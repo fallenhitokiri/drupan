@@ -2,14 +2,19 @@
 
 import yaml
 
+from io import read
+
 
 class Content(object):
     """Content object"""
-    def __init__(self, raw):
+    def fromFile(self, path, name):
         """
-        initalize object
-        <- raw - content from file
+        parse content from files
+        <- path: path to file
+           name: filename
         """
+        raw = read(path, name)
+
         (header, seperator, content) = raw.partition('---')
         
         meta = yaml.load(header)

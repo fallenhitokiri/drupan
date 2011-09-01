@@ -44,7 +44,8 @@ class Site(object):
         self.content = {}
 
         for cFile in ls(self.input, self.extension):
-            obj = content.Content(read(self.input, cFile))
+            obj = content.Content()
+            obj.fromFile(self.input, cFile)
             
             #create key with empty array if key does not exist
             if not self.content.has_key(obj.layout):
