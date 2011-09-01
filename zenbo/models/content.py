@@ -3,6 +3,7 @@
 import yaml
 
 from io import read
+from converters import *
 
 
 class Content(object):
@@ -27,6 +28,7 @@ class Content(object):
         self.content = content
 
         self._friendly()
+        self._convert(site)
         self._highlight(site)
         self._url(site)
 
@@ -44,10 +46,13 @@ class Content(object):
         self._url(site)
 
 
+    def _convert(self, site):
+        """convert content"""
+        self.content = getattr(eval(site.markup), 'markup')(self.content)
+
+
     def _friendly(self):
-        """
-        generate url friendly title
-        """
+        """generate url friendly title"""
         t = self.title
         t = t.replace(' ', '_')
         t = t.replace('!', '_')
@@ -130,15 +135,11 @@ class Content(object):
 
 
     def __unicode__(self):
-        """
-        return title and date
-        """
+        """return title and date"""
         return "[%s] %s" % (self.date, self.title)
 
     
     def __str__(self):
-        """
-        return title and date
-        """
+        """return title and date"""
         return unicode(self).encode('utf-8')
     
