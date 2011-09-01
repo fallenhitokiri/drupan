@@ -6,6 +6,7 @@ import yaml
 
 from io import read, ls
 from models import content
+from generators import *
 
 
 class Site(object):
@@ -45,13 +46,19 @@ class Site(object):
 
         for cFile in ls(self.input, self.extension):
             obj = content.Content()
-            obj.fromFile(self.input, cFile)
+            obj.fromFile(self.input, cFile, self)
             
             #create key with empty array if key does not exist
             if not self.content.has_key(obj.layout):
                 self.content[obj.layout] = []
             
             self.content[obj.layout].append(obj)
+
+
+    def generate(self):
+        """run generators"""
+        #getattr(index, 'generate')(self)
+        pass
 
 
     def sort(self):
