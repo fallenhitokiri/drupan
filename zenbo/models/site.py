@@ -39,6 +39,17 @@ class Site(object):
         if self.path[-1:] is not os.sep:
             self.path = self.path + os.sep
 
+    
+    def _add(self, obj):
+        """
+        create key with empty array if key does not exist
+        <- obj: object to add
+        """
+        if not self.content.has_key(obj.layout):
+            self.content[obj.layout] = []
+
+        self.content[obj.layout].append(obj)
+
 
     def load(self):
         """load content from disc"""
@@ -48,17 +59,16 @@ class Site(object):
             obj = content.Content()
             obj.fromFile(self.input, cFile, self)
             
-            #create key with empty array if key does not exist
-            if not self.content.has_key(obj.layout):
-                self.content[obj.layout] = []
-            
-            self.content[obj.layout].append(obj)
+            self._add(obj)
 
 
     def generate(self):
         """run generators"""
-        #getattr(index, 'generate')(self)
-        pass
+        for generator in self.generators:
+            obj = content.Content()
+            gen = getattr(eval(generator), 'generate')(self)
+            obj.fromDict(gen, self)
+            self._add(obj)
 
 
     def sort(self):

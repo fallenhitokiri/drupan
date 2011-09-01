@@ -31,6 +31,19 @@ class Content(object):
         self._url(site)
 
 
+    def fromDict(self, dic, site):
+        """
+        parse dictionary
+        <- dic: content from generator
+           site: site object
+        """
+        for key in dic:
+            setattr(self, key, dic[key])
+
+        self._friendly()
+        self._url(site)
+
+
     def _friendly(self):
         """
         generate url friendly title
@@ -113,7 +126,7 @@ class Content(object):
         for key in var:
             layout = layout.replace("$" + key, var[key])
 
-        self.url = "%s%s.html" % (site.url, layout)
+        self.url = "%s%s" % (site.url, layout)
 
 
     def __unicode__(self):
