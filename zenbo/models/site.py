@@ -4,7 +4,7 @@ import os
 
 import yaml
 
-from io import read
+from io import read, ls
 from models import content
 
 
@@ -43,15 +43,14 @@ class Site(object):
         """load content from disc"""
         self.content = {}
 
-        for cFile in os.listdir(self.input):
-            if os.path.splitext(cFile)[1] == self.extension:
-                obj = content.Content(read(self.input, cFile))
-                
-                #create key with empty array if key does not exist
-                if not self.content.has_key(obj.layout):
-                    self.content[obj.layout] = []
-
-                self.content[obj.layout].append(obj)
+        for cFile in ls(self.input, self.extension):
+            obj = content.Content(read(self.input, cFile))
+            
+            #create key with empty array if key does not exist
+            if not self.content.has_key(obj.layout):
+                self.content[obj.layout] = []
+            
+            self.content[obj.layout].append(obj)
 
 
     def sort(self):

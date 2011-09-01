@@ -15,3 +15,23 @@ def read(path, name):
     f.close()
 
     return c
+
+
+def ls(path, ext=None):
+    """
+    list filesystem
+    <- path: path to list
+       ext: extensions to filter
+    -> array
+    """
+    files = []
+
+    for cFile in os.listdir(path):
+        if ext is not None:
+            if os.path.splitext(cFile)[1] == ext:
+                files.append(cFile)
+        else:
+            files.append(cFile)
+
+    return files
+                
