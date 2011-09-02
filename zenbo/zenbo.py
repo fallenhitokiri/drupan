@@ -3,8 +3,6 @@
 
 """Zenbo executable"""
 
-import argparse
-
 from core import Zenbo
 
 
