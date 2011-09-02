@@ -39,6 +39,8 @@ class Site(object):
         if self.path[-1:] is not os.sep:
             self.path = self.path + os.sep
 
+        self.content = {}
+
     
     def _add(self, obj):
         """
@@ -53,12 +55,9 @@ class Site(object):
 
     def load(self):
         """load content from disc"""
-        self.content = {}
-
         for cFile in ls(self.input, self.extension):
             obj = content.Content()
             obj.fromFile(self.input, cFile, self)
-            
             self._add(obj)
 
 
