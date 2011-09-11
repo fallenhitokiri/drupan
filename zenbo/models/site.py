@@ -42,7 +42,7 @@ class Site(object):
         self.content = {}
 
     
-    def _add(self, obj):
+    def add(self, obj):
         """
         create key with empty array if key does not exist
         <- obj: object to add
@@ -51,23 +51,6 @@ class Site(object):
             self.content[obj.layout] = []
 
         self.content[obj.layout].append(obj)
-
-
-    def load(self):
-        """load content from disc"""
-        for cFile in ls(self.input, self.extension):
-            obj = content.Content()
-            obj.fromFile(self.input, cFile, self)
-            self._add(obj)
-
-
-    def generate(self):
-        """run generators"""
-        for generator in self.generators:
-            obj = content.Content()
-            gen = getattr(eval(generator), 'generate')(self)
-            obj.fromDict(gen, self)
-            self._add(obj)
 
 
     def sort(self):

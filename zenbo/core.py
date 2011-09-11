@@ -5,6 +5,9 @@
 import argparse
 
 from models import site
+from template import render
+from loader import load
+from generator import generate
 
 
 class Zenbo(object):
@@ -29,5 +32,8 @@ class Zenbo(object):
     def _compile(self):
         """compile site"""
         self.site = site.Site(self.path)
-        self.site.load()
+        load(self.site)
         self.site.sort()
+        generate(self.site)
+        render(self.site)
+        #print self.site.content['index'][0].content[1].rendered

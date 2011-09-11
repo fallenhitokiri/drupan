@@ -8,14 +8,14 @@ from converters import *
 
 class Content(object):
     """Content object"""
-    def fromFile(self, path, name, site):
+    def fromFile(self, name, site):
         """
         parse content from files
         <- path: path to file
            name: filename
            site: site object
         """
-        raw = read(path, name)
+        raw = read(site.input, name)
 
         (header, seperator, content) = raw.partition('---')
         
