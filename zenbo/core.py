@@ -8,6 +8,7 @@ from models import site
 from template import render
 from loader import load
 from generator import generate
+from write import write
 
 
 class Zenbo(object):
@@ -36,4 +37,4 @@ class Zenbo(object):
         self.site.sort()
         generate(self.site)
         render(self.site)
-        #print self.site.content['index'][0].content[1].rendered
+        write(self.site)
