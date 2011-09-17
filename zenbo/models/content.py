@@ -25,6 +25,10 @@ class Content(object):
         self.date    = meta['date']
         self.layout  = meta['layout']
         self.userdef = meta['userdef']
+
+        if meta.has_key('menu'):
+            self.menu = meta['menu']
+
         self.content = content
 
         self._friendly()
