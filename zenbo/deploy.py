@@ -8,4 +8,4 @@ def deploy(site):
     deploy generated site
     <- site object
     """
-    p = getattr(eval(site.deployment['type']), 'publish')(site)
+    getattr(eval(site.deployment['type']), 'publish')(site)
