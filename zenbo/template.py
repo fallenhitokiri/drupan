@@ -23,7 +23,7 @@ def template(obj, site, env):
             print "Template not found: %s" % obj.layout
             sys.exit()
     
-    tmp = template.render(obj=obj, storage=site)
+    tmp = template.render(obj=obj, site=site)
 
     return tmp
     

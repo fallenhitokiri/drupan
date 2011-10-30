@@ -9,6 +9,7 @@ from template import render
 from loader import load
 from generator import generate
 from write import write
+from deploy import deploy
 
 
 class Zenbo(object):
@@ -21,8 +22,8 @@ class Zenbo(object):
         parser = argparse.ArgumentParser(description='Zenbo')
         parser.add_argument('path', help='directory you store your site in')
         args = parser.parse_args()
-
-        self.path= vars(args)['path']
+        
+        self.path = vars(args)['path']
 
 
     def run(self):
@@ -38,3 +39,5 @@ class Zenbo(object):
         generate(self.site)
         render(self.site)
         write(self.site)
+        deploy(self.site)
+        
