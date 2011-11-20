@@ -7,13 +7,15 @@ I am currently deploying my first site with Zenbo but it is under heavy developm
 Since Zenbo is under heavy development I have only released core features so far.
 
 ###Markup Languages
+
  * markdown
- * textile
 
 ###Generators
+
  * feeds
  * index
  * archive
 
 ###Deployment
+
  * git
