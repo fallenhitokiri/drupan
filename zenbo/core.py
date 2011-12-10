@@ -21,14 +21,21 @@ class Zenbo(object):
         """
         parser = argparse.ArgumentParser(description='Zenbo')
         parser.add_argument('path', help='directory you store your site in')
+        parser.add_argument('--nodeploy', help='do not deploy after generation', action='store_true', default=False)
         args = parser.parse_args()
         
         self.path = vars(args)['path']
+        self.deploy = vars(args)['nodeploy']
 
 
     def run(self):
         """run Zenbo"""
         self._compile()
+        if self.deploy is True:
+            print "Not deploying generated page!"
+        else:
+            print "deploying,..."
+            #deploy(self.site)
 
 
     def _compile(self):
@@ -39,5 +46,4 @@ class Zenbo(object):
         generate(self.site)
         render(self.site)
         write(self.site)
-        deploy(self.site)
         

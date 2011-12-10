@@ -1,22 +1,56 @@
-#Directory Structure
-First you have to create 3 directories to hold the following file
- * content
- * your generated site
- * template to be used
-After you have those 3 copy the default_config.yaml to a directory of your choice, rename it /config.yaml/ and edit it.
-With the comments it should explain itself.
+# Quickstart
 
-I suggest you use one directory for all this stuff so you get a structure that looks like the following:
- site_name/
- - content/
- - site/
- - template/
- - config.yaml
+With this guide I will give you a short introduction how you can start blogging with Zenbo.
 
-#Deployment
-/add deployment section after the whole documentation is finished/
+I will use git and lighttpd but feel free to use whatever you want. Check out the documentation of the other deployment modules if you prefer rsync or something else.
 
-#Blogging
-Adding a new post to you blog is easy. Create a file in /content/ named "blogpost".markdown (default configuration), add the yaml header in default_post.markdown (or just copy this file and rename it), write your content and run
-  zenbo /path/to/your/site
-If you want to create a page do the same thing but use the yaml header from default_page.markdown
+## Setup
+
+You need 3 directories and one configuration file.
+
+ * one directory for your content
+ * one for the generated site
+ * and one for your template
+
+I suggest you copy the default.yaml to your directory and rename it to config.yaml. Thanks to the comments you should be able to figure it out by yourself.
+
+### Git
+
+After everything is created and configured run
+
+  git init
+
+and add a remote location named server. I suggest you use git over ssh with pub/priv key authentification. This way you can just run Zenbo and everything happens without bothering you.
+
+### Server
+
+On your server you need git and a webserver. Pick a directory, run
+
+  git init
+
+and point your webservers document root to the site directory in your git directory. Now run
+
+  chmod +x .git/hooks/post-received
+
+and edit it using your favorit edit. There should already be a shebang at the beginning. Add
+
+  GIT_WORKING_DIRECOTY=$foo git checkout -f
+
+Replace $foo with your git directory. Now git will automatically run checkout -f whenever you push your site to the repository. This way it will automatically be up to date.
+
+## Content
+
+To create content for your new site just create a file in your content directory with the extension specified in your config and add one of the following headers.
+
+### Blog Post
+
+header
+
+### Page
+
+Currently you can only write your content using markdown.
+
+## Template
+
+You can use Jinja to create your template. The variable holding all the informations is named obj for the current site content and site with everything you can imagine. If you want some ideas how to create your menu or how to structure your template take a look at [http://www.github.com/fallenhitokiri/Zenbo-test|Zenbos Test repository].
+
