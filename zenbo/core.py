@@ -38,7 +38,7 @@ class Zenbo(object):
             print "Not deploying generated page!"
         else:
             print "deploying,..."
-            #deploy(self.site)
+            deploy(self.site)
 
 
     def _compile(self):
