@@ -3,6 +3,7 @@
 import os
 import shutil
 import errno
+import codecs
 
 
 def read(path, name):
@@ -12,7 +13,7 @@ def read(path, name):
        name: filename
     -> file content
     """
-    f = open(path + os.sep + name)
+    f = codecs.open(path + os.sep + name, 'r', 'utf-8')
     c = f.read()
     f.close()
 
@@ -80,6 +81,6 @@ def write(name, content):
        content: content
     """
     f = open(name, 'w')
-    f.write(content)
+    f.write(content.encode('utf-8'))
     f.close()
     
