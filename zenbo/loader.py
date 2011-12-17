@@ -13,3 +13,5 @@ def load(site):
         obj = content.Content()
         obj.fromFile(cFile, site)
         site.add(obj)
+
+    site.sort()

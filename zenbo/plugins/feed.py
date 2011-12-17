@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from models import content
+
 from datetime import datetime
 
 
-def generate(site):
+def plugin():
+    info = {'step' : 'load',
+            'description' : 'generate a rss feed'}
+
+    return info
+
+
+def execute(site):
     """
     generate feed
     <- site: site object
-    -> var: dictionary containing content for object
     """
     con = site.content['post'][:10]
     now = datetime.now()
@@ -20,4 +28,7 @@ def generate(site):
             'content' : con,
         }
 
-    return var
+    obj = content.Content()
+    obj.fromDict(var, site)
+
+    site.add(obj)

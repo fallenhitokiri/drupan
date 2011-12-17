@@ -6,7 +6,7 @@ import yaml
 
 from io import read, ls
 from models import content
-from generators import *
+#from generators import *
 
 
 class Site(object):
@@ -24,7 +24,7 @@ class Site(object):
         self.directories = config['directories']
         self.markup      = config['markup']
         self.extension   = config['extension']
-        self.generators  = config['generators']
+        self.plugins     = config['plugins']
         self.urls        = config['urls']
         self.filters     = config['filters']
         self.highlight   = config['highlight']

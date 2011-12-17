@@ -7,9 +7,9 @@ import argparse
 from models import site
 from template import render
 from loader import load
-from generator import generate
 from write import write
 from deploy import deploy
+from plugins import *
 
 
 class Zenbo(object):
@@ -37,16 +37,27 @@ class Zenbo(object):
         if self.deploy is True:
             print "Not deploying generated page!"
         else:
-            print "deploying,..."
             deploy(self.site)
+
+
+    def __plugin(self, step):
+        """run all plugins that match the current step"""
+        for plugin in self.site.plugins:
+            info = getattr(eval(plugin), 'plugin')()
+
+            if info['step'] is step:
+                getattr(eval(plugin), 'execute')(self.site)
 
 
     def _compile(self):
         """compile site"""
         self.site = site.Site(self.path)
-        load(self.site)
-        self.site.sort()
-        generate(self.site)
-        render(self.site)
-        write(self.site)
         
+        load(self.site)
+        self.__plugin("load")
+        
+        render(self.site)
+        self.__plugin("render")
+
+        write(self.site)
+        self.__plugin("write")
