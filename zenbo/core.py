@@ -8,7 +8,7 @@ from models import site
 from template import render
 from loader import load
 from write import write
-from deploy import deploy
+from deployment import *
 from plugins import *
 
 
@@ -37,7 +37,7 @@ class Zenbo(object):
         if self.deploy is True:
             print "Not deploying generated page!"
         else:
-            deploy(self.site)
+            getattr(eval(self.site.deployment['type']), 'publish')(site)
 
 
     def __plugin(self, step):
