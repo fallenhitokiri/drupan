@@ -37,7 +37,7 @@ class Zenbo(object):
         if self.deploy is True:
             print "Not deploying generated page!"
         else:
-            getattr(eval(self.site.deployment['type']), 'publish')(site)
+            getattr(eval(self.site.deployment['type']), 'publish')(self.site)
 
 
     def __plugin(self, step):
