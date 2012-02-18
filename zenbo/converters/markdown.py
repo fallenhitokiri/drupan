@@ -9,7 +9,7 @@ def markup(content):
     <- content: content form object
     -> content: content after markdown magic
     """
-    content = md.markdown(content)
+    content = md.markdown(content, extras=["code-color"])
 
     return content
 
