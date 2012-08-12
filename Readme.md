@@ -9,8 +9,7 @@ system.
 
 ## Quick Start
 Copy ```doc/example``` to another location, run ```python path/to/zenbo.py
-path/to/example --no-deploy --serve``` and point your browser to
-```http://localhost:9000```.
+path/to/example --no-deploy --serve``` and point your browser to ```http://localhost:9000```.
 
 To create additional pages or posts you can find a template for each of them
 in ```example/draft/```.
