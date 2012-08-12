@@ -16,47 +16,60 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/fallenhitokiri/Zenbo">Fork Me on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/fallenhitokiri/Zenbo">View on GitHub</a>
 
           <h1 id="project_title">Zenbo</h1>
           <h2 id="project_tagline">Zenbo is a static site generation tool</h2>
 
-          <section id="downloads">
-            <a class="zip_download_link" href="https://github.com/fallenhitokiri/Zenbo/zipball/master">Download this project as a .zip file</a>
-            <a class="tar_download_link" href="https://github.com/fallenhitokiri/Zenbo/tarball/master">Download this project as a tar.gz file</a>
-          </section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/fallenhitokiri/Zenbo/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/fallenhitokiri/Zenbo/tarball/master">Download this project as a tar.gz file</a>
+            </section>
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <p>This is an alpha release. It should be stable and work as expected but it is
+not yet feature complete. Documentation still sucks but you should be able to
+figure it out with the quick start section below.</p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h1>Zenbo - static site generator</h1>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>Zenbo is a static site generator. You can use it for blogs, sites or anything
+you can imagine. Adding new features is easy thanks to a easy to use plugin
+system.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>Quick Start</h2>
 
-<h3>Designer Templates</h3>
+<p>Copy <code>doc/example</code> to another location, run <code>python path/to/zenbo.py
+path/to/example --no-deploy --serve</code> and point your browser to <code>http://localhost:9000</code>.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>To create additional pages or posts you can find a template for each of them
+in <code>example/draft/</code>.</p>
 
-<h3>Rather Drive Stick?</h3>
+<p>For further details please read <code>doc/Details.md</code>. It should cover everything
+you need to know to get a site up and running using Zenbo.</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<h2>Features</h2>
 
-<h3>Authors and Contributors</h3>
+<ul>
+<li>Markdown support</li>
+<li>Handling images</li>
+<li>Deploy with git</li>
+<li>Generate archives and RSS Feeds</li>
+<li>easily extend it using plugins</li>
+<li>minimal external dependencies (currently only PyYAML in default distribution)</li>
+</ul><p>We use Jinja as template system and you can access everything Zenbo considers
+Content in every template. So your imagination is the limit of your site. (Well
+beside some technical stuff)</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h2>BETA</h2>
 
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact support@github.com and we’ll help you sort it out.</p>
+<p>Zenbo is considered beta. It "powers" sites that are already used in "production".
+Still there could be some bugs. It is tested against Python 2.7, likely not 
+compatible to 3.x (see <code>finalizers/imagecopy.py</code>)</p>
       </section>
     </div>
 
