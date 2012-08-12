@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block bodyid %}id="index"{% endblock %}
+
+{% block content %}
+    <p class="box">This is an example site for Zenbo. Have fun :)</p>
+    
+    {% for cur in site.sorted %}
+        
+        {% if loop.index <= 5 %}
+        
+            <h4><a href="{{ cur.url }}" alt="{{ cur.meta['title'] }}">{{ cur.meta['title']}}</a></h4>
+            <p class="date">posted on: {{ cur.meta['date'] }}</p>
+            {{ cur.markup|more }}
+            <p class="more"><a href="{{ cur.url }}" alt="{{ cur.meta['title'] }}">continue more</a></p>
+        
+        {% endif %}
+        
+    {% endfor %}
+{% endblock %}

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import markdown2 as md
+"""
+Convert markdown text to html
+"""
+
+from markdown2 import markdown
 
 
-def markup(content):
-    """
-    run content thru markdown
-    <- content: content form object
-    -> content: content after markdown magic
-    """
-    content = md.markdown(content, extras=["code-color"])
+class Converter(object):
+    def __init__(self, site):
+        self.site = site
 
-    return content
-
+    def convert(self):
+        for co in self.site.content:
+            if co.content is not None:
+                co.markup = markdown(co.content)

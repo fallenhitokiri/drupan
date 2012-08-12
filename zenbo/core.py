@@ -1,63 +1,64 @@
 # -*- coding: utf-8 -*-
 
-"""Core of Zenbo"""
+"""
+Zenbos engine - everything happens here
+"""
 
 import argparse
 
-from models import site
-from template import render
-from loader import load
-from write import write
-from deployment import *
-from plugins import *
+from site import Site
+from plugin import Plugin
+from serve import Server
 
 
 class Zenbo(object):
-    """Zenbo"""
     def __init__(self):
-        """
-        setup Zenbo
-        - parse command line arguments
-        """
-        parser = argparse.ArgumentParser(description='Zenbo')
-
-        parser.add_argument('path', help='directory you store your site in')
-        parser.add_argument('--nodeploy', help='do not deploy after generation', action='store_true', default=False)
-
+        """parse arguments and create site object"""
+        parser = argparse.ArgumentParser(description=Zenbo)
+        parser.add_argument('path', help='path to configuration file')
+        parser.add_argument('--nodeploy', help='do not deploy',
+                             action='store_true', default=False)
+        parser.add_argument('--serve', help='serve site',
+                             action='store_true', default=False)
         args = parser.parse_args()
-        
-        self.path   = vars(args)['path']
-        self.deploy = vars(args)['nodeploy']
 
+        self.site = Site()
+        self.site.path = vars(args)['path']
+        self.no_deployment = vars(args)['nodeploy']
+        self.serve = vars(args)['serve']
 
     def run(self):
-        """run Zenbo"""
-        self._compile()
+        self.site.read_config()
+        plugin = Plugin(self.site)
 
-        if self.deploy is True:
-            print "Not deploying generated page!"
-        else:
-            getattr(eval(self.site.deployment['type']), 'publish')(self.site)
+        loader = plugin.get_loader()
+        loader.load()
 
+        for generator in self.site.config['generators']:
+            gen = plugin.get_generator(generator)
+            gen.generate()
 
-    def __plugin(self, step):
-        """run all plugins that match the current step"""
-        for plugin in self.site.plugins:
-            info = getattr(eval(plugin), 'plugin')()
+        for co in self.site.content:
+            co.prepare(self.site)
 
-            if info['step'] is step:
-                getattr(eval(plugin), 'execute')(self.site)
+        for converter in self.site.config['converters']:
+            conv = plugin.get_converter(converter)
+            conv.convert()
 
+        renderer = plugin.get_renderer()
+        renderer.render()
 
-    def _compile(self):
-        """compile site"""
-        self.site = site.Site(self.path)
-        
-        load(self.site)
-        self.__plugin("load")
-        
-        render(self.site)
-        self.__plugin("render")
+        writer = plugin.get_writer()
+        writer.write()
 
-        write(self.site)
-        self.__plugin("write")
+        for finalizer in self.site.config['finalizers']:
+            fin = plugin.get_finalizer(finalizer)
+            fin.finalize()
+
+        if self.no_deployment is False:
+            deployer = plugin.get_deploy()
+            deployer.deploy()
+
+        if self.serve is True:
+            server = Server(self.site)
+            server.serve()

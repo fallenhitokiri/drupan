@@ -1,0 +1,51 @@
+name: "Local Zenbo Test"
+url: "http://localhost:9000/"
+
+input:
+  name: "filesystem"
+  directory: "content"
+  extension: ".md"
+
+generators: ['blank', 'sorted']
+
+converters: ['markdown']
+
+# url scheme - form: layout: url
+# $foo means: relpace $foo with $foo from "meta"
+# %foo means: replace %foo with attribute foo from ContentObject
+layouts:
+  post: ["$year/$month/$day/%slug/", "_post.html"]
+  page: ["%slug/", "_page.html"]
+  archive: ["archive/", "_archive.html"]
+  index: ["", "_index.html"]
+  feed: ["feed/", "_feed.xml"]
+
+rendering:
+  name: "jinja"
+  directory: "template"
+
+output:
+  name: "filesystem"
+  directory: "site"
+
+finalizers: ['imagecopy']
+
+deploy:
+  name: "gitsub"
+
+
+###############################################################################
+# PLUGINS                                                                     #
+###############################################################################
+
+#layouts that should be added to "sorted" list
+sorting: ['post', 'note', 'link', 'image']
+
+#blank files to create
+blank:
+  index: ["Index", False]
+  archive: ["Archive", True]
+  feed: ["RSS Feed", False]
+
+imagecopy:
+  directory: "content/images/"

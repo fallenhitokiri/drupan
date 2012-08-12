@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+        <title>{{ site.config['name'] }} {% block title %}{% endblock %}</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="robots" content="all" />    
+        
+        <link href="{{ site.config['url'] }}css/screen.css" rel="stylesheet" type="text/css" />
+        <link href="{{ site.config['url'] }}feed.xml" rel="alternate" type="application/rss+xml" title="RSS Feed" />
+	</head>
+
+    <body {% block bodyid %}id="default"{% endblock %}>
+
+		<!--CONTAINER-->
+		<div id="container">
+
+			<!--CONTENT-->
+            <div id="content">
+                {% block content %} no content {% endblock %}
+            </div>
+			<!--END CONTENT-->
+
+			<!--SIDEBAR-->
+			<div id="sidebar">
+
+				<!--LOGO-->
+				<div id="logo">
+				
+                    <p><a href="/">add logo!</a></p>
+
+				</div>
+				<!--END LOGO-->
+
+				<!--RIBBON-->
+				<div id="ribbon-wrapper">
+					<div id="ribbon-front">
+						<p>{{ site.config['name'] }}</p>
+					</div>
+					
+					<div id="ribbon-edge-bottomleft"></div>
+					<div id="ribbon-edge-bottomright"></div>
+					<div id="ribbon-back-left"></div>
+					<div id="ribbon-back-right"></div>
+				</div>
+				<!--END RIBBON-->
+
+				<!--MENU-->
+				<div id="menu">
+					<ul>
+                        {% for cur in site.content %}
+                            {% if cur.menu == True or cur.meta['menu'] == True %}
+                                <li><a href="{{ cur.url }}">{{ cur.meta['title'] }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    
+                    <p id="social">
+                        <a href="{{ site.config['url'] }}feed/"><img src="/images/feed.png" alt="RSS Feed" /></a>
+                    </p>
+				</div>
+				<!--END MENU-->
+
+			</div>
+			<!--END SIDEBAR-->
+
+			<div class="clearer"></div>
+
+		</div>
+		<!--END CONTAINER-->
+
+	</body>
+
+</html>
