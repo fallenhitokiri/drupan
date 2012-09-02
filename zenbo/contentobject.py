@@ -23,7 +23,7 @@ class ContentObject(object):
         self.menu = menu
 
     def _generate_slug(self):
-        #this should be regex magic
+        # this should be regex magic
         if self.slug is None:
             t = self.meta['title']
             t = t.replace(' ', '-')

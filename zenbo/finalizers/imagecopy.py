@@ -21,7 +21,7 @@ class ImageParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         if tag == 'img':
-            self.images.append((dict(attrs)["src"]))
+            self.images.append((dict(attrs)['src']))
 
 
 class Finalizer(object):
