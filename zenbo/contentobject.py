@@ -87,7 +87,7 @@ class ContentObject(object):
         if (len(layout) > 0) and (layout[-1:] is not '/'):
             layout = layout + '/'
 
-        if "belongs" in self.meta:
+        if 'belongs' in self.meta:
             self.path = self.meta['belongs'] + layout
         else:
             self.path = layout
