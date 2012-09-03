@@ -87,7 +87,10 @@ class ContentObject(object):
         if (len(layout) > 0) and (layout[-1:] is not '/'):
             layout = layout + '/'
 
-        self.path = layout
+        if "belongs" in self.meta:
+            self.path = self.meta['belongs'] + layout
+        else:
+            self.path = layout
 
     def _generate_url(self, base):
         self.url = base + self.path
