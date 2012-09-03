@@ -9,6 +9,7 @@ import argparse
 from site import Site
 from plugin import Plugin
 from serve import Server
+import url
 
 
 class Zenbo(object):
@@ -39,7 +40,7 @@ class Zenbo(object):
             gen.generate()
 
         for co in self.site.content:
-            co.prepare(self.site)
+            url.prepare(co, self.site)
 
         for converter in self.site.config['converters']:
             conv = plugin.get_converter(converter)
