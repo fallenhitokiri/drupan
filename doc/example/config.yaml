@@ -6,7 +6,7 @@ input:
   directory: "content"
   extension: ".md"
 
-generators: ['blank', 'sorted']
+generators: ['blank', 'sorted', 'tags']
 
 converters: ['markdown']
 
@@ -19,6 +19,7 @@ layouts:
   archive: ["archive/", "_archive.html"]
   index: ["", "_index.html"]
   feed: ["feed/", "_feed.xml"]
+  tags: ["tag/", "_tag.xml"]
 
 rendering:
   name: "jinja"
