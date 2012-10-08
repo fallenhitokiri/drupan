@@ -20,8 +20,7 @@ layouts:
 
 
 options:
-  fsreader:
-    extension: ".md"
+  fsreader: ".md"
   sorting: ['post', 'note', 'link', 'image']
   blank:
     index: ["Index", False]

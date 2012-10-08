@@ -7,48 +7,48 @@ def _generate_slug(cobj):
     """clean title for URL generation"""
     # this should be regex magic
     if cobj.slug is None:
-        clear_url = cobj.meta['title']
-        clear_url = clear_url.replace(' ', '-')
-        clear_url = clear_url.replace('.', '-')
-        clear_url = clear_url.replace('!', '-')
-        clear_url = clear_url.replace('?', '-')
-        clear_url = clear_url.replace('&', '-')
-        clear_url = clear_url.replace(';', '-')
-        clear_url = clear_url.replace(':', '-')
-        clear_url = clear_url.replace('#', '-')
-        clear_url = clear_url.replace('~', '-')
-        clear_url = clear_url.replace('*', '-')
-        clear_url = clear_url.replace('`', '-')
-        clear_url = clear_url.replace('\'', '-')
-        clear_url = clear_url.replace("\"", "-")
-        clear_url = clear_url.replace('$', '-')
-        clear_url = clear_url.replace('@', '-')
-        clear_url = clear_url.replace('%', '-')
-        clear_url = clear_url.replace('/', '-')
-        clear_url = clear_url.replace('(', '-')
-        clear_url = clear_url.replace(')', '-')
-        clear_url = clear_url.replace('[', '-')
-        clear_url = clear_url.replace(']', '-')
-        clear_url = clear_url.replace('{', '-')
-        clear_url = clear_url.replace('}', '-')
-        clear_url = clear_url.replace('=', '-')
-        clear_url = clear_url.replace('^', '-')
-        clear_url = clear_url.replace('<', '-')
-        clear_url = clear_url.replace('>', '-')
-        clear_url = clear_url.replace('|', '-')
+        clean = cobj.meta['title']
+        clean = clean.replace(' ', '-')
+        clean = clean.replace('.', '-')
+        clean = clean.replace('!', '-')
+        clean = clean.replace('?', '-')
+        clean = clean.replace('&', '-')
+        clean = clean.replace(';', '-')
+        clean = clean.replace(':', '-')
+        clean = clean.replace('#', '-')
+        clean = clean.replace('~', '-')
+        clean = clean.replace('*', '-')
+        clean = clean.replace('`', '-')
+        clean = clean.replace('\'', '-')
+        clean = clean.replace("\"", "-")
+        clean = clean.replace('$', '-')
+        clean = clean.replace('@', '-')
+        clean = clean.replace('%', '-')
+        clean = clean.replace('/', '-')
+        clean = clean.replace('(', '-')
+        clean = clean.replace(')', '-')
+        clean = clean.replace('[', '-')
+        clean = clean.replace(']', '-')
+        clean = clean.replace('{', '-')
+        clean = clean.replace('}', '-')
+        clean = clean.replace('=', '-')
+        clean = clean.replace('^', '-')
+        clean = clean.replace('<', '-')
+        clean = clean.replace('>', '-')
+        clean = clean.replace('|', '-')
 
-        clear_url = clear_url.replace('----', '-')
-        clear_url = clear_url.replace('---', '-')
-        clear_url = clear_url.replace('--', '-')
+        clean = clean.replace('----', '-')
+        clean = clean.replace('---', '-')
+        clean = clean.replace('--', '-')
 
-        if clear_url[-1] == "-":
-            clear_url = clear_url[:-1]
+        if clean[-1] == "-":
+            clean = clean[:-1]
 
         # last character should never be -
-        if clear_url[-2:-1] == "-":
-            clear_url = clear_url[:-2]
+        if clean[-2:-1] == "-":
+            clean = clean[:-2]
 
-        cobj.slug = clear_url.lower()
+        cobj.slug = clean.lower()
 
 
 def _generate_path(cobj):

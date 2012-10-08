@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""Load content from filesystem
+options:
+- fsreader: "file extension used for content"
+"""
+
 import os
 import codecs
 
@@ -15,7 +20,14 @@ class Feature(object):
         self.site = site
         self.options = site.config.options_for_key('fsreader')
         self.content_directory = site.config.input
-        self.extension = self.options['extension']
+        self.extension = '.md'
+
+        if self.options:
+            self.extension = self.options
+            
+            # extension should start with a dot
+            if self.extension[0:1] is not '.':
+                self.extension = '.' + self.extension
 
         # ensure os seperator
         if self.content_directory[-1:] is not os.sep:

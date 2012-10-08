@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""Generate blank content objects
+options:
+- blank:
+    layout1: ['name', 'in_menu']
+    layout2: ['name', 'in_menu']
+in_menu is either True or False
+"""
+
 from ..contentobject import ContentObject
 from ..url import prepare
 

@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""Copy images in the same directory as the post linking to it
+options:
+  - imagecopy: "path to images"
+"""
+
+
 from HTMLParser import HTMLParser
 import shutil
 import os
@@ -23,12 +29,18 @@ class Feature(object):
     corresponding directory
     """
     def __init__(self, site):
-        self.input = site.path + site.config.options_for_key('imagecopy')
+        self.options = site.config.options_for_key('imagecopy')
         self.output = site.config.output
         self.site = site
-
-        if self.input[-1:] is not os.sep:
-            self.input = self.input + os.sep
+        
+        if self.options:
+            self.input = site.path + self.options
+            
+            # path should end with os.sep
+            if self.input[-1:] is not os.sep:
+                self.input = self.input + os.sep
+        else:
+            self.input = self.site.config.input + "images/"
 
     def run(self):
         """run the plugin"""

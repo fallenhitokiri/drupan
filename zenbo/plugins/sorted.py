@@ -2,7 +2,7 @@
 
 """sort content objects
 - add to your configuration file:
-    sorting = ['bla', 'foo', 'bar']
+    sorting = ['layout1', 'layout2', 'layout3']
 """
 
 
