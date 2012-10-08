@@ -16,12 +16,12 @@ from jinja2 import FileSystemLoader, Environment
 from jinja_filters import more
 
 
-class Renderer(object):
+class Feature(object):
     def __init__(self, site):
-        self.template_dir = site.path + site.config['rendering']['directory']
         self.site = site
+        self.template_dir = site.config.template
 
-    def render(self):
+    def run(self):
         env = Environment(loader=FileSystemLoader(self.template_dir))
 
         env.filters['more'] = getattr(more, 'handle')

@@ -11,7 +11,7 @@ import os
 
 class Server(object):
     def __init__(self, site):
-        self.output = site.path + site.config['output']['directory']
+        self.output = site.config.output
         self.site = site
         self.port = 9000
 
@@ -27,5 +27,5 @@ class Server(object):
             httpd.serve_forever()
         except KeyboardInterrupt:
             print "shutting down server\n"
-        
+
         os.chdir(cwd)

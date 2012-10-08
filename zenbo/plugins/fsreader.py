@@ -19,13 +19,15 @@ import codecs
 import yaml
 
 from ..contentobject import ContentObject
+from ..url import prepare
 
 
-class Loader(object):
+class Feature(object):
     def __init__(self, site):
         self.site = site
-        self.content_directory = site.path + site.config['input']['directory']
-        self.extension = site.config['input']['extension']
+        self.options = site.config.options_for_key('fsreader')
+        self.content_directory = site.config.input
+        self.extension = self.options['extension']
 
         # ensure os seperator
         if self.content_directory[-1:] is not os.sep:
@@ -46,7 +48,7 @@ class Loader(object):
         meta = yaml.load(header)
         return (meta, content)
 
-    def load(self):
+    def run(self):
         files = self.filelist()
 
         # for every file: read, create ContentObject, parse yaml, store
@@ -59,4 +61,5 @@ class Loader(object):
 
             co = ContentObject()
             (co.meta, co.content) = self.parse_yaml(raw)
+            prepare(co, self.site)
             self.site.content.append(co)

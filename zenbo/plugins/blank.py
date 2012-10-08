@@ -18,17 +18,19 @@ configuration:
 """
 
 from ..contentobject import ContentObject
+from ..url import prepare
 
 
-class Generator(object):
+class Feature(object):
     def __init__(self, site):
-        self.blanks = site.config['blank']
         self.site = site
+        self.options = site.config.options_for_key("blank")
 
-    def generate(self):
-        for current in self.blanks:
+    def run(self):
+        for current in self.options:
             co = ContentObject()
-            title = self.blanks[current][0]
-            menu = self.blanks[current][1]
+            title = self.options[current][0]
+            menu = self.options[current][1]
             co.add_meta(title, current, menu)
+            prepare(co, self.site)
             self.site.content.append(co)

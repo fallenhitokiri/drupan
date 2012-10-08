@@ -24,20 +24,16 @@ class ImageParser(HTMLParser):
             self.images.append((dict(attrs)['src']))
 
 
-class Finalizer(object):
+class Feature(object):
     def __init__(self, site):
-        self.input = site.path + site.config['imagecopy']['directory']
-        self.output = site.path + site.config['output']['directory']
+        self.input = site.path + site.config.options_for_key('imagecopy')
+        self.output = site.config.output
+        self.site = site
 
         if self.input[-1:] is not os.sep:
             self.input = self.input + os.sep
 
-        if self.output[-1:] is not os.sep:
-            self.output = self.output + os.sep
-
-        self.site = site
-
-    def finalize(self):
+    def run(self):
         for co in self.site.content:
             co.images = []
 

@@ -9,7 +9,6 @@ import argparse
 from site import Site
 from plugin import Plugin
 from serve import Server
-import url
 
 
 class Zenbo(object):
@@ -29,36 +28,11 @@ class Zenbo(object):
         self.serve = vars(args)['serve']
 
     def run(self):
-        self.site.read_config()
-        plugin = Plugin(self.site)
+        self.site.setup()
+        plugins = Plugin(self.site)
 
-        loader = plugin.get_loader()
-        loader.load()
-
-        for generator in self.site.config['generators']:
-            gen = plugin.get_generator(generator)
-            gen.generate()
-
-        for co in self.site.content:
-            url.prepare(co, self.site)
-
-        for converter in self.site.config['converters']:
-            conv = plugin.get_converter(converter)
-            conv.convert()
-
-        renderer = plugin.get_renderer()
-        renderer.render()
-
-        writer = plugin.get_writer()
-        writer.write()
-
-        for finalizer in self.site.config['finalizers']:
-            fin = plugin.get_finalizer(finalizer)
-            fin.finalize()
-
-        if self.no_deployment is False:
-            deployer = plugin.get_deploy()
-            deployer.deploy()
+        for plugin in plugins.plugins:
+            plugin.run()
 
         if self.serve is True:
             server = Server(self.site)

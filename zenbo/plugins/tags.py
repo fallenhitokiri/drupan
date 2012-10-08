@@ -9,18 +9,19 @@ add "tags" to your layouts.
 """
 
 from ..contentobject import ContentObject
+from ..url import prepare
 
 
-class Generator(object):
+class Feature(object):
     def __init__(self, site):
         self.site = site
         self.tags = {}
 
-    def generate(self):
+    def run(self):
         for current in self.site.content:
-            if current.meta.has_key('tags'):
+            if "tags" in current.meta:
                 for tag in current.meta['tags']:
-                    if not self.tags.has_key(tag):
+                    if not tag in self.tags:
                         self.tags[tag] = []
                     self.tags[tag].append(current)
 
@@ -30,4 +31,5 @@ class Generator(object):
             menu = False
             co.add_meta(title, 'tags', menu)
             co.tags = self.tags[name]
+            prepare(co, self.site)
             self.site.content.append(co)

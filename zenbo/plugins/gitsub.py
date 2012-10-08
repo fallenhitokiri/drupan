@@ -9,7 +9,7 @@ import shlex
 import subprocess
 
 
-class Deployment(object):
+class Feature(object):
     def __init__(self, site):
         self.cmd_add = 'git add .'
         self.cmd_commit = 'git commit -m "%s"' % str(datetime.datetime.now())

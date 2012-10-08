@@ -1,14 +1,11 @@
 name: "Local Zenbo Test"
 url: "http://localhost:9000/"
 
-input:
-  name: "filesystem"
-  directory: "content"
-  extension: ".md"
+plugins: ['fsreader', 'blank', 'sorted', 'tags', 'markdown', 'jinja', 'fswriter', 'imagecopy']
 
-generators: ['blank', 'sorted', 'tags']
-
-converters: ['markdown']
+input: "content"
+template: "template"
+output: "site"
 
 # url scheme - form: layout: url
 # $foo means: relpace $foo with $foo from "meta"
@@ -19,34 +16,16 @@ layouts:
   archive: ["archive/", "_archive.html"]
   index: ["", "_index.html"]
   feed: ["feed/", "_feed.xml"]
-  tags: ["tag/", "_tag.xml"]
-
-rendering:
-  name: "jinja"
-  directory: "template"
-
-output:
-  name: "filesystem"
-  directory: "site"
-
-finalizers: ['imagecopy']
-
-deploy:
-  name: "gitsub"
+  tags: ["tag/$title/", "_tag.html"]
 
 
-###############################################################################
-# PLUGINS                                                                     #
-###############################################################################
+options:
+  fsreader:
+    extension: ".md"
+  sorting: ['post', 'note', 'link', 'image']
+  blank:
+    index: ["Index", False]
+    archive: ["Archive", True]
+    feed: ["RSS Feed", False]
+  imagecopy: "content/images/"
 
-#layouts that should be added to "sorted" list
-sorting: ['post', 'note', 'link', 'image']
-
-#blank files to create
-blank:
-  index: ["Index", False]
-  archive: ["Archive", True]
-  feed: ["RSS Feed", False]
-
-imagecopy:
-  directory: "content/images/"

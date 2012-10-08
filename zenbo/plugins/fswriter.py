@@ -12,11 +12,11 @@ import os
 import errno
 
 
-class Writer(object):
+class Feature(object):
     def __init__(self, site):
-        self.output = site.path + site.config['output']['directory']
-        self.template = site.path + site.config['rendering']['directory']
         self.site = site
+        self.output = site.config.output
+        self.template = site.config.template
 
     def __cleandir(self):
         try:
@@ -45,7 +45,7 @@ class Writer(object):
         f.write(content.encode('utf-8'))
         f.close()
 
-    def write(self):
+    def run(self):
         self.__cleandir()
         self.__copytree()
 

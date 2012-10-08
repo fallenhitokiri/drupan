@@ -8,15 +8,15 @@ configuration:
 """
 
 
-class Generator(object):
+class Feature(object):
     def __init__(self, site):
-        self.keys = site.config['sorting']
         self.site = site
         self.site.sorted = []
+        self.options = site.config.options_for_key('sorting')
 
-    def generate(self):
+    def run(self):
         for co in self.site.content:
-            if co.meta['layout'] in self.keys:
+            if co.meta['layout'] in self.options:
                 self.site.sorted.append(co)
 
         self.site.sorted.sort(key=lambda co: co.meta['date'])

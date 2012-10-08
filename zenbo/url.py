@@ -78,9 +78,9 @@ def _generate_url(co, base):
     co.url = base + co.path
 
 def prepare(co, site):
-    layouts = site.config['layouts']
+    layouts = site.config.layouts
     (co.url_scheme, co.template_name) = layouts[co.meta['layout']]
 
     _generate_slug(co)
     _generate_path(co)
-    _generate_url(co, site.config['url'])
+    _generate_url(co, site.config.url)
