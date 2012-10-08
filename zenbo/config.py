@@ -51,7 +51,7 @@ class Configuration(object):
 
         return self.config['layouts']
 
-    def _ensure_seperator(self, directory):
+    def _ensure_separator(self, directory):
         """make sure path ends on os.sep"""
         if directory[-1:] is not os.sep:
             directory = directory + os.sep
@@ -59,15 +59,15 @@ class Configuration(object):
 
     @property
     def input(self):
-        return self.path + self._ensure_seperator(self.config['input'])
+        return self.path + self._ensure_separator(self.config['input'])
 
     @property
     def template(self):
-        return self.path + self._ensure_seperator(self.config['template'])
+        return self.path + self._ensure_separator(self.config['template'])
 
     @property
     def output(self):
-        return self.path + self._ensure_seperator(self.config['output'])
+        return self.path + self._ensure_separator(self.config['output'])
 
     def options_for_key(self, key):
         if key in self.config['options']:
