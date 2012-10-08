@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-"""
-Site object stores everything needed to generate and deploy your site
-"""
-
-import config
 import os
+
+from zenbo.config import Configuration
 
 
 class Site(object):
+    """Site object stores everything that is needed to generate a site"""
     def __init__(self):
         self.path = None
         self.no_deployment = False
@@ -16,8 +14,9 @@ class Site(object):
         self.content = []
 
     def setup(self):
+        """read configuration and prepare object"""
         # path should end with os seperator
         if self.path[-1:] is not os.sep:
             self.path = self.path + os.sep
 
-        self.config = config.Configuration(self.path)
+        self.config = Configuration(self.path)

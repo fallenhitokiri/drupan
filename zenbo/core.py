@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 
-"""
-Zenbos engine - everything happens here
-"""
-
 import argparse
 
-from site import Site
-from plugin import Plugin
-from serve import Server
+from zenbo.site import Site
+from zenbo.plugin import Plugin
+from zenbo.serve import Server
 
 
 class Zenbo(object):
+    """Zenbos engine - everything happens here"""
     def __init__(self):
         """parse arguments and create site object"""
         parser = argparse.ArgumentParser(description=Zenbo)
@@ -28,6 +25,12 @@ class Zenbo(object):
         self.serve = vars(args)['serve']
 
     def run(self):
+        """run zenbo
+        - setup site object
+        - load plugins
+        - run plugins
+        - maybe serve site
+        """
         self.site.setup()
         plugins = Plugin(self.site)
 

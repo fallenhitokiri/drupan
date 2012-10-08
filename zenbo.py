@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Zenbo executable
+"""
 from zenbo import core
 
 

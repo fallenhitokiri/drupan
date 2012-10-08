@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 
-"""
-simple httpd to test your site
-"""
-
 import SimpleHTTPServer
 import SocketServer
 import os
 
 
 class Server(object):
+    """simple httpd to test your site"""
     def __init__(self, site):
         self.output = site.config.output
         self.site = site
         self.port = 9000
 
     def serve(self):
+        """run server with output directory as server root"""
         cwd = os.getcwd()
         os.chdir(self.output)
 

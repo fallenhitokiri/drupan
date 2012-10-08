@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-"""
-Deploy homepage with git - subprocess edition
-"""
-
 import datetime
 import shlex
 import subprocess
 
 
 class Feature(object):
+    """Deploy homepage with git - subprocess edition"""
     def __init__(self, site):
         self.cmd_add = 'git add .'
         self.cmd_commit = 'git commit -m "%s"' % str(datetime.datetime.now())
@@ -18,11 +15,17 @@ class Feature(object):
         self.site = site
 
     def _runcommand(self, cmd):
+        """run a command"""
         # TODO: some error handling would be nice
         sp = subprocess.Popen(shlex.split(cmd), cwd=self.path)
         sp.communicate()
 
     def deploy(self):
+        """deploy site
+        - add
+        - commit
+        - push
+        """
         self._runcommand(self.cmd_add)
         self._runcommand(self.cmd_commit)
         self._runcommand(self.cmd_push)

@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
-"""
-Convert markdown text to html
-"""
-
 from markdown2 import markdown
 
 
 class Feature(object):
+    """Convert markdown text to html"""
     def __init__(self, site):
         self.site = site
 
     def run(self):
-        for co in self.site.content:
-            if co.content is not None:
-                co.markup = markdown(co.content)
+        """run the plugin"""
+        for cobj in self.site.content:
+            if cobj.content is not None:
+                cobj.markup = markdown(cobj.content)

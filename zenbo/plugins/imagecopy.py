@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Search in all ContentObjects for images and copy them in them
-corresponding directory
-
-configuration:
-  - add directory that holds images to your configuration
-"""
-
 from HTMLParser import HTMLParser
 import shutil
 import os
@@ -15,16 +7,21 @@ import os
 
 
 class ImageParser(HTMLParser):
+    """Handler based on HTMLParser for images"""
     def __init__(self):
         self.images = []
         HTMLParser.__init__(self)
 
     def handle_starttag(self, tag, attrs):
+        """if image tag is found add it to self.images"""
         if tag == 'img':
             self.images.append((dict(attrs)['src']))
 
 
 class Feature(object):
+    """Search in all ContentObjects for images and copy them in them
+    corresponding directory
+    """
     def __init__(self, site):
         self.input = site.path + site.config.options_for_key('imagecopy')
         self.output = site.config.output
@@ -34,16 +31,17 @@ class Feature(object):
             self.input = self.input + os.sep
 
     def run(self):
-        for co in self.site.content:
-            co.images = []
+        """run the plugin"""
+        for cobj in self.site.content:
+            cobj.images = []
 
-            if co.markup is not None:
+            if cobj.markup is not None:
                 parser = ImageParser()
-                parser.feed(co.markup)
-                co.images = parser.images
+                parser.feed(cobj.markup)
+                cobj.images = parser.images
 
-            odir = self.output + co.path
+            odir = self.output + cobj.path
 
-            for img in co.images:
+            for img in cobj.images:
                 imgfile = self.input + img
                 shutil.copy(imgfile, odir)
