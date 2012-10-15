@@ -14,7 +14,7 @@ class Feature(object):
         """run the plugin"""
         fshelpers.cleandir(self.output)
         fshelpers.copytree(self.template, self.output)
-        
+
         for cobj in self.site.content:
             if len(cobj.path.split('/')) > 1:
                 path = "%s/%s" % (self.output, cobj.path.rsplit('/', 1)[0])

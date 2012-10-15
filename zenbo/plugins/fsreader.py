@@ -22,7 +22,7 @@ class Feature(object):
 
         if self.options:
             self.extension = self.options
-            
+
             # extension should start with a dot
             if self.extension[0:1] is not '.':
                 self.extension = '.' + self.extension

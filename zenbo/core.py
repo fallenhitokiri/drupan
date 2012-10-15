@@ -47,7 +47,7 @@ class Zenbo(object):
         if self.serve is True:
             server = Server(self.site)
             server.serve()
-    
+
     def initialize(self, path):
         """init new site"""
         bootstrap(path)

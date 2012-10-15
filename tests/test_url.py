@@ -30,14 +30,14 @@ class ValidURLTest(unittest.TestCase):
         slug = "this-is-a-test-slug"
         url._generate_slug(co)
         self.assertEqual(slug, co.slug)
-    
+
     def test_url(self):
         co = ContentObject()
         base = "http://www.domain.tld/"
         final_url = "http://www.domain.tld/foo/bar/"
         url._generate_url(co, base)
         self.assertEqual(final_url, co.url)
-    
+
     def test_path(self):
         co = ContentObject()
         final_path = "foo/bar/"

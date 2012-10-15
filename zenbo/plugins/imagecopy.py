@@ -32,7 +32,7 @@ class Feature(object):
         self.options = site.config.options_for_key('imagecopy')
         self.output = site.config.output
         self.site = site
-        
+
         if self.options:
             self.input = site.path + self.options
         else:

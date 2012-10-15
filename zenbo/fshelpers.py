@@ -70,7 +70,7 @@ def read(path, name):
         read = infile.read()
     return read
 
-    
+
 def write(name, content):
     """write file"""
     with open(name, 'w') as output:
