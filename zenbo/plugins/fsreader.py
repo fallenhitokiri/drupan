@@ -58,9 +58,8 @@ class Feature(object):
         for current in files:
             full = self.content_directory + current
 
-            cfile = codecs.open(full, 'r', 'utf-8')
-            raw = cfile.read()
-            cfile.close()
+            with open(full) as cfile:
+                raw = cfile.read()
 
             co = ContentObject()
             (co.meta, co.content) = self.parse_yaml(raw)

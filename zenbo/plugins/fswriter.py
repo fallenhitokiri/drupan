@@ -32,16 +32,15 @@ class Feature(object):
                 os.makedirs(path)
             except OSError:
                 if OSError.errno == errno.EEXIST:
-                    # TODO: looks like passing this one is okay
+                    # looks like passing this one is okay
                     pass
                 else:
                     raise
 
     def __write(self, name, content):
         """write file"""
-        outf = open(name, 'w')
-        outf.write(content.encode('utf-8'))
-        outf.close()
+        with open(name, 'w') as output:
+            output.write(content.encode('utf-8'))
 
     def run(self):
         """run the plugin"""

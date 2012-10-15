@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-
 from zenbo.config import Configuration
 
 
@@ -15,8 +13,4 @@ class Site(object):
 
     def setup(self):
         """read configuration and prepare object"""
-        # path should end with os seperator
-        if self.path[-1:] is not os.sep:
-            self.path = self.path + os.sep
-
         self.config = Configuration(self.path)

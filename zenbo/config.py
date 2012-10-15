@@ -15,11 +15,10 @@ def ensure_separator(directory):
 class Configuration(object):
     """Read configuration and make sure sane values are returned"""
     def __init__(self, path):
-        self.path = path
-        cfg_path = path + os.sep + "config.yaml"
-        cfg = codecs.open(cfg_path, 'r')
-        self.config = yaml.load(cfg)
-        cfg.close()
+        self.path = ensure_separator(path)
+        cfg_path = self.path + "config.yaml"
+        with open(cfg_path) as cfg:
+            self.config = yaml.load(cfg)
 
     @property
     def name(self):

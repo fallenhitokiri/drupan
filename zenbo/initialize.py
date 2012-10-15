@@ -635,9 +635,8 @@ def files(path):
     for base_file in FILES:
         print "writing %s" % base_file[0]
         name = path + base_file[0]
-        out = open(name, 'w')
-        out.write(base_file[1])
-        out.close()
+        with open(name, 'w') as output:
+            output.write(base_file[1])
 
 
 def bootstrap(path):
@@ -649,3 +648,5 @@ def bootstrap(path):
     
     directories(path)
     files(path)
+    
+    print "your new site is created. Have fun :)"
