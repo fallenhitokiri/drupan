@@ -20,7 +20,7 @@ class Feature(object):
         sp = subprocess.Popen(shlex.split(cmd), cwd=self.path)
         sp.communicate()
 
-    def deploy(self):
+    def run(self):
         """deploy site
         - add
         - commit

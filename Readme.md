@@ -23,8 +23,8 @@ you need to know to get a site up and running using Zenbo.
   - Image support
   - Deploy with git
   - Generate archives and RSS Feeds
-  - easily extend it using plugins
-  - minimal external dependencies
+  - Easily extend it using plugins
+  - Minimal external dependencies
 
 ### Jinja
 We use Jinja as template system and you can access everything Zenbo considers
