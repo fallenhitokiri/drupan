@@ -6,7 +6,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath('..'))
-from zenbo.converters import markdown
+from zenbo.plugins import markdown
 
 
 def comp(co):
@@ -33,8 +33,8 @@ class So(object):
 class ValidMarkdownTest(unittest.TestCase):
     def test_markup(self):
         site = So()
-        converter = markdown.Converter(site)
-        converter.convert()
+        plugin = markdown.Feature(site)
+        plugin.run()
         self.failUnless(comp(site.content[0]))
 
 

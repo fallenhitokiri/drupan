@@ -2,41 +2,15 @@
 
 """generate nice looking urls"""
 
+import re
+
 
 def _generate_slug(cobj):
     """clean title for URL generation"""
-    # this should be regex magic
     if cobj.slug is None:
-        clean = cobj.meta['title']
-        clean = clean.replace(' ', '-')
-        clean = clean.replace('.', '-')
-        clean = clean.replace('!', '-')
-        clean = clean.replace('?', '-')
-        clean = clean.replace('&', '-')
-        clean = clean.replace(';', '-')
-        clean = clean.replace(':', '-')
-        clean = clean.replace('#', '-')
-        clean = clean.replace('~', '-')
-        clean = clean.replace('*', '-')
-        clean = clean.replace('`', '-')
-        clean = clean.replace('\'', '-')
-        clean = clean.replace("\"", "-")
-        clean = clean.replace('$', '-')
-        clean = clean.replace('@', '-')
-        clean = clean.replace('%', '-')
-        clean = clean.replace('/', '-')
-        clean = clean.replace('(', '-')
-        clean = clean.replace(')', '-')
-        clean = clean.replace('[', '-')
-        clean = clean.replace(']', '-')
-        clean = clean.replace('{', '-')
-        clean = clean.replace('}', '-')
-        clean = clean.replace('=', '-')
-        clean = clean.replace('^', '-')
-        clean = clean.replace('<', '-')
-        clean = clean.replace('>', '-')
-        clean = clean.replace('|', '-')
-
+        clean = re.sub('[^A-Za-z0-9]+', '-', cobj.meta['title'])
+        
+        # multiple '-' do not look nice
         clean = clean.replace('----', '-')
         clean = clean.replace('---', '-')
         clean = clean.replace('--', '-')
