@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
-import codecs
 import yaml
-
 
 from zenbo import fshelpers
 

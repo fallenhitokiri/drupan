@@ -9,13 +9,6 @@ sys.path.insert(0, os.path.abspath('..'))
 from zenbo.plugins import markdown
 
 
-def comp(co):
-    if co.markup == "<p>foo</p>\n":
-        return True
-    else:
-        return False
-
-
 class Obj(object):
     """small content object"""
     def __init__(self):
@@ -35,7 +28,8 @@ class ValidMarkdownTest(unittest.TestCase):
         site = So()
         plugin = markdown.Feature(site)
         plugin.run()
-        self.failUnless(comp(site.content[0]))
+        content = site.content[0].markup
+        self.assertEqual(content, "<p>foo</p>\n")
 
 
 def main():

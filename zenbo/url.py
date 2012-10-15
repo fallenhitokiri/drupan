@@ -8,6 +8,7 @@ import re
 def _generate_slug(cobj):
     """clean title for URL generation"""
     if cobj.slug is None:
+        # only characters and numbers - everything else becomes a hyphen
         clean = re.sub('[^A-Za-z0-9]+', '-', cobj.meta['title'])
         
         # multiple '-' do not look nice
@@ -21,6 +22,10 @@ def _generate_slug(cobj):
         # last character should never be -
         if clean[-2:-1] == "-":
             clean = clean[:-2]
+        
+        # first character should never be a -
+        if clean[:1] == "-":
+            clean = clean[1:]
 
         cobj.slug = clean.lower()
 
