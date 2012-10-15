@@ -32,7 +32,7 @@ def _generate_slug(cobj):
 
 def _generate_path(cobj):
     """generate full path. Layout will be provided by cobjnfiguration"""
-    # TODO: <sarcasm>add even more cobjmplexity</sarcasm>
+    # TODO: <sarcasm>add even more complexity</sarcasm>
     layout = cobj.url_scheme
 
     cobj.meta['year'] = cobj.meta['date'].year

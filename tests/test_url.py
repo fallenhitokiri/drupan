@@ -4,6 +4,7 @@
 import unittest
 import sys
 import os
+from datetime import datetime
 
 sys.path.insert(0, os.path.abspath('..'))
 from zenbo import url
@@ -13,8 +14,14 @@ class ContentObject(object):
     """test object"""
     def __init__(self):
         self.slug = None
-        self.meta = {'title': "-This! Is? A#/ Test\&   Slug-"}
+        self.meta = {
+            'title': "-This! Is? A#/ Test\&   Slug-",
+            'date': datetime.now(),
+            'bar': "bar",
+        }
         self.path = "foo/bar/"
+        self.foo = "foo"
+        self.url_scheme = "%foo/$bar"
 
 
 class ValidURLTest(unittest.TestCase):
@@ -30,6 +37,12 @@ class ValidURLTest(unittest.TestCase):
         final_url = "http://www.domain.tld/foo/bar/"
         url._generate_url(co, base)
         self.assertEqual(final_url, co.url)
+    
+    def test_path(self):
+        co = ContentObject()
+        final_path = "foo/bar/"
+        url._generate_path(co)
+        self.assertEqual(final_path, co.path)
 
 
 def main():
