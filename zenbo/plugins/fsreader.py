@@ -5,13 +5,11 @@ options:
 - fsreader: "file extension used for content"
 """
 
-import os
-import codecs
-
 import yaml
 
-from ..contentobject import ContentObject
-from ..url import prepare
+from zenbo.contentobject import ContentObject
+from zenbo.url import prepare
+from zenbo import fshelpers
 
 
 class Feature(object):
@@ -29,21 +27,6 @@ class Feature(object):
             if self.extension[0:1] is not '.':
                 self.extension = '.' + self.extension
 
-        # ensure os seperator
-        if self.content_directory[-1:] is not os.sep:
-            self.content_directory = self.content_directory + os.sep
-
-    def filelist(self):
-        """list all files in a directory and exclude self.extension"""
-        files = []
-
-        for cfile in os.listdir(self.content_directory):
-            if self.extension is not None:
-                if os.path.splitext(cfile)[1] == self.extension:
-                    files.append(cfile)
-
-        return files
-
     def parse_yaml(self, raw):
         """split file and parse yaml header"""
         (header, seperator, content) = raw.partition("---")
@@ -52,14 +35,11 @@ class Feature(object):
 
     def run(self):
         """run the plugin"""
-        files = self.filelist()
+        files = fshelpers.filelist(self.content_directory, self.extension)
 
         # for every file: read, create ContentObject, parse yaml, store
         for current in files:
-            full = self.content_directory + current
-
-            with open(full) as cfile:
-                raw = cfile.read()
+            raw = fshelpers.read(self.content_directory, current)
 
             co = ContentObject()
             (co.meta, co.content) = self.parse_yaml(raw)

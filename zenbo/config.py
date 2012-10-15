@@ -5,20 +5,23 @@ import codecs
 import yaml
 
 
-def ensure_separator(directory):
-    """path should end on os.sep"""
-    if directory[-1:] is not os.sep:
-        directory = directory + os.sep
-    return directory
+from zenbo import fshelpers
+
+
+def prepare_url(url):
+    """make sure URLs end with a '/' and do not start with one"""
+    if url[-1:] is not "/":
+        url = url + "/"
+    if url[:1] is "/":
+        url = url[1:]
+    return url
 
 
 class Configuration(object):
     """Read configuration and make sure sane values are returned"""
     def __init__(self, path):
-        self.path = ensure_separator(path)
-        cfg_path = self.path + "config.yaml"
-        with open(cfg_path) as cfg:
-            self.config = yaml.load(cfg)
+        self.path = fshelpers.ensure_separator(path)
+        self.config = yaml.load(fshelpers.read(path, "config.yaml"))
 
     @property
     def name(self):
@@ -28,12 +31,7 @@ class Configuration(object):
     @property
     def url(self):
         """return URL"""
-        url = self.config['url']
-
-        # make sure the base URL always ends with a '/'
-        if url[-1:] is not "/":
-            url = url + "/"
-
+        url = prepare_url(self.config['url'])
         return url
 
     @property
@@ -44,15 +42,8 @@ class Configuration(object):
     @property
     def layouts(self):
         """return layouts"""
-        # make sure URLs end with a '/' and do not start with one
         for key in self.config['layouts']:
-            url = self.config['layouts'][key][0]
-
-            if url[-1:] is not "/":
-                url = url + "/"
-            if url[:1] is "/":
-                url = url[1:]
-
+            url = prepare_url(self.config['layouts'][key][0])
             self.config['layouts'][key][0] = url
 
         return self.config['layouts']
@@ -60,17 +51,17 @@ class Configuration(object):
     @property
     def input(self):
         """return input directory"""
-        return self.path + ensure_separator(self.config['input'])
+        return self.path + fshelpers.ensure_separator(self.config['input'])
 
     @property
     def template(self):
         """return template directory"""
-        return self.path + ensure_separator(self.config['template'])
+        return self.path + fshelpers.ensure_separator(self.config['template'])
 
     @property
     def output(self):
         """return output directory"""
-        return self.path + ensure_separator(self.config['output'])
+        return self.path + fshelpers.ensure_separator(self.config['output'])
 
     def options_for_key(self, key):
         """check if a key is in options dictionary and return it.

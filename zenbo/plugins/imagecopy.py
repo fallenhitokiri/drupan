@@ -7,9 +7,9 @@ options:
 
 
 from HTMLParser import HTMLParser
-import shutil
-import os
 # TODO: Python 3 renames this to html.parser - transition?
+
+from zenbo import fshelpers
 
 
 class ImageParser(HTMLParser):
@@ -35,10 +35,6 @@ class Feature(object):
         
         if self.options:
             self.input = site.path + self.options
-            
-            # path should end with os.sep
-            if self.input[-1:] is not os.sep:
-                self.input = self.input + os.sep
         else:
             self.input = self.site.config.input + "images/"
 
@@ -55,5 +51,4 @@ class Feature(object):
             odir = self.output + cobj.path
 
             for img in cobj.images:
-                imgfile = self.input + img
-                shutil.copy(imgfile, odir)
+                fshelpers.copyfile(self.input, img, odir)

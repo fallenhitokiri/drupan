@@ -5,8 +5,8 @@
 - add a 'tags' array to every content object that should be tagged
 """
 
-from ..contentobject import ContentObject
-from ..url import prepare
+from zenbo.contentobject import ContentObject
+from zenbo.url import prepare
 
 
 class Feature(object):
