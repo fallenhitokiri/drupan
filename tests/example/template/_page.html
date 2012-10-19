@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+
+{% block title %}
+ - {{ obj.meta['title'] }}
+{% endblock %}
+
+{% block content %}
+    <h5>{{ obj.meta['title'] }}</h5>
+    {{obj.markup}}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+
+{% block title %}
+ - Archive
+{% endblock %}
+
+{% block content %}
+    <h6>Archive</h6>
+    <p>Here you can view all posts written since the big relaunch on December 11th, 2011</p>
+    <p class="box">My old posts will be available shortly in another archive</p>
+    <ul>
+    {% for item in site.sorted %}
+        <li><a href="{{ item.url }}">{{ item.meta['title'] }}</a> <span>written on: {{ item.meta['date'] }}</span></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

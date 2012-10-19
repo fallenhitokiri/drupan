@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+
+{% block title %}
+ - {{ obj.meta['title'] }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ obj.meta['title'] }}</h1>
+    <p class="date">posted on {{ obj.meta['date'] }}</p>
+    {{obj.markup}}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}
+ - Tag: {{ obj.meta['title'] }}
+{% endblock %}
+
+{% block content %}
+    <h6>Tag: {{ obj.meta['title'] }}</h6>
+    <ul>
+    {% for tag in obj.tags %}
+        <li><a href="{{ tag.url }}">{{ tag.meta['title'] }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
