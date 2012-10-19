@@ -610,7 +610,6 @@ DRAFT_PAGE = """title: title
 date: yyyy-mm-dd hh:mm:ss
 layout: page
 menu: True
-userdef: 
 ---
 Content
 """
@@ -619,7 +618,6 @@ DRAFT_POST = """title: title
 date: yyyy-mm-dd hh:mm:ss
 layout: post
 tags: [tag1, tag2]
-userdef: 
 ---
 Teaser
 <!--MORE-->
@@ -628,8 +626,8 @@ Content
 
 FILES = [
     ['config.yaml', CONFIG],
-    ['draft/post.md', DRAFT_POST],
-    ['draft/page.md', DRAFT_PAGE],
+    ['draft/_post.md', DRAFT_POST],
+    ['draft/_page.md', DRAFT_PAGE],
     ['template/_archive.html', ARCHIVE],
     ['template/_base.html', BASE],
     ['template/_feed.xml', FEED],
