@@ -1,4 +1,4 @@
-drupan - formally known as Zenbo.
+drupan - formerly known as Zenbo.
 
 # drupan - static site generator
 drupan is a static site generator. You can use it for blogs, sites or anything
