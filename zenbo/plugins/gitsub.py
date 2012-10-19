@@ -12,6 +12,7 @@ class Feature(object):
         self.cmd_commit = 'git commit -m "%s"' % str(datetime.datetime.now())
         self.cmd_push = 'git push -u server master'
         self.path = site.path
+        self.no_deployment = site.no_deployment
         self.site = site
 
     def _runcommand(self, cmd):
@@ -26,6 +27,7 @@ class Feature(object):
         - commit
         - push
         """
-        self._runcommand(self.cmd_add)
-        self._runcommand(self.cmd_commit)
-        self._runcommand(self.cmd_push)
+        if self.no_deployment:
+            self._runcommand(self.cmd_add)
+            self._runcommand(self.cmd_commit)
+            self._runcommand(self.cmd_push)
