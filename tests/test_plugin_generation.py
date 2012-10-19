@@ -32,7 +32,7 @@ class So(object):
 
 
 class ValidGenerationTest(unittest.TestCase):
-    def test_highlight(self):
+    def test_generation(self):
         site = So()
         plugin = blank.Feature(site)
         plugin.run()

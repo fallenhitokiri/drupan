@@ -35,7 +35,7 @@ class So(object):
 
 
 class ValidTagTest(unittest.TestCase):
-    def test_markup(self):
+    def test_tag_generation(self):
         site = So()
         plugin = tags.Feature(site)
         plugin.run()
