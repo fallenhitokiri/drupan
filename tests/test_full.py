@@ -12,7 +12,7 @@ from drupan.core import Drupan
 class ValidFullTest(unittest.TestCase):
     def setUp(self):
         self.engine = Drupan()
-        path = "example"
+        path = "tests/example"
         nodeploy = True
         serve = False
         self.engine.setup(path, nodeploy, serve)
