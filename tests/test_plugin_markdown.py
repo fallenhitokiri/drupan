@@ -6,7 +6,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath('..'))
-from zenbo.plugins import markdown
+from drupan.plugins import markdown
 
 
 class Obj(object):

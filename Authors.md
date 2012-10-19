@@ -1,4 +1,4 @@
-Zenbo was created and is maintained by Timo Zimmermann.
+drupan was created and is maintained by Timo Zimmermann.
 
 #Development
 

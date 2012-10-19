@@ -8,8 +8,8 @@ options:
 in_menu is either True or False
 """
 
-from zenbo.contentobject import ContentObject
-from zenbo.url import prepare
+from drupan.contentobject import ContentObject
+from drupan.url import prepare
 
 
 class Feature(object):

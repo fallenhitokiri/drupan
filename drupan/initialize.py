@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-"""everything that is needed to create a new zenbo site"""
+"""everything that is needed to create a new drupan site"""
 
 import os
 
 
 DIRECTORIES = ['content', 'template', 'site', 'draft', 'content/images', 'template/css']
 
-CONFIG = """name: "Local Zenbo Test"
+CONFIG = """name: "Local drupan Test"
 url: "http://localhost:9000/"
 
 plugins: ['fsreader', 'blank', 'sorted', 'tags', 'markdown', 'jinja', 'fswriter', 'imagecopy']
@@ -60,12 +60,12 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
-        <title>Zenbo - {% block title %}{% endblock %}</title>
+        <title>drupan - {% block title %}{% endblock %}</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
         <meta http-equiv="expires" content="0">
-        <meta name="description" content="This is the default Zenbo template." />
-        <meta name="keywords" content="super awesome, zenbo" />
+        <meta name="description" content="This is the default drupan template." />
+        <meta name="keywords" content="super awesome, drupan" />
         <meta name="author" content="someone cool" />
         <meta name="robots" content="all" />    
 
@@ -169,7 +169,7 @@ INDEX = """{% extends "_base.html" %}
 {% block bodyid %}id="index"{% endblock %}
 
 {% block content %}
-    <p class="box">Hi, this is an example Zenbo site.</p>
+    <p class="box">Hi, this is an example drupan site.</p>
 
     {% for cur in site.sorted %}
 

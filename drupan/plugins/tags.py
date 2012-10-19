@@ -5,8 +5,8 @@
 - add a 'tags' array to every content object that should be tagged
 """
 
-from zenbo.contentobject import ContentObject
-from zenbo.url import prepare
+from drupan.contentobject import ContentObject
+from drupan.url import prepare
 
 
 class Feature(object):

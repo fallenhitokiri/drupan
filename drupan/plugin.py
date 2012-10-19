@@ -15,6 +15,6 @@ class Plugin(object):
     def load(self):
         """load all plugins specified in configuration file"""
         for name in self.site.config.plugins:
-            mod = __import__('zenbo.plugins.%s' % name, fromlist=['Feature'])
+            mod = __import__('drupan.plugins.%s' % name, fromlist=['Feature'])
             plugin = mod.Feature(self.site)
             self.plugins.append(plugin)

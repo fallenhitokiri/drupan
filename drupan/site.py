@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from zenbo.config import Configuration
+from drupan.config import Configuration
 
 
 class Site(object):

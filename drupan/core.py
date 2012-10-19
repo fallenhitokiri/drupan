@@ -3,17 +3,17 @@
 import argparse
 import sys
 
-from zenbo.site import Site
-from zenbo.plugin import Plugin
-from zenbo.serve import Server
-from zenbo.initialize import bootstrap
+from drupan.site import Site
+from drupan.plugin import Plugin
+from drupan.serve import Server
+from drupan.initialize import bootstrap
 
 
-class Zenbo(object):
-    """Zenbos engine - everything happens here"""
+class Drupan(object):
+    """drupan engine - everything happens here"""
     def __init__(self):
         """parse arguments and create site object"""
-        parser = argparse.ArgumentParser(description=Zenbo)
+        parser = argparse.ArgumentParser(description='drupan')
         parser.add_argument('path', help='path to configuration file')
         parser.add_argument('--nodeploy', help='do not deploy',
                              action='store_true', default=False)
@@ -32,7 +32,7 @@ class Zenbo(object):
             self.initialize(vars(args)['path'])
 
     def run(self):
-        """run zenbo
+        """run denbo
         - setup site object
         - load plugins
         - run plugins

@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 sys.path.insert(0, os.path.abspath('..'))
-from zenbo import url
+from drupan import url
 
 
 class ContentObject(object):

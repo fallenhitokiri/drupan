@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Zenbo executable"""
+"""drupan executable"""
 
-from zenbo import core
+from drupan import core
 
 
 if __name__ == '__main__':
-    engine = core.Zenbo()
+    engine = core.Drupan()
     engine.run()

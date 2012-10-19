@@ -2,7 +2,7 @@
 
 from jinja2 import FileSystemLoader, Environment
 
-from zenbo.plugins.jinja_filters import more
+from drupan.plugins.jinja_filters import more
 
 
 class Feature(object):

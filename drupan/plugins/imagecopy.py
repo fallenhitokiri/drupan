@@ -9,7 +9,7 @@ options:
 from HTMLParser import HTMLParser
 # TODO: Python 3 renames this to html.parser - transition?
 
-from zenbo import fshelpers
+from drupan import fshelpers
 
 
 class ImageParser(HTMLParser):

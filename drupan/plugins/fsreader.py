@@ -7,9 +7,9 @@ options:
 
 import yaml
 
-from zenbo.contentobject import ContentObject
-from zenbo.url import prepare
-from zenbo import fshelpers
+from drupan.contentobject import ContentObject
+from drupan.url import prepare
+from drupan import fshelpers
 
 
 class Feature(object):

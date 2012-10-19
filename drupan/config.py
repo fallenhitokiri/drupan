@@ -2,7 +2,7 @@
 
 import yaml
 
-from zenbo import fshelpers
+from drupan import fshelpers
 
 
 def prepare_url(url):
