@@ -6,16 +6,14 @@ you can imagine. Adding new features is easy thanks to a easy to use plugin
 system.
 
 ## Quick Start
-If you want to make sure you have all dependencies installed run ```pip install -r requirements.txt```.
+If you want to make sure you have all dependencies installed run 
+```pip install -r requirements.txt```.
 
 Run ```drupan.py --init path-to-site```. You find a template for a post or a
 page in your new sites path in the directory ```draft```.
 
 Run ```drupan.py path-to-site --no-deploy --serve``` and visit your new site
 on ```http://localhost:9000```.
-
-For further details please read ```doc/details.md```. It should cover everything
-you need to know to get a site up and running using drupan.
 
 ## Features
   - Markdown support
