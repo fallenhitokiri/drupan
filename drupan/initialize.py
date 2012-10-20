@@ -8,7 +8,7 @@ import os
 DIRECTORIES = ['content', 'template', 'site', 'draft', 'content/images', 'template/css']
 
 CONFIG = """name: "Local drupan Test"
-url: "http://localhost:9000/"
+url: "/"
 
 plugins: ['fsreader', 'blank', 'sorted', 'tags', 'markdown', 'jinja', 'fswriter', 'imagecopy']
 
@@ -29,11 +29,6 @@ layouts:
 
 
 options:
-  sorting: ['post', 'note', 'link', 'image']
-  blank:
-    index: ["Index", False]
-    archive: ["Archive", True]
-    feed: ["RSS Feed", False]
 """
 
 ARCHIVE = """{% extends "_base.html" %}

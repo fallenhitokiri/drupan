@@ -11,12 +11,16 @@ class Feature(object):
     def __init__(self, site):
         self.site = site
         self.site.sorted = []
-        self.options = site.config.options_for_key('sorting')
+        self.layouts = ['post']
+        self.options = site.config.options_for_key('sorted')
+
+        if self.options:
+            self.layouts = self.options
 
     def run(self):
         """run the plugin"""
         for cobj in self.site.content:
-            if cobj.meta['layout'] in self.options:
+            if cobj.meta['layout'] in self.layouts:
                 self.site.sorted.append(cobj)
 
         self.site.sorted.sort(key=lambda cobj: cobj.meta['date'])

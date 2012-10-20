@@ -64,6 +64,10 @@ class Configuration(object):
         """check if a key is in options dictionary and return it.
         Else return False
         """
+        # if there are no options self.config['options'] is not iterable
+        if not type(self.config['options']) is dict:
+            return False
+
         if key in self.config['options']:
             return self.config['options'][key]
         return False
