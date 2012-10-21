@@ -13,6 +13,7 @@ class Feature(object):
     """generate tags for each object and create a content object if needed"""
     def __init__(self, site):
         self.site = site
+        self.site.tags = {}
         self.tags = {}
 
     def run(self):
@@ -32,3 +33,4 @@ class Feature(object):
             cobj.tags = self.tags[name]
             prepare(cobj, self.site)
             self.site.content.append(cobj)
+            self.site.tags[name] = cobj.url
