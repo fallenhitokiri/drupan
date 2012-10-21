@@ -2,23 +2,19 @@
 If you understand what each plugin is doing you have a
 pretty good idea what happens while generating your site.
 Remember that plugins are executed in the order in which
-they are listed on the ```plugins``` array in your 
-```config.yaml```.
+they are listed on the ```plugins``` array in your ```config.yaml```.
 
-If there are options described here they go to the
-```options:``` part of your ```config.yaml```. They are all
-optional. Necessary configuration options are described in
-```doc/configuration.md```.
+If there are options described here they go to the ```options:```
+part of your ```config.yaml```. They are all
+optional. Necessary configuration options are described in ```doc/configuration.md```.
 
 You *always* name the configuration key after the plugin.
 
 ## fsreader
-Reads your content from your file system and creates
-```ContentObjects```. The header will be stored in ```meta```
-and your content in ```content```.
+Reads your content from your file system and creates ```ContentObjects```.
+The header will be stored in ```meta``` and your content in ```content```.
 
-The object will be added to your ```Site``` object in the
-```content``` array.
+The object will be added to your ```Site``` object in the ```content``` array.
 
 ### Configuration
 If you want to use another file extension than ```.md``` specify
@@ -29,8 +25,7 @@ it in ```options```.
 ## fswriter
 Writes everything in the ```content``` array of your ```Site```
 object to the file system. It will use the ```path``` of the
-current object, split it, create the folders and write and
-```index.html```.
+current object, split it, create the folders and write and ```index.html```.
 
 Before it starts writing it will wipe your output folder and
 copy everything in your template folder to the new output folder
@@ -65,9 +60,8 @@ Deploy a site using git. See ```doc/Deployment.md```.
 
 ## highlight
 Your ```ContentObjects``` have a variable ```markup``` which
-stores the final HTML of your content. highlight search for
-```<pre><code>``` tags, extracts the code and uses pygments to
-highlight it.
+stores the final HTML of your content. highlight search for ```<pre><code>```
+tags, extracts the code and uses pygments to highlight it.
 
 ### Configuration
 You can change if line numbers are display and the class of your CSS.
