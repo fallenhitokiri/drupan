@@ -39,8 +39,16 @@ ARCHIVE = """{% extends "_base.html" %}
 
 {% block content %}
     <h6>Archive</h6>
-    <p>Here you can view all posts written since the big relaunch on December 11th, 2011</p>
-    <p class="box">My old posts will be available shortly in another archive</p>
+    {% if site.tags.count > 0 %}
+    <p><strong>Tags:</strong>
+    {% for tag in site.tags %}
+        <a href="{{ site.tags[tag] }}">{{ tag }}</a>{% if not loop.last %},{% endif %}
+    {% endfor %}
+    </p>
+    {% endif %}
+
+    <p class="box">If you do not want to miss new posts subscribe to my <a href="/feed/">RSS feed</a>.</p>
+
     <ul>
     {% for item in site.sorted %}
         <li><a href="{{ item.url }}">{{ item.meta['title'] }}</a> <span>written on: {{ item.meta['date'] }}</span></li>
@@ -65,7 +73,7 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <meta name="robots" content="all" />
 
         <link href="{{ site.config['url'] }}css/screen.css" rel="stylesheet" type="text/css" />
-        <link href="{{ site.config['url'] }}feed.xml" rel="alternate" type="application/rss+xml" title="RSS Feed" />
+        <link href="{{ site.config['url'] }}feed/" rel="alternate" type="application/rss+xml" title="RSS Feed" />
     </head>
 
     <body {% block bodyid %}id="default"{% endblock %}>
@@ -111,7 +119,6 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                                 <li><a href="{{ cur.url }}">{{ cur.meta['title'] }}</a></li>
                             {% endif %}
                         {% endfor %}
-                        <li><a href="/feed/">Subscribe</a></li>
                     </ul>
 
                     <!--<p id="social">
@@ -299,6 +306,10 @@ body {
 
 #content em {
     font-style:italic;
+}
+
+#content strong {
+    font-weight:bold;
 }
 
 #content code {
@@ -612,10 +623,30 @@ Teaser
 Content
 """
 
+TEST_PAGE = """title: I am a page
+date: 2012-10-21
+layout: page
+menu: True
+---
+Awesome content goes here!
+"""
+
+TEST_POST = """title: I am a post
+date: 2012-10-21
+layout: post
+tags: ["tag1", "tag2"]
+---
+Intro
+<!--MORE-->
+For a great post.
+"""
+
 FILES = [
     ['config.yaml', CONFIG],
     ['draft/_post.md', DRAFT_POST],
     ['draft/_page.md', DRAFT_PAGE],
+    ['content/post.md', TEST_POST],
+    ['content/page.md', TEST_PAGE],
     ['template/_archive.html', ARCHIVE],
     ['template/_base.html', BASE],
     ['template/_feed.xml', FEED],
