@@ -57,12 +57,12 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <head>
         <title>drupan - {% block title %}{% endblock %}</title>
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="expires" content="0">
         <meta name="description" content="This is the default drupan template." />
         <meta name="keywords" content="super awesome, drupan" />
         <meta name="author" content="someone cool" />
-        <meta name="robots" content="all" />    
+        <meta name="robots" content="all" />
 
         <link href="{{ site.config['url'] }}css/screen.css" rel="stylesheet" type="text/css" />
         <link href="{{ site.config['url'] }}feed.xml" rel="alternate" type="application/rss+xml" title="RSS Feed" />
@@ -85,7 +85,7 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 <!--LOGO-->
                 <div id="logo">
 
-                    <p><a href="/"><img src="{{ site.config['url'] }}/css/logo.png" /></a></p>
+                    <p><a href="/">Logo</a></p>
 
                 </div>
                 <!--END LOGO-->
@@ -114,10 +114,9 @@ BASE = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                         <li><a href="/feed/">Subscribe</a></li>
                     </ul>
 
-                    <p id="social">
-                        <a href="https://twitter.com/#!/username!"><img src="/images/twitter.png" alt="Twitter" /></a>
-                        <a href="/feed/"><img src="/images/feed.png" alt="RSS Feed" /></a>
-                    </p>
+                    <!--<p id="social">
+                        social
+                    </p>-->
                 </div>
                 <!--END MENU-->
 
@@ -279,8 +278,6 @@ body {
 
 #content h1, h2, h3, h4, h5, h6 {
     margin:0px 0px 10px 0px;
-    /*color:#AD2731;*/
-    font-family:"OpenSans Light";
 }
 
 #content h1 {
@@ -301,7 +298,7 @@ body {
 }
 
 #content em {
-    font-family:"OpenSans Italic";
+    font-style:italic;
 }
 
 #content code {
@@ -353,7 +350,6 @@ body {
 
 #content .date {
     color:#AD2731;
-    font-family:"OpenSans Light";
     font-size:12px;
     margin:-5px 0px 10px 0px;
 }
@@ -375,7 +371,6 @@ body {
     background-image: -webkit-linear-gradient(bottom, #222326 0%, #4D4D4F 100%);
     background-image: -ms-linear-gradient(bottom, #222326 0%, #4D4D4F 100%);
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #222326), color-stop(1, #4D4D4F));
-    font-family:"OpenSans Light";
 }
 
 #content .box a {
@@ -520,7 +515,6 @@ body {
     word-spacing:1.2px;
     text-align:center;
     padding:8px 0px 0px 0px;
-    font-family:"OpenSans Light";
 }
 
 /* MENU */
@@ -532,7 +526,6 @@ body {
 
 #sidebar ul {
     width:200px;
-    font-family:"OpenSans Light";
 }
 
 #sidebar ul li {
@@ -566,8 +559,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
     margin: 0;
@@ -577,7 +570,7 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
@@ -638,7 +631,7 @@ FILES = [
 def directories(path):
     """create directories in path"""
     os.makedirs(path)
-    
+
     for directory in DIRECTORIES:
         print "creating %s" % directory
         new_dir = path + directory
@@ -657,11 +650,11 @@ def files(path):
 def bootstrap(path):
     """setup a new site"""
     print "creating new site at %s" % path
-    
+
     if not path[-1:] is os.sep:
         path = path + os.sep
-    
+
     directories(path)
     files(path)
-    
+
     print "your new site is created. Have fun :)"
