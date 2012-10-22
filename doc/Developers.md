@@ -25,6 +25,9 @@ I prefer to write my tests as subclass of ```unittest.Testcase```.
 Nose is fine, too. Please do no use a framework which is not 
 compatible to them.
 
+Of course there are situations when a test does not make any sense,
+like deployment modules for git.
+
 ## License
 Your work has to be compatible with the BSD 2 clause license.
 
