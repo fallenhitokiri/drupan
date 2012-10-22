@@ -18,3 +18,5 @@ pip-log.txt
 .tox
 *.mo
 .mr.developer.cfg
+
+MANIFEST
