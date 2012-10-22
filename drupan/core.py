@@ -18,12 +18,7 @@ class Drupan(object):
         self.serve = serve
 
     def run(self):
-        """run drupan
-        - setup site object
-        - load plugins
-        - run plugins
-        - maybe serve site
-        """
+        """run drupan"""
         self.site.setup()
         plugins = Plugin(self.site)
 
