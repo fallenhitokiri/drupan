@@ -39,7 +39,7 @@ ARCHIVE = """{% extends "_base.html" %}
 
 {% block content %}
     <h6>Archive</h6>
-    {% if site.tags.count > 0 %}
+    {% if site.tags > 0 %}
     <p><strong>Tags:</strong>
     {% for tag in site.tags %}
         <a href="{{ site.tags[tag] }}">{{ tag }}</a>{% if not loop.last %},{% endif %}
@@ -179,7 +179,7 @@ INDEX = """{% extends "_base.html" %}
             <h4><a href="{{ cur.url }}" alt="{{ cur.meta['title'] }}">{{ cur.meta['title']}}</a></h4>
             <p class="date">posted on: {{ cur.meta['date'] }}</p>
             {{ cur.markup|more }}
-            <p class="more"><a href="{{ cur.url }}" alt="{{ cur.meta['title'] }}">continue more</a></p>
+            <p class="more"><a href="{{ cur.url }}" alt="{{ cur.meta['title'] }}">continue reading</a></p>
 
         {% endif %}
 
