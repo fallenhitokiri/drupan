@@ -3,6 +3,7 @@
 import shutil
 import os
 import errno
+from io import open
 
 
 def ensure_separator(directory):
@@ -66,7 +67,7 @@ def read(path, name):
     """read file"""
     full = ensure_separator(path) + name
     read = None
-    with open(full) as infile:
+    with open(full, 'r', encoding='utf-8') as infile:
         read = infile.read()
     return read
 
