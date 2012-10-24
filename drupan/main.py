@@ -2,11 +2,13 @@
 import argparse
 
 from drupan import core
+from drupan.version import __version__
 
 
 def cmd():
     """command line entry point"""
-    parser = argparse.ArgumentParser(description='drupan')
+    desc = "drupan v{0}".format(__version__)
+    parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('path', help='path to configuration file')
     parser.add_argument('--nodeploy', help='do not deploy',
                          action='store_true', default=False)

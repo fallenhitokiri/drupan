@@ -2,12 +2,15 @@
 
 from distutils.core import setup
 
+from drupan.version import __version__
+
+
 setup(
     name='drupan',
-    version='1.0.0',
+    version=__version__,
     author='Timo Zimmermann',
     author_email='timo@screamingatmyscreen.com',
-    packages=['drupan', 
+    packages=['drupan',
               'drupan/plugins',
               'drupan/plugins/jinja_filters',
     ],
