@@ -74,5 +74,5 @@ def read(path, name):
 
 def write(name, content):
     """write file"""
-    with open(name, 'w') as output:
-        output.write(content.encode('utf-8'))
+    with open(name, 'w', encoding='utf-8') as output:
+        output.write(content)
