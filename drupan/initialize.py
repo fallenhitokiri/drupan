@@ -146,19 +146,21 @@ FEED = """<?xml version="1.0" encoding="utf-8" ?>
 
     <channel>
         <title>{{ site.config['name'] }}</title>
-        <link>{{ site.url }}</link>
+        <link>{{ site.config['url'] }}</link>
         <description>what's hot</description>
         <language>en-en</language>
         <copyright>you!</copyright>
-        <pubDate>{{obj.rfc}} GMT</pubDate>
+        <pubDate>{{obj.meta['date']}} GMT</pubDate>
 
         {% for item in site.sorted %}
+            {% if loop.index <= 10 %}
             <item>
-                <title>{{item.title}}</title>
-                <link>{{item.url}}</link>
+                <title>{{item.meta['title']}}</title>
+                <link>{{item.meta['url']}}</link>
                 <description>{{item.markup}}</description>
-                <pubDate>{{item.date}}</pubDate>
+                <pubDate>{{item.meta['date']}}</pubDate>
             </item>
+            {% endif %}
         {% endfor %}
     </channel>
 
