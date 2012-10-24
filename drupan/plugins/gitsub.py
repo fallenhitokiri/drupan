@@ -27,7 +27,7 @@ class Feature(object):
         - commit
         - push
         """
-        if self.no_deployment:
+        if not self.no_deployment:
             self._runcommand(self.cmd_add)
             self._runcommand(self.cmd_commit)
             self._runcommand(self.cmd_push)
