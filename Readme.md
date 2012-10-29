@@ -2,7 +2,7 @@ drupan - formerly known as Zenbo.
 
 # drupan - static site generator
 drupan is a static site generator. You can use it for blogs, sites or anything
-you can imagine. Adding new features is easy thanks to a easy to use plugin
+you can imagine. Adding new features is easy thanks to an easy to use plugin
 system.
 
 ## Installation
