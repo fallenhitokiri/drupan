@@ -120,6 +120,9 @@ Look for a ```tags``` array in ```ContentObject.meta``` and create
 content objects for every tag. Give them a URL and add all
 ```ContentObjects``` with the tag to it.
 
+In your template you can use the ```site.tags``` array with the
+tag name as key to access to URL for the corresponding tag page.
+
 ### Configuration
 Remember to add a layout.
 
