@@ -16,14 +16,22 @@ class Feature(object):
         self.site.tags = {}
         self.tags = {}
 
+    def add_tag(self, tag):
+        """create tag if it does not exist"""
+        if not tag in self.tags:
+            self.tags[tag] = []
+
+    def add_object(self, cobj):
+        """add object to tag list"""
+        for tag in cobj.meta['tags']:
+            self.add_tag(tag)
+            self.tags[tag].append(cobj)
+
     def run(self):
         """run the plugin"""
-        for current in self.site.content:
-            if "tags" in current.meta:
-                for tag in current.meta['tags']:
-                    if not tag in self.tags:
-                        self.tags[tag] = []
-                    self.tags[tag].append(current)
+        for cobj in self.site.content:
+            if "tags" in cobj.meta:
+                self.add_object(cobj)
 
         for name in self.tags:
             cobj = ContentObject()
