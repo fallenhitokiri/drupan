@@ -1,9 +1,9 @@
-drupan - formerly known as Zenbo.
-
 # drupan - static site generator
 drupan is a static site generator. You can use it for blogs, sites or anything
 you can imagine. Adding new features is easy thanks to an easy to use plugin
 system.
+
+[![Build Status](https://travis-ci.org/fallenhitokiri/drupan.png?branch=development)](https://travis-ci.org/fallenhitokiri/drupan)
 
 ## Installation
 You can install drupan with an easy ```pip install drupan``` or ```easy_install```
