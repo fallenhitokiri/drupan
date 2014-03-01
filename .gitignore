@@ -18,6 +18,7 @@ pip-log.txt
 .tox
 *.mo
 .mr.developer.cfg
+venv
 
 MANIFEST
 
