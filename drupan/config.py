@@ -1,74 +1,69 @@
 # -*- coding: utf-8 -*-
-
 """
-drupan.config
+    drupan.config
 
-Configuration object for drupan. Currently supports file based configuration.
+    Configuration for drupan. You can configure it by passing a dictionary
+    with all values, passing a YAML formatted string or a path to a file.
 """
 
-import io
+from io import open
 
 import yaml
 
 
 class Config(object):
-    def __init__(self, options):
+    """hold every information needed by the engine and plugins to work"""
+    def __init__(self):
+        self.reader = None
+        self.writer = None
+        self.url_scheme = None
+        self.plugins = None
+        self.options = None
+
+    def from_file(self, cfg):
+        """read the configuration from a  file
+
+        :param cfg: full path to configuration file
         """
-        init a new configuration instanze.
+        with open(cfg, 'r', encoding='utf-8') as infile:
+            self.parse_yaml(infile.read())
 
-        Arguments:
-            options: dictionary containing everything necessary to get the
-                     configuration from the source (dictionary)
+    def get_option(self, section, key):
+        """get a configuration option for a section of the system
+
+        :param section: plugin name e.x.
+        :param key: option to get
+        :returns: configuration option
         """
-        self.formats = ("yaml")
-        self.options = options
+        sec = self.options.get(section, None)
 
-        self.raw = None
-
-        if not "type" in options:
-            return
-
-        typ = options["type"]
-
-        if typ == "file":
-            self.from_file()
-
-    def from_file(self):
-        """read configuration from a file"""
-        if not "cfg" in self.options:
-            raise Exception("Could not find configuration file in options")
-
-        inp = self.options["cfg"]
-        with io.open(inp, "r", encoding="utf-8") as source:
-            self.raw = source.read()
-
-        self._parse_config()
-
-    def parse_config(self):
-        """parse the read configuration"""
-        format = self.options.get("format", "yaml")
-
-        if not format in self.formats:
-            raise Exception("invalid configuration format")
-
-        if format == "yaml":
-            self._parse_yaml()
-
-    def parse_yaml(self):
-        """parse yaml configuration and store as attributes"""
-        parsed = yaml.load(self.raw)
-
-        # set each key as attribute with the value of the dict
-        for key in parsed:
-            setattr(self, key, parsed[key])
-
-    def get(self, key):
-        """
-        Returns:
-            value for configuration key
-        """
-        if not hasattr(self, key):
-            message = "could not find key: {0} in config".format(key)
+        if not sec:
+            message = "{0} improperly configured".format(section)
             raise Exception(message)
 
-        return getattr(self, key)
+        opt = sec.get(key, None)
+
+        if not opt:
+            message = "could not find {0} for {1}".format(section, key)
+            raise Exception(message)
+
+        return opt
+
+    def parse_yaml(self, raw):
+        """parse yaml and configure this instance
+
+        :param raw: yaml data
+        """
+        parsed = yaml.load(raw)
+        self.config_from_dict(parsed)
+
+    def config_from_dict(self, cfg):
+        """set instance variables form a dictionary
+
+        :param cfg: dictionary with configuration options
+        """
+        self.reader = cfg.get("reader", None)
+        self.writer = cfg.get("writer", None)
+        self.url_scheme = cfg.get("url_scheme", None)
+        self.plugins = cfg.get("plugins", None)
+        self.options = cfg.get("options", None)
