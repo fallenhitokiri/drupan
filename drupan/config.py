@@ -23,7 +23,8 @@ class Config(object):
     def from_file(self, cfg):
         """read the configuration from a  file
 
-        :param cfg: full path to configuration file
+        Arguments:
+            cfg: full path to configuration file
         """
         with open(cfg, 'r', encoding='utf-8') as infile:
             self.parse_yaml(infile.read())
@@ -31,9 +32,12 @@ class Config(object):
     def get_option(self, section, key):
         """get a configuration option for a section of the system
 
-        :param section: plugin name e.x.
-        :param key: option to get
-        :returns: configuration option
+        Arguments:
+            section: plugin name e.x.
+            key: option to get
+
+        Returns:
+            configuration option
         """
         sec = self.options.get(section, None)
 
@@ -52,7 +56,8 @@ class Config(object):
     def parse_yaml(self, raw):
         """parse yaml and configure this instance
 
-        :param raw: yaml data
+        Arguments:
+            raw: yaml data
         """
         parsed = yaml.load(raw)
         self.config_from_dict(parsed)
@@ -60,7 +65,8 @@ class Config(object):
     def config_from_dict(self, cfg):
         """set instance variables form a dictionary
 
-        :param cfg: dictionary with configuration options
+        Arguments:
+            cfg: dictionary with configuration options
         """
         self.reader = cfg.get("reader", None)
         self.writer = cfg.get("writer", None)
