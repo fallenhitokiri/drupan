@@ -11,7 +11,7 @@ class Entity(object):
     def __init__(self, config):
         self.config = config
 
-        self.meta = None
+        self.meta = dict()
         self.raw = None
         self.content = None
 
