@@ -22,7 +22,7 @@ class Reader(object):
     def __init__(self, site, config):
         """
         Arguments:
-            instance: of drupan.site.Site
+            site: instance of drupan.site.Site
             config: instance of drupan.config.Config
         """
         self.site = site
