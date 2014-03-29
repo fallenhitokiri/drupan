@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-    drupan.plugins.jinja
+    drupan.template
 
-    Plugin to integrate the jinja templating engine.
+    Integrate the jinja templating engine.
 """
 
 from jinja2 import FileSystemLoader, Environment
@@ -21,7 +21,7 @@ def filter_more(content):
         return content
 
 
-class Plugin(object):
+class Render(object):
     """render site using Jinja"""
     def __init__(self, site, config):
         """
