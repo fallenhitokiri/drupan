@@ -16,7 +16,7 @@ class Config(object):
     def __init__(self):
         self.reader = None
         self.writer = None
-        self.url_scheme = None
+        self.url_scheme = dict()
         self.plugins = None
         self.options = None
 
