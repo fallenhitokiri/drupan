@@ -39,6 +39,10 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(dt.hour, 14)
         self.assertEqual(dt.minute, 56)
 
+    def test_created_no_date(self):
+        """should use datetime.now() as created date"""
+        self.assertEqual(type(self.entity.created), datetime.datetime)
+
     def test_created_storage(self):
         """should return foo"""
         self.entity.meta["date"] = "2014-01-30 14:56"
@@ -79,3 +83,30 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(dt.hour, 14)
         self.assertEqual(dt.minute, 56)
         self.assertEqual(dt, self.entity._updated)
+
+    def test_get_url_value(self):
+        """should return 'foo', 'bar' and 2014"""
+        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["foo"] = "foo"
+        self.entity.bar = "bar"
+
+        self.assertEqual(self.entity.get_url_value("%foo"), "foo")
+        self.assertEqual(self.entity.get_url_value("%bar"), "bar")
+        self.assertEqual(self.entity.get_url_value("%year"), "2014")
+
+    def test_url_meta(self):
+        """should return /foo/bar/"""
+        self.entity.meta["foo"] = "foo"
+        self.entity.bar = "bar"
+        self.entity.meta["url"] = "%foo/%bar"
+
+        self.assertEqual(self.entity.url, "/foo/bar/")
+
+    def test_url_config_layout(self):
+        """should return /foo/2014/1/"""
+        self.entity.meta["foo"] = "foo"
+        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["layout"] = "post"
+        self.config.url_scheme["post"] = "/%foo/%year/%month/"
+
+        self.assertEqual(self.entity.url, "/foo/2014/1/")

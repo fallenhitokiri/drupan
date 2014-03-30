@@ -35,11 +35,38 @@ class Entity(object):
     @property
     def url(self):
         """
+        Return the URL for this entity. If there is no URL key in the meta
+        dictionary config["urls"][layout] will be used.
+
         Returns:
             url for this entity
         """
         if self._url:
             return self._url
+
+        if "url" in self.meta:
+            layout = self.meta["url"]
+        else:
+            layout = self.config.url_scheme[self.layout]
+
+        for key in layout.split("/"):
+            if not len(key) > 0:
+                continue
+
+            if not key.startswith("%"):
+                continue
+
+            value = self.get_url_value(key)
+            layout = layout.replace(key, value)
+
+        if len(layout) > 0 and not layout.endswith("/"):
+            layout += "/"
+
+        if len(layout) > 0 and not layout.startswith("/"):
+            layout = "/" + layout
+
+        self._url = layout
+        return self._url
 
     @property
     def slug(self):
@@ -78,8 +105,11 @@ class Entity(object):
         if self._created:
             return self._created
 
-        raw = self.meta["date"]
-        dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
+        if "date" in self.meta:
+            raw = self.meta["date"]
+            dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
+        else:
+            dt = datetime.now()
 
         self._created = dt
         return self._created
@@ -103,3 +133,28 @@ class Entity(object):
         dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
         self._updated = dt
         return self._updated
+
+    def get_url_value(self, key):
+        """
+        There are three possible scenarios where 'key' can be stored
+
+          - part of the created timestamp
+          - in the meta dictionary
+          - as attribute of an Entity instance
+
+        Arguments:
+            key: key to lookup value for
+
+        Returns:
+            variable to be used in the URL for a given key
+        """
+        key = key[1:]  # remove %
+
+        if hasattr(self.created, key):
+            # return as string, not int
+            return str(getattr(self.created, key))
+
+        if key in self.meta:
+            return self.meta[key]
+
+        return getattr(self, key)
