@@ -8,6 +8,8 @@
 
 import os
 from io import open
+import shutil
+import errno
 
 import yaml
 
@@ -59,3 +61,80 @@ class Reader(object):
         entity.raw = content.strip()
 
         self.site.entities.append(entity)
+
+
+class Writer(object):
+    """
+    Implements a filesystem writer, writing all entities which have a rendered
+    attribute != None. The path is the URL split and appended to the base path.
+    """
+    def __init__(self, site, config):
+        """
+        Arguments:
+            site: instance of drupan.site.Site
+            config: instance of drupan.config.Config
+        """
+        self.site = site
+        self.config = config
+
+        self.base_path = config.get_option("writer", "directory")
+        self.template = config.get_options("jinja", "template")
+
+    def run(self):
+        """run the plugin"""
+        self.cleandir()
+        self.copytree()
+
+        for entity in self.site.entities:
+            self.create_path(entity)
+            self.write(entity)
+
+    def cleandir(self):
+        """clean the output directory"""
+        try:
+            shutil.rmtree(self.base_path)
+        except:
+            pass
+
+    def copytree(self):
+        """
+        copy the template directory to the output directory, skip files prefixed
+        with _
+        """
+        ignore = shutil.ignore_patterns("_*")
+        shutil.copytree(self.template, self.base_path, ignore=ignore)
+
+    def create_path(self, entity):
+        """
+        Create all directories needed to write an entity.
+
+        Arguments:
+            entity: entity to write (drupan.entity.Entity)
+        """
+        if entity.path == "":
+            return
+
+        path = os.path.join(self.base_path, entity.path)
+
+        if os.path.exists(path):
+            return
+
+        try:
+            os.makedirs(path)
+        except OSError:
+            if OSError.errno == errno.EEXIST:
+                pass
+            else:
+                raise
+
+    def write(self, entity):
+        """
+        Write an entity to disk
+
+        Arguments:
+            entity: entity to write (drupan.entity.Entity)
+        """
+        path = os.path.join(self.base_path, entity.path, "index.html")
+
+        with open(path, "w", encoding="utf-8") as output:
+            output.write(entity.rendered)
