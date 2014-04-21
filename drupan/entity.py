@@ -141,7 +141,9 @@ class Entity(object):
         Returns:
             path without leading or trailing slash
         """
-        return self.url.rsplit("/", 1)[0].split("/", 1)[1]
+        if self.url.rsplit("/", 1)[0] != "":
+            return self.url.rsplit("/", 1)[0].split("/", 1)[1]
+        return ""
 
     def get_url_value(self, key):
         """

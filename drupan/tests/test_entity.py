@@ -127,3 +127,9 @@ class TestEntity(unittest.TestCase):
         self.entity._url = None
         self.config.url_scheme["post"] = "%foo/%bar/"
         self.assertEqual(self.entity.path, "foo/bar")
+
+    def test_path_slash(self):
+        """should return ''"""
+        self.entity.meta["layout"] = "post"
+        self.config.url_scheme["post"] = "/"
+        self.assertEqual(self.entity.path, "")
