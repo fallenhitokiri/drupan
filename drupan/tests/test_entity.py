@@ -110,3 +110,20 @@ class TestEntity(unittest.TestCase):
         self.config.url_scheme["post"] = "/%foo/%year/%month/"
 
         self.assertEqual(self.entity.url, "/foo/2014/1/")
+
+    def test_path(self):
+        """should return foo/bar"""
+        self.entity.meta["foo"] = "foo"
+        self.entity.meta["bar"] = "bar"
+        self.entity.meta["layout"] = "post"
+
+        self.config.url_scheme["post"] = "/%foo/%bar/"
+        self.assertEqual(self.entity.path, "foo/bar")
+
+        self.entity._url = None
+        self.config.url_scheme["post"] = "/%foo/%bar"
+        self.assertEqual(self.entity.path, "foo/bar")
+
+        self.entity._url = None
+        self.config.url_scheme["post"] = "%foo/%bar/"
+        self.assertEqual(self.entity.path, "foo/bar")

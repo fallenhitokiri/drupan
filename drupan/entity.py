@@ -112,6 +112,7 @@ class Entity(object):
             dt = datetime.now()
 
         self._created = dt
+
         return self._created
 
     @property
@@ -133,6 +134,14 @@ class Entity(object):
         dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
         self._updated = dt
         return self._updated
+
+    @property
+    def path(self):
+        """
+        Returns:
+            path without leading or trailing slash
+        """
+        return self.url.rsplit("/", 1)[0].split("/", 1)[1]
 
     def get_url_value(self, key):
         """
