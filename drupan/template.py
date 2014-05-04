@@ -32,7 +32,7 @@ class Render(object):
         self.site = site
         self.config = config
 
-        self.template = config.get_options("jinja", "template")
+        self.template = config.get_option("jinja", "template")
 
     def run(self):
         """run the plugin"""
@@ -41,7 +41,8 @@ class Render(object):
         env.filters['more'] = filter_more
 
         for page in self.site.entities:
-            template = env.get_template(page.layout)
+            name = "_{0}.html".format(page.layout)
+            template = env.get_template(name)
             page.rendered = template.render(
                 obj=page,
                 site=self.site,
