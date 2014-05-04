@@ -106,8 +106,7 @@ class Entity(object):
             return self._created
 
         if "date" in self.meta:
-            raw = self.meta["date"]
-            dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
+            dt = self.meta["date"]
         else:
             dt = datetime.now()
 
@@ -124,14 +123,13 @@ class Entity(object):
         if self._updated:
             return self._updated
 
-        raw = self.meta.get("updated", None)
+        dt = self.meta.get("updated", None)
 
         # update timestamp is not required - use the created timestamp
-        if not raw:
+        if not dt:
             self._updated = self.created
             return self._updated
 
-        dt = datetime.strptime(raw, "%Y-%m-%d %H:%M")
         self._updated = dt
         return self._updated
 

@@ -29,7 +29,7 @@ class TestEntity(unittest.TestCase):
 
     def test_created_generation(self):
         """should return a datetime instance"""
-        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
         dt = self.entity.created
 
         self.assertEqual(type(dt), datetime.datetime)
@@ -45,7 +45,7 @@ class TestEntity(unittest.TestCase):
 
     def test_created_storage(self):
         """should return foo"""
-        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
         self.entity._created = "foo"
         dt = self.entity.created
 
@@ -53,7 +53,7 @@ class TestEntity(unittest.TestCase):
 
     def test_updated_generation(self):
         """should return a datetime instance"""
-        self.entity.meta["updated"] = "2014-01-30 14:56"
+        self.entity.meta["updated"] = datetime.datetime(2014, 01, 30, 14, 56)
         dt = self.entity.updated
 
         self.assertEqual(type(dt), datetime.datetime)
@@ -65,7 +65,7 @@ class TestEntity(unittest.TestCase):
 
     def test_updated_storage(self):
         """should return foo"""
-        self.entity.meta["updated"] = "2014-01-30 14:56"
+        self.entity.meta["updated"] = datetime.datetime(2014, 01, 30, 14, 56)
         self.entity._updated = "foo"
         dt = self.entity.updated
 
@@ -73,7 +73,7 @@ class TestEntity(unittest.TestCase):
 
     def test_updated_not_existing(self):
         """should return a datetime instance"""
-        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
         dt = self.entity.updated
 
         self.assertEqual(type(dt), datetime.datetime)
@@ -86,7 +86,7 @@ class TestEntity(unittest.TestCase):
 
     def test_get_url_value(self):
         """should return 'foo', 'bar' and 2014"""
-        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
         self.entity.meta["foo"] = "foo"
         self.entity.bar = "bar"
 
@@ -105,7 +105,7 @@ class TestEntity(unittest.TestCase):
     def test_url_config_layout(self):
         """should return /foo/2014/1/"""
         self.entity.meta["foo"] = "foo"
-        self.entity.meta["date"] = "2014-01-30 14:56"
+        self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
         self.entity.meta["layout"] = "post"
         self.config.url_scheme["post"] = "/%foo/%year/%month/"
 
