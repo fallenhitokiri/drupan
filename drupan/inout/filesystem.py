@@ -78,7 +78,7 @@ class Writer(object):
         self.config = config
 
         self.base_path = config.get_option("writer", "directory")
-        self.template = config.get_options("jinja", "template")
+        self.template = config.get_option("jinja", "template")
 
     def run(self):
         """run the plugin"""
@@ -98,8 +98,8 @@ class Writer(object):
 
     def copytree(self):
         """
-        copy the template directory to the output directory, skip files prefixed
-        with _
+        copy the template directory to the output directory, skip files
+        prefixed with _
         """
         ignore = shutil.ignore_patterns("_*")
         shutil.copytree(self.template, self.base_path, ignore=ignore)
