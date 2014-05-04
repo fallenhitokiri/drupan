@@ -26,7 +26,10 @@ class Plugin(object):
         for entity in self.site.entities:
             self.generate_tags(entity)
 
-        self.site.entities.extend(self.tags)
+        for tag in self.tags:
+            self.site.entities.append(self.tags[tag])
+
+        self.site.tags = self.tags
 
     def generate_tags(self, entity):
         """
