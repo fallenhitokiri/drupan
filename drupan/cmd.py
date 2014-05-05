@@ -2,11 +2,12 @@
 import argparse
 
 from .engine import Engine
+from .version import __version__
 
 
 def cmd():
     """command line entry point"""
-    desc = "drupan v{0}".format(2)
+    desc = "drupan v{0}".format(__version__)
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("config", help="configuration file")
     parser.add_argument(
