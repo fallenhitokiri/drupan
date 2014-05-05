@@ -21,6 +21,7 @@ class Engine(object):
         self.writer = None
         self.plugins = list()
         self.render = None
+        self.deployment = None
 
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
@@ -43,6 +44,12 @@ class Engine(object):
 
         self.render = Render(self.site, self.config)
 
+        if self.config.deployment:
+            self.deployment = __import__(
+                "drupan.deployment.{0}".format(self.config.deployment),
+                fromlist=["Deploy"]
+            ).Deploy(self.site, self.config)
+
     def run(self):
         """run the site generation process"""
         self.reader.run()
@@ -54,3 +61,11 @@ class Engine(object):
     def serve(self):
         """serve the generated site"""
         http(self.config.get_option("writer", "directory"))
+
+    def deploy(self):
+        """deploy the generated site"""
+        if not self.deployment:
+            return
+
+        self.deployment.run()
+

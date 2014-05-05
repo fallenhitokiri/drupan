@@ -19,6 +19,7 @@ class Config(object):
         self.url_scheme = dict()
         self.plugins = None
         self.options = None
+        self.deployment = None
 
     def from_file(self, cfg):
         """read the configuration from a  file
@@ -73,3 +74,4 @@ class Config(object):
         self.url_scheme = cfg.get("url_scheme", None)
         self.plugins = cfg.get("plugins", None)
         self.options = cfg.get("options", None)
+        self.deployment = cfg.get("deployment", None)

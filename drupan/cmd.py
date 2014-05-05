@@ -32,3 +32,6 @@ def cmd():
 
     if args.serve:
         engine.serve()
+
+    if not args.nodeploy:
+        engine.deploy()
