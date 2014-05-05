@@ -9,6 +9,7 @@
 from .site import Site
 from .config import Config
 from .template import Render
+from .serve import http
 
 
 class Engine(object):
@@ -49,3 +50,7 @@ class Engine(object):
             plugin.run()
         self.render.run()
         self.writer.run()
+
+    def serve(self):
+        """serve the generated site"""
+        http(self.config.get_option("writer", "directory"))

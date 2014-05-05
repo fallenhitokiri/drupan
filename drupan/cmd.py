@@ -28,3 +28,6 @@ def cmd():
     engine.config.from_file(args.config)
     engine.prepare_engine()
     engine.run()
+
+    if args.serve:
+        engine.serve()
