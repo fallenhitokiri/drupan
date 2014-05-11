@@ -13,12 +13,23 @@ def filter_more(content):
     if there is a more tag return everything above else return the content
     string
     """
-    (first, more, second) = content.partition('<!--MORE-->')
+    (first, more, second) = content.partition("<!--MORE-->")
 
-    if more == '<!--MORE-->':
+    if more == "<!--MORE-->":
         return first
     else:
         return content
+
+
+def filter_filter(entities, key, value):
+    """filter entities based on key and value"""
+    filtered = []
+
+    for entity in entities:
+        if getattr(entity, key) == value:
+            filtered.append(entity)
+
+    return filtered
 
 
 class Render(object):
@@ -38,7 +49,8 @@ class Render(object):
         """run the plugin"""
         env = Environment(loader=FileSystemLoader(self.template))
 
-        env.filters['more'] = filter_more
+        env.filters["more"] = filter_more
+        env.filters["filter"] = filter_filter
 
         for page in self.site.entities:
             name = "_{0}.html".format(page.layout)
