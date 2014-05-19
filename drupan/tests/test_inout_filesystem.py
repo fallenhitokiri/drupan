@@ -3,7 +3,7 @@ import unittest
 
 from drupan.config import Config
 from drupan.site import Site
-from drupan.inout.filesystem import Reader
+from drupan.inout.filesystem import Reader, ImageParser
 
 
 class TestReader(unittest.TestCase):
@@ -39,3 +39,12 @@ class TestReader(unittest.TestCase):
         """should add a dot before the extension"""
         reader = Reader(self.site, self.config)
         self.assertEqual(reader.extension, ".md")
+
+
+class TestImageParser(unittest.TestCase):
+    def test_parsing(self):
+        parser = ImageParser()
+        parser.feed('<p><img src="foo.jpg" /></p>')
+
+        self.assertEqual(len(parser.images), 1)
+        self.assertEqual(parser.images[0], "foo.jpg")
