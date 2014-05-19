@@ -24,7 +24,16 @@ class Deploy(object):
         """run the deployment process"""
         s3path = "s3://{0}".format(self.bucket)
         proc = subprocess.Popen(
-            ["aws", "s3", "--acl", "public-read", "sync", ".", s3path],
+            [
+                "aws",
+                "s3",
+                "sync",
+                ".",
+                s3path,
+                "--acl",
+                "public-read",
+                "--delete"
+            ],
             cwd=self.path
         )
         proc.communicate()
