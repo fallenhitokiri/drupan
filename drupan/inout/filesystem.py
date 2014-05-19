@@ -10,6 +10,7 @@ import os
 from io import open
 import shutil
 import errno
+from HTMLParser import HTMLParser
 
 import yaml
 
@@ -88,6 +89,7 @@ class Writer(object):
         for entity in self.site.entities:
             self.create_path(entity)
             self.write(entity)
+            self.copy_images(entity)
 
     def cleandir(self):
         """clean the output directory"""
@@ -138,3 +140,42 @@ class Writer(object):
 
         with open(path, "w", encoding="utf-8") as output:
             output.write(entity.rendered)
+
+    def copy_images(self, entity):
+        """
+        Copy images that are linked in this entity to the entity folder
+
+        Arguments:
+            entity: entity to copy images to
+        """
+        if entity.rendered is None:
+            return
+
+        parser = ImageParser()
+        parser.feed(entity.rendered)
+
+        # no images found?
+        if len(parser.images) == 0:
+            return
+
+        path = os.path.join(self.base_path, entity.path)
+        source = os.path.join(
+            self.config.get_option("reader", "directory"),
+            "images"
+        )
+
+        for linked in parser.images:
+            origin = os.path.join(source, linked)
+            shutil.copy(origin, path)
+
+
+class ImageParser(HTMLParser):
+    """Handler based on HTMLParser for images"""
+    def __init__(self):
+        self.images = []
+        HTMLParser.__init__(self)
+
+    def handle_starttag(self, tag, attrs):
+        """if image tag is found add it to self.images"""
+        if tag == 'img':
+            self.images.append((dict(attrs)['src']))
