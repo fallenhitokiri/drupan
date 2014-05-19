@@ -26,7 +26,7 @@ def http(dir, port=9000):
     httpd = SocketServer.TCPServer(("", port), handler)
 
     try:
-        print "server running on port {0}".format(port)
+        print "server running on http://localhost:{0}".format(port)
         httpd.serve_forever()
     except KeyboardInterrupt:
         print "shutting down server\n"
