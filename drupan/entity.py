@@ -159,6 +159,14 @@ class Entity(object):
         """
         return self._get_from_meta("tags")
 
+    @property
+    def date(self):
+        """
+        Returns:
+            date from meta
+        """
+        return self._get_from_meta("date")
+
     def get_url_value(self, key):
         """
         There are three possible scenarios where 'key' can be stored
