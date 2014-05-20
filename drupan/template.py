@@ -21,13 +21,24 @@ def filter_more(content):
         return content
 
 
-def filter_filter(entities, key, value):
-    """filter entities based on key and value"""
-    filtered = []
+def filter_filter(site, key, value):
+    """
+    returns one or more entities for a specific key / value combination. Uses
+    Site.get()
+    """
+    return site.get(key, value)
 
-    for entity in entities:
-        if getattr(entity, key) == value:
-            filtered.append(entity)
+
+def filter_get(site, key, value):
+    """
+    returns one entity for a specific key / value combination. Uses Site.get()
+    """
+    filtered = site.get(key, value)
+
+    if type(filtered) == list:
+        raise Exception("too many results", key, value)
+    if filtered is None:
+        raise Exception("no result for", key, value)
 
     return filtered
 
@@ -47,10 +58,14 @@ class Render(object):
 
     def run(self):
         """run the plugin"""
-        env = Environment(loader=FileSystemLoader(self.template))
+        env = Environment(
+            loader=FileSystemLoader(self.template),
+            extensions=["jinja2.ext.with_"]
+        )
 
         env.filters["more"] = filter_more
         env.filters["filter"] = filter_filter
+        env.filters["get"] = filter_get
 
         for page in self.site.entities:
             name = "_{0}.html".format(page.layout)
