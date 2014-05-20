@@ -143,6 +143,22 @@ class Entity(object):
             return self.url.rsplit("/", 1)[0].split("/", 1)[1]
         return ""
 
+    @property
+    def title(self):
+        """
+        Returns:
+            title from meta
+        """
+        return self._get_from_meta("title")
+
+    @property
+    def tags(self):
+        """
+        Returns:
+            tags from meta
+        """
+        return self._get_from_meta("tags")
+
     def get_url_value(self, key):
         """
         There are three possible scenarios where 'key' can be stored
@@ -167,3 +183,12 @@ class Entity(object):
             return self.meta[key]
 
         return getattr(self, key)
+
+    def _get_from_meta(self, key):
+        """
+        Returns:
+            "key" from meta or None
+        """
+        if key in self.meta:
+            return self.meta[key]
+        return None
