@@ -7,6 +7,8 @@
     look up certain entities.
 """
 
+from datetime import datetime
+
 
 def search(entity, key, value):
     """
@@ -34,6 +36,7 @@ def search(entity, key, value):
 class Site(object):
     def __init__(self):
         self.entities = list()  # list for drupan.entity.Entity
+        self.date = datetime.now()
 
     def get(self, key, value):
         """
