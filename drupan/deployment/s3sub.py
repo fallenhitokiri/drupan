@@ -18,7 +18,8 @@ class Deploy(object):
         self.site = site
         self.config = config
 
-        self.path = config.get_option("s3sub", "path")
+        self.bucket = config.get_option("s3sub", "bucket")
+        self.profile = config.get_option("s3sub", "profile")
 
     def run(self):
         """run the deployment process"""
@@ -30,10 +31,11 @@ class Deploy(object):
                 "sync",
                 ".",
                 s3path,
-                "--acl",
-                "public-read",
-                "--delete"
+                "--delete",
+                "--profile",
+                self.profile
             ],
             cwd=self.path
         )
         proc.communicate()
+
