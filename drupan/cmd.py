@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+import sys
 
 from .engine import Engine
 from .version import __version__
@@ -22,12 +23,23 @@ def cmd():
         action="store_true",
         default=False
     )
+    parser.add_argument(
+        "--deploy",
+        help="deploy without generating the site",
+        action="store_true",
+        default=False
+    )
     args = parser.parse_args()
 
     engine = Engine()
 
     engine.config.from_file(args.config)
     engine.prepare_engine()
+
+    if args.deploy:
+        engine.deploy()
+        sys.exit()
+
     engine.run()
 
     if args.serve:
