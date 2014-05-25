@@ -22,7 +22,8 @@ class Config(object):
         self.deployment = None
 
     def from_file(self, cfg):
-        """read the configuration from a  file
+        """
+        read the configuration from a  file
 
         Arguments:
             cfg: full path to configuration file
@@ -31,7 +32,8 @@ class Config(object):
             self.parse_yaml(infile.read())
 
     def get_option(self, section, key):
-        """get a configuration option for a section of the system
+        """
+        get a configuration option for a section of the system
 
         Arguments:
             section: plugin name e.x.
@@ -55,16 +57,18 @@ class Config(object):
         return opt
 
     def parse_yaml(self, raw):
-        """parse yaml and configure this instance
+        """
+        parse yaml and configure this instance
 
         Arguments:
             raw: yaml data
         """
         parsed = yaml.load(raw)
-        self.config_from_dict(parsed)
+        self.from_dict(parsed)
 
-    def config_from_dict(self, cfg):
-        """set instance variables form a dictionary
+    def from_dict(self, cfg):
+        """
+        set instance variables form a dictionary
 
         Arguments:
             cfg: dictionary with configuration options

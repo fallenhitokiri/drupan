@@ -36,7 +36,7 @@ class TestConfig(unittest.TestCase):
 
     def test_config_from_drict(self):
         """should have a reader and plugins set"""
-        self.config.config_from_dict(self.cfg)
+        self.config.from_dict(self.cfg)
         self.assertEqual(self.config.reader, "bar")
         self.assertEqual(len(self.config.plugins), 3)
 
