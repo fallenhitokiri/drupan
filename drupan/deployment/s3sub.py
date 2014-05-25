@@ -20,6 +20,7 @@ class Deploy(object):
 
         self.bucket = config.get_option("s3sub", "bucket")
         self.profile = config.get_option("s3sub", "profile")
+        self.path = config.get_option("writer", "directory")
 
     def run(self):
         """run the deployment process"""
@@ -38,4 +39,3 @@ class Deploy(object):
             cwd=self.path
         )
         proc.communicate()
-
