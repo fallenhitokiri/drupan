@@ -58,7 +58,7 @@ class Deploy(object):
         self.generate_redirect_md5s()
         self.load_md5(md5_file)
         self.compare_md5s()
-        #self.save_md5(md5_file)
+        self.save_md5(md5_file)
         self.redirect()
 
     def upload_files(self):
@@ -152,6 +152,7 @@ class Deploy(object):
         for redirect in self.changed:
             source = os.path.join(self.s3path, redirect)
             destination = urljoin(self.site_url, self.redirects[redirect])
+
             proc = subprocess.Popen(
                 [
                     "aws",

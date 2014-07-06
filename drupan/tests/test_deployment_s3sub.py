@@ -15,7 +15,9 @@ class TestS3Sub(unittest.TestCase):
                 "s3sub": {
                     "bucket": "asdf",
                     "profile": "asdf",
-                    "md5list": "asdf"
+                    "md5path": "asdf",
+                    "redirects": "asdf",
+                    "site_url": "asdf"
                 },
                 "writer": {
                     "directory": "asdf"
@@ -27,14 +29,14 @@ class TestS3Sub(unittest.TestCase):
     def test_compare_md5s_not_found(self):
         """should add key to changed"""
         s3d = Deploy(self.site, self.config)
-        s3d.md5["foo"] = 1
+        s3d.new_md5s["foo"] = 1
         s3d.compare_md5s()
         self.assertEquals(s3d.changed[0], "foo")
 
     def test_compare_md5s_changed(self):
         """should add key to changed"""
         s3d = Deploy(self.site, self.config)
-        s3d.md5["foo"] = 1
+        s3d.new_md5s["foo"] = 1
         s3d.old_md5s["foo"] = 2
         s3d.compare_md5s()
         self.assertEquals(s3d.changed[0], "foo")
@@ -42,7 +44,7 @@ class TestS3Sub(unittest.TestCase):
     def test_compare_md5s_no_change(self):
         """should add key to changed"""
         s3d = Deploy(self.site, self.config)
-        s3d.md5["foo"] = 1
+        s3d.new_md5s["foo"] = 1
         s3d.old_md5s["foo"] = 1
         s3d.compare_md5s()
         self.assertEquals(len(s3d.changed), 0)
