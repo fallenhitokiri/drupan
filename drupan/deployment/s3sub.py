@@ -28,8 +28,8 @@ class Deploy(object):
         self.bucket = config.get_option("s3sub", "bucket")
         self.profile = config.get_option("s3sub", "profile")
         self.path = config.get_option("writer", "directory")
-        self.md5list = config.get_option("s3sub", "md5list")
-        self.md5 = dict()
+        self.md5_path = config.get_option("s3sub", "md5path")
+        self.new_md5s = dict()
         self.old_md5s = dict()
         self.changed = list()
         self.s3path = "s3://{0}".format(self.bucket)
@@ -37,9 +37,9 @@ class Deploy(object):
     def run(self):
         """run the deployment process"""
         self.generate_md5s()
-        self.load_md5s()
+        self.load_md5("content.md5.json")
         self.compare_md5s()
-        self.save_md5s()
+        self.save_md5("content.md5.json")
         self.upload()
 
     def generate_md5s(self):
@@ -54,34 +54,52 @@ class Deploy(object):
 
                 with open(filepath, "rb") as infile:
                     raw = infile.read()
-                    self.md5[filepath] = md5(raw).hexdigest()
+                    self.new_md5s[filepath] = md5(raw).hexdigest()
 
-    def load_md5s(self):
-        """load MD5 checksums from disk"""
-        with open(self.md5list, "r", encoding="utf-8") as infile:
+    def load_md5(self, filename):
+        """
+        load MD5 checksums from disk (json format)
+
+        Arguments:
+            filename: name of the file to load MD5 sums from
+        """
+        load = os.path.join(self.md5_path, filename)
+
+        # if there is no MD5 file, just return
+        if not os.path.isfile(load):
+            return
+
+        with open(load, "r", encoding="utf-8") as infile:
             raw = infile.read()
             self.old_md5s = json.loads(raw)
 
-    def save_md5s(self):
-        """save MD5 checksums to disk"""
-        with open(self.md5list, "w", encoding="utf-8") as outfile:
-            dumped = json.dumps(self.md5)
+    def save_md5(self, filename):
+        """
+        save MD5 checksums to disk (json format)
+
+        Arguments:
+            filename: name of the file to save MD5 sums to
+        """
+        save = os.path.join(self.md5_path, filename)
+        with open(save, "w", encoding="utf-8") as outfile:
+            dumped = json.dumps(self.new_md5s)
             outfile.write(unicode(dumped))
 
     def compare_md5s(self):
         """compare MD5 checksums"""
-        for key in self.md5:
+        for key in self.new_md5s:
             if not key in self.old_md5s:
                 self.changed.append(key)
                 continue
 
-            if self.md5[key] != self.old_md5s[key]:
+            if self.new_md5s[key] != self.old_md5s[key]:
                 self.changed.append(key)
 
     def upload(self):
         """upload changed files to S3"""
         for local in self.changed:
-            remote = local.replace(self.path, self.s3path)
+            print local
+            """remote = local.replace(self.path, self.s3path)
 
             proc = subprocess.Popen(
                 [
@@ -95,4 +113,24 @@ class Deploy(object):
                 ],
                 cwd=self.path
             )
-            proc.communicate()
+            proc.communicate()"""
+
+    def redirect(self):
+        """create a redirect"""
+        source = ""
+        destination = ""
+        proc = subprocess.Popen(
+            [
+                "aws",
+                "s3",
+                "cp",
+                "index.html",
+                source,
+                "--website-redirect",
+                destination,
+                "--profile",
+                self.profile
+            ],
+            cwd=self.path
+        )
+        proc.communicate()
