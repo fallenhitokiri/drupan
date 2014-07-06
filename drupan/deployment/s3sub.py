@@ -13,6 +13,7 @@ from hashlib import md5
 import json
 from io import open
 import os
+from urlparse import urljoin
 
 
 class Deploy(object):
@@ -29,6 +30,8 @@ class Deploy(object):
         self.profile = config.get_option("s3sub", "profile")
         self.path = config.get_option("writer", "directory")
         self.md5_path = config.get_option("s3sub", "md5path")
+        self.redirects = config.get_option("s3sub", "redirects")
+        self.site_url = config.get_option("s3sub", "site_url")
         self.new_md5s = dict()
         self.old_md5s = dict()
         self.changed = list()
@@ -36,13 +39,38 @@ class Deploy(object):
 
     def run(self):
         """run the deployment process"""
-        self.generate_md5s()
-        self.load_md5("content.md5.json")
+        self.upload_files()
+
+        # reset - we use the same variables again
+        self.new_md5s = dict()
+        self.old_md5s = dict()
+        self.changed = list()
+
+        self.upload_redirects()
+
+    def upload_redirects(self):
+        """upload redirects for S3"""
+        md5_file = "redirects.md5.json"
+        # return if there are no redirects
+        if self.redirects == dict():
+            return
+
+        self.generate_redirect_md5s()
+        self.load_md5(md5_file)
         self.compare_md5s()
-        self.save_md5("content.md5.json")
+        #self.save_md5(md5_file)
+        self.redirect()
+
+    def upload_files(self):
+        """upload generated site to S3"""
+        md5_file = "content.md5.json"
+        self.generate_site_md5s()
+        self.load_md5(md5_file)
+        self.compare_md5s()
+        self.save_md5(md5_file)
         self.upload()
 
-    def generate_md5s(self):
+    def generate_site_md5s(self):
         """generate MD5 checksums for all entities"""
         for root, dirs, files in os.walk(self.path):
             for name in files:
@@ -55,6 +83,11 @@ class Deploy(object):
                 with open(filepath, "rb") as infile:
                     raw = infile.read()
                     self.new_md5s[filepath] = md5(raw).hexdigest()
+
+    def generate_redirect_md5s(self):
+        """generate MD5 checkusm for all redirects"""
+        for redirect in self.redirects:
+            self.new_md5s[redirect] = md5(self.redirects[redirect]).hexdigest()
 
     def load_md5(self, filename):
         """
@@ -98,8 +131,7 @@ class Deploy(object):
     def upload(self):
         """upload changed files to S3"""
         for local in self.changed:
-            print local
-            """remote = local.replace(self.path, self.s3path)
+            remote = local.replace(self.path, self.s3path)
 
             proc = subprocess.Popen(
                 [
@@ -113,24 +145,25 @@ class Deploy(object):
                 ],
                 cwd=self.path
             )
-            proc.communicate()"""
+            proc.communicate()
 
     def redirect(self):
         """create a redirect"""
-        source = ""
-        destination = ""
-        proc = subprocess.Popen(
-            [
-                "aws",
-                "s3",
-                "cp",
-                "index.html",
-                source,
-                "--website-redirect",
-                destination,
-                "--profile",
-                self.profile
-            ],
-            cwd=self.path
-        )
-        proc.communicate()
+        for redirect in self.changed:
+            source = os.path.join(self.s3path, redirect)
+            destination = urljoin(self.site_url, self.redirects[redirect])
+            proc = subprocess.Popen(
+                [
+                    "aws",
+                    "s3",
+                    "cp",
+                    "index.html",
+                    source,
+                    "--website-redirect",
+                    destination,
+                    "--profile",
+                    self.profile
+                ],
+                cwd=self.path
+            )
+            proc.communicate()
