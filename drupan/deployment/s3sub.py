@@ -149,8 +149,11 @@ class Deploy(object):
 
     def redirect(self):
         """create a redirect"""
+        index = os.path.join(self.path, "index.html")
+
         for redirect in self.changed:
-            source = os.path.join(self.s3path, redirect)
+            # lstrip to make sure joining works if redirect starts with a /
+            source = os.path.join(self.s3path, redirect.lstrip("/"))
             destination = urljoin(self.site_url, self.redirects[redirect])
 
             proc = subprocess.Popen(
@@ -158,7 +161,7 @@ class Deploy(object):
                     "aws",
                     "s3",
                     "cp",
-                    "index.html",
+                    index,
                     source,
                     "--website-redirect",
                     destination,
