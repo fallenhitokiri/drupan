@@ -32,6 +32,8 @@ class Deploy(object):
         self.md5_path = config.get_option("s3sub", "md5path")
         self.redirects = config.get_option("s3sub", "redirects")
         self.site_url = config.get_option("s3sub", "site_url")
+        self.skip_upload = config.get_option("s3sub", "skip_upload")
+
         self.new_md5s = dict()
         self.old_md5s = dict()
         self.changed = list()
@@ -68,7 +70,9 @@ class Deploy(object):
         self.load_md5(md5_file)
         self.compare_md5s()
         self.save_md5(md5_file)
-        self.upload()
+
+        if self.should_upload:
+            self.upload()
 
     def generate_site_md5s(self):
         """generate MD5 checksums for all entities"""
@@ -146,6 +150,25 @@ class Deploy(object):
                 cwd=self.path
             )
             proc.communicate()
+
+    @property
+    def should_upload(self):
+        """
+        Check if a changed file is part of self.skip_upload. If this
+        is the case for all changed files do not upload the site.
+
+        Returns:
+            True if the site should be uploaded
+        """
+        upload = False
+
+        for changed in self.changed:
+            url = changed.replace(self.path, "")
+
+            if not url in self.skip_upload:
+                upload = True
+
+        return upload
 
     def redirect(self):
         """create a redirect"""

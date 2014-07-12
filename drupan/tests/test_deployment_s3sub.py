@@ -17,7 +17,8 @@ class TestS3Sub(unittest.TestCase):
                     "profile": "asdf",
                     "md5path": "asdf",
                     "redirects": "asdf",
-                    "site_url": "asdf"
+                    "site_url": "asdf",
+                    "skip_upload": "asdf"
                 },
                 "writer": {
                     "directory": "asdf"
@@ -48,3 +49,17 @@ class TestS3Sub(unittest.TestCase):
         s3d.old_md5s["foo"] = 1
         s3d.compare_md5s()
         self.assertEquals(len(s3d.changed), 0)
+
+    def test_should_upload_skip(self):
+        """should skip uploading"""
+        s3d = Deploy(self.site, self.config)
+        s3d.skip_upload = ["/foo/foo", "bar"]
+        s3d.changed = ["/foo/foo"]
+        self.assertFalse(s3d.should_upload)
+
+    def test_should_upload(self):
+        """should_upload should return True"""
+        s3d = Deploy(self.site, self.config)
+        s3d.skip_upload = ["foo", "bar"]
+        s3d.changed = ["asdf/foo", "bazbaz/zap"]
+        self.assertTrue(s3d.should_upload)
