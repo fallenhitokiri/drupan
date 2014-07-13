@@ -11,6 +11,20 @@ import shutil
 import sys
 
 
+INSTRUCTIONS = """Your new site was created.
+
+To build your new site change to the directory and run
+
+drupan config.yaml --serve
+
+For more information on how to correctly configure your site and what
+plugins you can use please read the quickstart guide at
+http://github.com/fallenhitokiri/drupan/docs/quickstart.md
+
+Enjoy drupan :)
+"""
+
+
 def bootstrap(path):
     """
     Copy the template for new sites to the given path. Only copy if the path
@@ -27,3 +41,5 @@ def bootstrap(path):
         sys.exit()
 
     shutil.copytree(template, path)
+
+    print INSTRUCTIONS
