@@ -153,3 +153,18 @@ possible MD5 checksums of all files will be generated.
   - ```skip_upload``` a list with files - if only files that are listed here
   changed when running drupan the site will not be uploaded
   - ```redirects``` redirects to create - format: old url: new url
+
+## gitsub
+This plugins runs git as subcommand and pushes your site to the remote called
+```server```. It runs the following commands
+
+  - ```git add .```
+  - ```git commit -a -m "$foo"``` where $foo is the current date and time
+  - ```git push -u server master```
+
+No path is assumed as default so you can either push the whole drupan directory
+or just the generated site directory. It is up to you to decide what you prefer.
+
+###### Options
+
+  - ```path``` path to run the git commands in

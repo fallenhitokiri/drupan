@@ -43,4 +43,3 @@ class Deploy(object):
         self.execute(CMD_ADD)
         self.execute(CMD_COMMIT)
         self.execute(CMD_PUSH)
-
