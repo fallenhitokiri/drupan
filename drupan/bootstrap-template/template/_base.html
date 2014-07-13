@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{% block title %}drupan - rawr{% endblock %}</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <link rel="stylesheet" href="/css/main.css" />
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed/" />
+    </head>
+    
+    <body>
+
+        <div id="sidebar">
+
+
+            <p id="name"><a href="/">drupan</a></p>
+
+            <div id="me">
+
+                <div id="picture"></div>
+
+                <div id="about"><p id="who"><strong>Your Site</strong></p>
+                    <p>with a short description</p>
+                </div>
+                <!--about-->
+
+            </div>
+            <!--me-->
+
+            <ul>
+                {% with entity = site|get("title", "About") %}
+                <li><a href="{{ entity.url }}">About</a></li>
+                {% endwith %}
+
+                {% with entity = site|get("layout", "archive") %}
+                <li><a href="{{ entity.url }}">Archive</a></li>
+                {% endwith %}
+            </ul>
+
+        </div>
+        <!--sidebar-->
+
+        <div id="main">
+
+            <div id="wrapper">
+
+                {% block content %} no content {% endblock %}
+
+            </div>
+            <!--wrapper-->
+
+        </div>
+        <!--main-->
+
+    </body>
+</html>

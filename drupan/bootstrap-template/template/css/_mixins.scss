@@ -1,0 +1,20 @@
+@mixin borderradius($o, $r, $b, $l) {
+    -webkit-border-radius: $o $r $b $l;
+            border-radius: $o $r $b $l;
+}
+
+@mixin boxshadow($ho, $ve, $bl, $sp, $r, $g, $b, $o) {
+    -webkit-box-shadow: $ho $ve $bl $sp rgba($r, $g, $b, $o);
+            box-shadow: $ho $ve $bl $sp rgba($r, $g, $b, $o);
+}
+
+@mixin insertboxshadow($ho, $ve, $bl, $sp, $r, $g, $b, $o) {
+    -webkit-box-shadow: inset $ho $ve $bl $sp rgba($r, $g, $b, $o);
+            box-shadow: inset $ho $ve $bl $sp rgba($r, $g, $b, $o);
+}
+
+@mixin borders($color, $o, $r, $u, $l, $style) {
+    border-color:$color;
+    border-width:$o $r $u $l;
+    border-style:$style;
+}

@@ -4,6 +4,7 @@ import sys
 
 from .engine import Engine
 from .version import __version__
+from .initialize import bootstrap
 
 
 def cmd():
@@ -30,6 +31,10 @@ def cmd():
         default=False
     )
     args = parser.parse_args()
+
+    if args.init:
+        bootstrap(args.config)
+        sys.exit()
 
     engine = Engine()
 

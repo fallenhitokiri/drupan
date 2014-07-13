@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+
+{% block title %}
+ Archive
+{% endblock %}
+
+{% block content %}
+    <h1>Oh no! There was an error!</h1>
+
+    <p>Sorry, there was an error. Maybe you requested a site that does not exist
+    or I missed to setup a redirect. Take a look at all the posts, I am sure you
+    will find the one you are looking for.</p>
+
+    <ul id="archive">
+    {% for item in site|filter("layout", "post")|sort(attribute="created", reverse=True) %}
+        <li>
+            <span class="meta">{{ item.created.strftime("%B %d, %Y") }}</span>
+            <span class="title"><a href="{{ item.url }}">{{ item.title }}</a></span>
+
+            <!--<span class="preview">{{ item.content|more }}</span>-->
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

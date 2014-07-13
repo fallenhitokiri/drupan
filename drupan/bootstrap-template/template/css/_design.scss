@@ -1,0 +1,387 @@
+/******************************************************************************
+* fonts                                                                       *
+******************************************************************************/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,800,600|Open+Sans+Condensed:300,700);
+
+
+/******************************************************************************
+* defaults                                                                    *
+******************************************************************************/
+.clearer { clear:both; }
+
+html { height:100%; }
+
+body {
+    height:100%;
+    font-family:Open Sans;
+    font-weight:400;
+    font-size:0.9em;
+    line-height:1.6em;
+    color:$grey3;
+    @include borders($red, 5px, 0, 0, 0, solid);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin:0 0 0.5em 0;
+    color:$dark;
+}
+
+h1 {
+    font-weight:800;
+    font-size:1.8em;
+    margin:0 0 0.8em 0;
+}
+
+h1 a {
+    color:$dark;
+}
+
+h2 {
+    font-weight:800;
+    font-size:1.5em;
+}
+
+h3 {
+    font-weight:800;
+    font-size:1.3em;
+}
+
+h4 {
+    font-weight:800;
+    font-size:1.1em;
+}
+
+h5 {
+    font-weight:800;
+}
+
+h6 {
+    font-weight:800;
+    font-size:0.9em;
+}
+
+strong {
+    font-weight:800;
+}
+
+em {
+    font-style: italic;
+}
+
+a {
+    color:$blue;
+    text-decoration:none;
+    -webkit-transition: 200ms ease-in 200ms;
+    -moz-transition: 200ms ease-in 200ms;
+    -o-transition: 200ms ease-in 200ms;
+    transition: 200ms ease-in 200ms;
+}
+
+a:hover {
+    color:$red;
+}
+
+.meta {
+    color:$grey3;
+    font-family:"Open Sans Condensed";
+    font-weight:300;
+    line-height:0.9em;
+
+    a {
+        color:$grey3;
+        text-decoration:underline;
+    }
+
+    a:hover { 
+        color:$blue;
+    }
+}
+
+.intro {
+    font-style: italic;
+    font-size:1.2em;
+    line-height:1.4em;
+}
+
+
+/******************************************************************************
+* sidebar                                                                     *
+******************************************************************************/
+#sidebar {
+    width:350px;
+    height:100%;
+    float:left;
+    position:fixed;
+    top:0;
+    background:url('bg.png');
+    @include borders($dark, 5px, 0, 0, 0, solid);
+    @include insertboxshadow(-4px, 0px, 7px, -4px, 0, 0, 0, 1);
+
+    ul {
+        font-weight:600;
+        font-size:0.9em;
+
+        li {
+            width:33%;
+            display:block;
+            float:left;
+        }
+    }
+
+    a {
+        color:$grey2;
+        text-decoration:none;
+        display:block;
+        padding:0.5em 1em 0.5em 1em;
+        text-align:center;
+        font-family:"Open Sans Condensed";
+        font-weight:700;
+    }
+
+    a:hover {
+        color:$red;
+    }
+}
+
+#name {
+    font-weight:800;
+    font-size:1.1em;
+    text-align:center;
+    padding:3em 0 0 0;
+    margin:0 0 3em 0;
+
+    a {
+        color:$red;
+    }
+
+    a:hover {}
+}
+
+#picture {
+    width:100px;
+    height:100px;
+    margin:0 auto;
+    background:url("me.jpg") no-repeat;
+    background-size: 100% auto;
+    @include borderradius(50px, 50px, 50px, 50px);
+    @include insertboxshadow(0px, 0px, 8px, 0px, 0, 0, 0, 1);
+}
+
+#about {
+    color:$grey2;
+    margin:0 25px 3em 25px;
+    padding:0.5em 0 0 0;
+    line-height:1.5em;
+    font-family:"Open Sans Condensed";
+    font-weight:300;
+
+    #who { 
+        font-weight:600; 
+        color:$white;
+        text-align:center;
+        margin:0 0 3em 0;
+        font-family:"Open Sans";
+    }
+
+    p {
+        margin:0 0 0.5em 0;
+    }
+}
+
+
+/******************************************************************************
+* main                                                                        *
+******************************************************************************/
+#main {
+    float:left;
+    width:600px;
+    margin:0 0 3em 400px;
+    padding:3em 0 3em 0;
+
+    blockquote{
+        padding:1em;
+        font-style:italic;
+    }
+
+    p {
+        margin:0 0 1em 0;
+    }
+
+    ul, ol {
+        padding:0 0 1em 2em;
+
+        li {
+            margin:0 0 0.3em 0;
+        }
+    }
+
+    ul {
+        list-style-type:disc;
+    }
+
+    ol {
+        list-style-type:decimal-leading-zero;
+    }
+
+    .post {
+        margin:0 0 3em 0;
+    }
+    
+    img {
+        width:600px;
+        height:auto;
+    }
+
+    .subbox {
+        color:$grey3;
+        font-size:0.9em;
+        @include borders($grey2, 1px, 0, 0, 0, solid);
+        padding:1em 0 0 0;
+        margin:3em 0 0 0;
+    }
+
+    #archive {
+        list-style-type:none;
+        padding:1em 0 1em 0;
+
+        .title a {
+            font-weight: 800;
+            color:$dark;
+            max-width:550px;
+        }
+
+        .title a:hover {
+            color:$red;
+        }
+
+        li {
+            padding:0 0 1.2em 0;
+        }
+
+        #tags {
+            margin:0 0 2em 0;
+        }
+
+        .meta {
+            float:right;
+        }
+
+        .preview {
+            margin:0 0 1em 0;
+        }
+    }
+
+    pre {
+        background:#efefef;
+        font-family:Courier New, Sans;
+        @include borders($dark, 1px, 1px, 1px, 1px, solid);
+        margin:0 20px 20px 20px;
+    }
+}
+
+/******************************************************************************
+* responsive                                                                  *
+******************************************************************************/
+@media only screen and (max-device-width: 480px) {
+    #sidebar {
+        width:100%;
+        height:100px;
+        position:absolute;
+        @include borders($red, 0, 0, 5px, 0, solid);
+        @include insertboxshadow(0px, -4px, 7px, -4px, 0, 0, 0, 1);
+
+        #name {
+            padding:1em 0 0 0;
+            margin:0 0 1em 0;
+        }
+
+        #me {
+            display:none;
+        }
+    }
+
+    #main {
+        margin:100px 0 0 0;
+        width:100%;
+
+        #wrapper {
+            width:90%;
+            margin:0 auto;
+        }
+        
+        img {
+            width:100%;
+            height:auto;
+        }
+
+        #archive {
+            .preview {
+                display:none;
+            }
+        }
+    }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait) {
+    #sidebar {
+        width:100%;
+        height:240px;
+        position:absolute;
+        @include borders($red, 0, 0, 5px, 0, solid);
+        -webkit-box-shadow: inset 0px -4px 7px -4px rgba(0, 0, 0, 1);
+                box-shadow: inset 0px -4px 7px -4px rgba(0, 0, 0, 1);
+
+        #name {
+            padding:1.5em 0 0 1em;
+            margin:0 0 1.5em 0;
+        }
+
+        #me {
+            padding:1em;
+            width:600px;
+            margin:0 auto;
+        }
+
+        #picture {
+            width:80px;
+            height:80px;
+            @include borderradius(40px, 40px, 40px, 40px);
+            margin:0;
+            float:left;
+        }
+
+        #about {
+            width:500px;
+            float:right;
+            margin:0;
+        }
+
+        #who {
+            text-align:left;
+            margin:0;
+            padding:0;
+        }
+
+        ul {
+            clear:both;
+            width:100%;
+            padding:2em 0 0 0;
+        }
+    }
+
+    #main {
+        margin:240px 0 0 0;
+        width:100%;
+
+        #wrapper {
+            width:600px;
+            margin:0 auto;
+        }
+        
+        img {
+            width:100%;
+            height:auto;
+        }
+    }
+}
+
