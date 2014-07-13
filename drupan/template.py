@@ -26,7 +26,12 @@ def filter_filter(site, key, value):
     returns one or more entities for a specific key / value combination. Uses
     Site.get()
     """
-    return site.get(key, value)
+    filtered = site.get(key, value)
+
+    if type(filtered) != list:
+        return [filtered]
+
+    return filtered
 
 
 def filter_get(site, key, value):
