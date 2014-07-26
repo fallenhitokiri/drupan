@@ -20,7 +20,7 @@ class Engine(object):
         self.reader = None
         self.writer = None
         self.plugins = list()
-        self.render = None
+        self.renderer = None
         self.deployment = None
 
     def prepare_engine(self):
@@ -42,7 +42,7 @@ class Engine(object):
             ).Plugin(self.site, self.config)
             self.plugins.append(plugin)
 
-        self.render = Render(self.site, self.config)
+        self.renderer = Render(self.site, self.config)
 
         if self.config.deployment:
             self.deployment = __import__(
@@ -55,7 +55,7 @@ class Engine(object):
         self.reader.run()
         for plugin in self.plugins:
             plugin.run()
-        self.render.run()
+        self.renderer.run()
         self.writer.run()
 
     def serve(self):
