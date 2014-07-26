@@ -4,7 +4,6 @@ import sys
 
 from .engine import Engine
 from .version import __version__
-from .initialize import bootstrap
 
 
 def cmd():
@@ -19,22 +18,12 @@ def cmd():
         "--serve", help="serve site", action="store_true", default=False
     )
     parser.add_argument(
-        "--init",
-        help="create new site at path",
-        action="store_true",
-        default=False
-    )
-    parser.add_argument(
         "--deploy",
         help="deploy without generating the site",
         action="store_true",
         default=False
     )
     args = parser.parse_args()
-
-    if args.init:
-        bootstrap(args.config)
-        sys.exit()
 
     engine = Engine()
 
