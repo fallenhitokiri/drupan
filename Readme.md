@@ -3,6 +3,10 @@ Drupan is a flexible static site generator helping you to create blogs, single
 page applications or traditional websites. While being opionionated the plugin
 system allows you to extend it with any functionallity you desire.
 
+## Quickstart
+Install drupan, clone this [example site](https://github.com/fallenhitokiri/drupan-template-blog)
+repository and run `drupan config.yaml --serve` in the cloned directory.
+
 ## Noteworthy Features
 - deployment using git or directly to S3
 - fast generation time
