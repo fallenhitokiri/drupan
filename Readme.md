@@ -17,7 +17,6 @@ Supported command line switches
 
 - `nodeploy` do not deploy the generated site
 - `serve` runs a development server on port 9000
-- `init` creates a new site
 - `deploy` deploy your output directory without generation
 
 ### Readers
