@@ -1,9 +1,24 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
+import os
 
 from .engine import Engine
 from .version import __version__
+
+
+WRONG_VERSION = """Your config parameter is a directory. If you just updated
+drupan your site is likely still configured for drupan 1, you are using
+drupan 2.
+Please check the migration guide in the docs directory on
+<https://github.com/fallenhitokiri/drupan/docs/migration_1_to_2.md>
+"""
+
+INIT = """For a new site you can clone \
+<https://github.com/fallenhitokiri/drupan-template-blog> \
+which should give you a good starting point and should always be up to date \
+with the latest chages.
+"""
 
 
 def cmd():
@@ -18,14 +33,31 @@ def cmd():
         "--serve", help="serve site", action="store_true", default=False
     )
     parser.add_argument(
+        "--init",
+        help="show how to setup a new site",
+        action="store_true",
+        default=False
+    )
+    parser.add_argument(
         "--deploy",
         help="deploy without generating the site",
         action="store_true",
         default=False
     )
+
+    if "--init" in sys.argv:
+        print INIT
+        sys.exit()
+
     args = parser.parse_args()
 
     engine = Engine()
+
+    # if someone uses a directory as config it is likely a drupan 1 setup
+    # point to the migration guide.
+    if os.path.isdir(args.config):
+        print WRONG_VERSION
+        sys.exit()
 
     engine.config.from_file(args.config)
     engine.prepare_engine()
