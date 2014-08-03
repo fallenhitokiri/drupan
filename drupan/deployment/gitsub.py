@@ -34,7 +34,6 @@ class Deploy(object):
         Arugments:
             command: command to execute
         """
-        print command
         proc = subprocess.Popen(shlex.split(command), cwd=self.path)
         proc.communicate()
 
