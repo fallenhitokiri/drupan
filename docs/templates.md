@@ -4,7 +4,7 @@ powerful and allows you to realize nearly everything you can imagine. To
 further support this drupan provides additional filters you can use.
 
 ##### more
-With the more filter you can split the content that is passed to the filter
+With the `more` filter you can split the content that is passed to the filter
 and get either the part before the separator or the whole content if the
 separator does not exist.
 
@@ -14,7 +14,7 @@ The default separator is `<!--MORE-->`
 In your template where you want your content you do `{{ entity.content|more }}`.
 
 ##### filter
-If you used the Django ORM once you know what filter is doing. You can
+If you used the Django ORM once you know what `filter` is doing. You can
 filter your entities based on a key and value and get a list of entities
 returned.
 

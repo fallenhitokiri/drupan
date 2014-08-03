@@ -1,5 +1,5 @@
 # Configuration
-For plugin specific configuraiton options please read the plugin documentation.
+For plugin specific configuration options please read the plugin documentation.
 A standard configuration can look like this
 
     reader: "filesystem"
@@ -69,7 +69,7 @@ section.
 A reader is the way drupan gets the raw information and content to generate
 a site.
 
-Options go in the ```reader``` section - this is a necessary to prevent name
+Options go in the ```reader``` section - this is necessary to prevent name
 conflicts with the filesystem writer.
 
 ## filesystem
@@ -83,11 +83,11 @@ The filesystem reader reads the content from files in a directory.
   another extension will be ignored
 
 # Writers
-A writers job is to somehow save the generated site and take care of all
+A writers' job is to somehow save the generated site and take care of all
 required tasks to make the site fully workable, like copying images to the
 posts.
 
-Options go in the ```writer``` section - this is a necessary to prevent name
+Options go in the ```writer``` section - this is necessary to prevent name
 conflicts with the filesystem writer.
 
 ## filesystem
