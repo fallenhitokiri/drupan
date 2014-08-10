@@ -18,6 +18,8 @@ INIT = """For a new site you can clone \
 <https://github.com/fallenhitokiri/drupan-template-blog> \
 which should give you a good starting point and should always be up to date \
 with the latest chages.
+
+After cloning switch to the directory and run `drupan config.yaml --serve`
 """
 
 
