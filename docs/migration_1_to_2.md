@@ -5,10 +5,9 @@ fact that we are talking about a major release - please read [this blog
 post](http://screamingatmyscreen.com/2014/7/state-of-drupan-2-rawr/).
 
 ### Configuration
-The changes are mostly in the configuration file. Most importantly: you
-now give the configuration file as argument to drupan, not the directoy
-holding the file. This helps if you manage multiple sites form the same
-system.
+The changes are mostly in the configuration file. Most importantly: 
+drupan expectes the configuration file, not the directory as argument.
+This helps if you manage multiple sites form the same system.
 
 The format of the file completly changed. Please read `configuration.md`
 in the `docs` directory for more information.
