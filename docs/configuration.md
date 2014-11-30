@@ -168,3 +168,27 @@ or just the generated site directory. It is up to you to decide what you prefer.
 ###### Options
 
   - ```path``` path to run the git commands in
+
+## s3cf
+This plugins uses the [boto library](https://github.com/boto/boto) to deploy your
+site to S3 and it will also invalidate all changed files on CloudFront. As `s3sub`
+it requires you to use `fswriter` as writer plugin, but you do not need to go
+through the hassle to setup AWS cli tools.
+
+After the initial upload only changed files will be uploaded. To make this
+possible MD5 checksums of all files will be generated.
+
+###### Options
+
+  - ```bucket``` name of the S3 bucket to upload to
+  - ```md5path``` path where to store the MD5 checksums
+  - ```site_url``` URL of your site
+  - ```skip_upload``` a list with files - if only files that are listed here
+  changed when running drupan the site will not be uploaded
+  - ```aws_access_key``` AWS access key with permissions for your S3 bucket and CF 
+  distribution
+  - ```aws_access_key``` AWS secret key with permissions for your S3 bucket and CF 
+  distribution
+  - ```cloudfront_id``` ID of your CloudFront distribution
+  - ```redirects``` redirects to create - format: old url: new url (uses S3 redirect 
+  feature)
