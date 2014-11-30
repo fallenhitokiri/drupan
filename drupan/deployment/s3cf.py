@@ -46,19 +46,13 @@ class Deploy(object):
         self.new_md5s = dict()
         self.old_md5s = dict()
         self.changed = list()
-
-        self.s3_connection = S3Connection(
-            self.aws_access_key,
-            self.aws_secret_key
-        )
-        self.bucket = self.s3_connection.get_bucket(self.bucket_name)
-        self.cf_connection = boto.connect_cloudfront(
-            self.aws_access_key,
-            self.aws_secret_key
-        )
+        self.s3_connection = None
+        self.bucket = None
+        self.cf_connection = None
 
     def run(self):
         """run the deployment process"""
+        self.setup()
         self.upload_files()
         self.invalidate()
 
@@ -68,6 +62,18 @@ class Deploy(object):
         self.changed = list()
 
         self.upload_redirects()
+
+    def setup(self):
+        """setup AWS connection"""
+        self.s3_connection = S3Connection(
+            self.aws_access_key,
+            self.aws_secret_key,
+        )
+        self.bucket = self.s3_connection.get_bucket(self.bucket_name)
+        self.cf_connection = boto.connect_cloudfront(
+            self.aws_access_key,
+            self.aws_secret_key,
+        )
 
     def upload_redirects(self):
         """upload redirects for S3"""
