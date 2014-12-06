@@ -137,3 +137,7 @@ class TestEntity(unittest.TestCase):
     def test_url_no_layout(self):
         """should return None"""
         self.assertEqual(self.entity.url, None)
+
+    def test_path_no_url(self):
+        """should return None"""
+        self.assertEqual(self.entity.path, None)
