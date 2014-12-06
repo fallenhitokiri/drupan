@@ -133,3 +133,7 @@ class TestEntity(unittest.TestCase):
         self.entity.meta["layout"] = "post"
         self.config.url_scheme["post"] = "/"
         self.assertEqual(self.entity.path, "")
+
+    def test_url_no_layout(self):
+        """should return None"""
+        self.assertEqual(self.entity.url, None)

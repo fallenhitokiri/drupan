@@ -30,7 +30,7 @@ class Entity(object):
         Returns:
             layout for this entity
         """
-        return self.meta["layout"]
+        return self.meta.get("layout", None)
 
     @property
     def url(self):
@@ -46,8 +46,10 @@ class Entity(object):
 
         if "url" in self.meta:
             layout = self.meta["url"]
-        else:
+        elif self.layout in self.config.url_scheme:
             layout = self.config.url_scheme[self.layout]
+        else:
+            return None
 
         for key in layout.split("/"):
             if not len(key) > 0:
