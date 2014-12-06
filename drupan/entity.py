@@ -141,7 +141,7 @@ class Entity(object):
         Returns:
             path without leading or trailing slash
         """
-        if not self.url:
+        if self.url is None:
             return None
 
         if self.url.rsplit("/", 1)[0] != "":

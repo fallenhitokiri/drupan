@@ -87,7 +87,7 @@ class Writer(object):
         self.copytree()
 
         for entity in self.site.entities:
-            if not entity.path:
+            if entity.path is None:
                 continue
 
             self.create_path(entity)
