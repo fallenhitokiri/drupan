@@ -73,6 +73,9 @@ class Render(object):
         env.filters["get"] = filter_get
 
         for page in self.site.entities:
+            if not page.layout:
+                continue
+
             name = "_{0}.html".format(page.layout)
             template = env.get_template(name)
             page.rendered = template.render(
