@@ -154,7 +154,7 @@ class Entity(object):
         Returns:
             title from meta
         """
-        return self._get_from_meta("title")
+        return self.meta.get("title", None)
 
     @property
     def tags(self):
@@ -162,7 +162,7 @@ class Entity(object):
         Returns:
             tags from meta
         """
-        return self._get_from_meta("tags")
+        return self.meta.get("tags", None)
 
     @property
     def date(self):
@@ -170,7 +170,7 @@ class Entity(object):
         Returns:
             date from meta
         """
-        meta = self._get_from_meta("date")
+        meta = self.meta.get("date", None)
 
         if meta:
             return meta
@@ -201,12 +201,3 @@ class Entity(object):
             return self.meta[key]
 
         return getattr(self, key)
-
-    def _get_from_meta(self, key):
-        """
-        Returns:
-            "key" from meta or None
-        """
-        if key in self.meta:
-            return self.meta[key]
-        return None

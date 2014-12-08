@@ -142,9 +142,17 @@ class TestEntity(unittest.TestCase):
         """should return None"""
         self.assertEqual(self.entity.path, None)
 
-    def test_empty_entity_date(self):
+    def test_date(self):
         """should return a valid date"""
         self.assertEqual(type(self.entity.date), datetime.datetime)
 
         self.entity.meta["date"] = datetime.date.today()
         self.assertEqual(type(self.entity.date), datetime.date)
+
+    def test_meta_properties(self):
+        """should return title and tags"""
+        self.entity.meta["title"] = "foo"
+        self.entity.meta["tags"] = ["foo", "bar"]
+
+        self.assertEqual(self.entity.title, "foo")
+        self.assertEqual(type(self.entity.tags), list)
