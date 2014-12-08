@@ -141,3 +141,10 @@ class TestEntity(unittest.TestCase):
     def test_path_no_url(self):
         """should return None"""
         self.assertEqual(self.entity.path, None)
+
+    def test_empty_entity_date(self):
+        """should return a valid date"""
+        self.assertEqual(type(self.entity.date), datetime.datetime)
+
+        self.entity.meta["date"] = datetime.date.today()
+        self.assertEqual(type(self.entity.date), datetime.date)

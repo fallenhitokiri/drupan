@@ -170,7 +170,12 @@ class Entity(object):
         Returns:
             date from meta
         """
-        return self._get_from_meta("date")
+        meta = self._get_from_meta("date")
+
+        if meta:
+            return meta
+
+        return datetime.now()
 
     def get_url_value(self, key):
         """
