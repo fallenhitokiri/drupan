@@ -79,7 +79,7 @@ class Entity(object):
         if self._slug:
             return self._slug
 
-        clean = re.sub('[^A-Za-z0-9]+', '-', self.meta['title'])
+        clean = re.sub('[^A-Za-z0-9]+', '-', self.meta.get("title", ""))
 
         # multiple '-' do not look nice
         clean = clean.replace('----', '-')

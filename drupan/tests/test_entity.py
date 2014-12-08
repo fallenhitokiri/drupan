@@ -27,6 +27,10 @@ class TestEntity(unittest.TestCase):
 
         self.assertEqual(self.entity.slug, "baz")
 
+    def test_slug_no_title(self):
+        """should return None"""
+        self.assertEqual(self.entity.slug, "")
+
     def test_created_generation(self):
         """should return a datetime instance"""
         self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
