@@ -27,6 +27,10 @@ class TestEntity(unittest.TestCase):
 
         self.assertEqual(self.entity.slug, "baz")
 
+    def test_slug_no_title(self):
+        """should return None"""
+        self.assertEqual(self.entity.slug, "")
+
     def test_created_generation(self):
         """should return a datetime instance"""
         self.entity.meta["date"] = datetime.datetime(2014, 01, 30, 14, 56)
@@ -133,3 +137,26 @@ class TestEntity(unittest.TestCase):
         self.entity.meta["layout"] = "post"
         self.config.url_scheme["post"] = "/"
         self.assertEqual(self.entity.path, "")
+
+    def test_url_no_layout(self):
+        """should return None"""
+        self.assertEqual(self.entity.url, None)
+
+    def test_path_no_url(self):
+        """should return None"""
+        self.assertEqual(self.entity.path, None)
+
+    def test_date(self):
+        """should return a valid date"""
+        self.assertEqual(type(self.entity.date), datetime.datetime)
+
+        self.entity.meta["date"] = datetime.date.today()
+        self.assertEqual(type(self.entity.date), datetime.date)
+
+    def test_meta_properties(self):
+        """should return title and tags"""
+        self.entity.meta["title"] = "foo"
+        self.entity.meta["tags"] = ["foo", "bar"]
+
+        self.assertEqual(self.entity.title, "foo")
+        self.assertEqual(type(self.entity.tags), list)

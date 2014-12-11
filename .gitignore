@@ -20,6 +20,7 @@ pip-log.txt
 *.mo
 .mr.developer.cfg
 venv
+.idea/
 
 MANIFEST
 

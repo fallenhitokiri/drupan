@@ -30,7 +30,7 @@ class Entity(object):
         Returns:
             layout for this entity
         """
-        return self.meta["layout"]
+        return self.meta.get("layout", None)
 
     @property
     def url(self):
@@ -46,8 +46,10 @@ class Entity(object):
 
         if "url" in self.meta:
             layout = self.meta["url"]
-        else:
+        elif self.layout in self.config.url_scheme:
             layout = self.config.url_scheme[self.layout]
+        else:
+            return None
 
         for key in layout.split("/"):
             if not len(key) > 0:
@@ -77,7 +79,7 @@ class Entity(object):
         if self._slug:
             return self._slug
 
-        clean = re.sub('[^A-Za-z0-9]+', '-', self.meta['title'])
+        clean = re.sub('[^A-Za-z0-9]+', '-', self.meta.get("title", ""))
 
         # multiple '-' do not look nice
         clean = clean.replace('----', '-')
@@ -139,6 +141,9 @@ class Entity(object):
         Returns:
             path without leading or trailing slash
         """
+        if self.url is None:
+            return None
+
         if self.url.rsplit("/", 1)[0] != "":
             return self.url.rsplit("/", 1)[0].split("/", 1)[1]
         return ""
@@ -149,7 +154,7 @@ class Entity(object):
         Returns:
             title from meta
         """
-        return self._get_from_meta("title")
+        return self.meta.get("title", None)
 
     @property
     def tags(self):
@@ -157,7 +162,7 @@ class Entity(object):
         Returns:
             tags from meta
         """
-        return self._get_from_meta("tags")
+        return self.meta.get("tags", None)
 
     @property
     def date(self):
@@ -165,7 +170,12 @@ class Entity(object):
         Returns:
             date from meta
         """
-        return self._get_from_meta("date")
+        meta = self.meta.get("date", None)
+
+        if meta:
+            return meta
+
+        return datetime.now()
 
     def get_url_value(self, key):
         """
@@ -191,12 +201,3 @@ class Entity(object):
             return self.meta[key]
 
         return getattr(self, key)
-
-    def _get_from_meta(self, key):
-        """
-        Returns:
-            "key" from meta or None
-        """
-        if key in self.meta:
-            return self.meta[key]
-        return None
