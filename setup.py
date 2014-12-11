@@ -46,6 +46,7 @@ Deployment
 
   - `gitsub` commits the changes to git and pushes to a remote server
   - `s3sub` uploads the site to S3
+  - `s3cf` upload directly to S3 and invalidate CouldFront using boto
 
 Plugins
 ======
