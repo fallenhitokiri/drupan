@@ -179,7 +179,7 @@ class Writer(object):
 class ImageParser(HTMLParser):
     """Handler based on HTMLParser for images"""
     def __init__(self):
-        super().__init__()
+        HTMLParser.__init__(self)
         self.images = []
 
     def handle_starttag(self, tag, attrs):
