@@ -65,3 +65,17 @@ class TestS3cf(unittest.TestCase):
         s3cf.skip_upload = ["foo", "bar"]
         s3cf.changed = ["asdf/foo", "bazbaz/zap"]
         self.assertTrue(s3cf.should_upload)
+
+    def test_invalidation_list(self):
+        """should add two objects"""
+        s3cf = Deploy(self.site, self.config)
+        s3cf.path = "foo"
+        s3cf.changed = ["foo/bar", "foo/baz/"]
+
+        invalid = s3cf._invalidation_list()
+
+        self.assertEqual(len(invalid), 4)
+        self.assertTrue("/bar" in invalid)
+        self.assertTrue("/bar/" in invalid)
+        self.assertTrue("/baz" in invalid)
+        self.assertTrue("/baz/" in invalid)

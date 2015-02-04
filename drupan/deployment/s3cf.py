@@ -168,17 +168,33 @@ class Deploy(object):
             print "uploading: {1}".format(local, remote)
 
     def invalidate(self):
+        """Invalidate changed entities"""
+        invalid = self._invalidation_list()
+
+        self.cf_connection.create_invalidation_request(
+            self.cloudfront_id,
+            invalid,
+        )
+
+        print "invalidating: {0}".format(invalid)
+
+    def _invalidation_list(self):
+        """
+        Returns:
+            list of all objects to invalidate
+        """
         invalid = list()
 
         for local in self.changed:
             url = local.replace(self.path, "")
             invalid.append(url)
 
-        self.cf_connection.create_invalidation_request(
-            self.cloudfront_id,
-            invalid
-        )
-        print "invalidating: {0}".format(invalid)
+            if url.endswith("/"):
+                invalid.append(url[:-1])
+            else:
+                invalid.append("{0}/".format(url))
+
+        return invalid
 
     @property
     def should_upload(self):
