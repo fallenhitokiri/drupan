@@ -160,3 +160,8 @@ class TestEntity(unittest.TestCase):
 
         self.assertEqual(self.entity.title, "foo")
         self.assertEqual(type(self.entity.tags), list)
+
+    def test_file_path(self):
+        """should return path with index.html appended"""
+        self.entity._url = "/foo/"
+        self.assertEqual(self.entity.file_path, "foo/index.html")
