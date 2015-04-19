@@ -177,6 +177,10 @@ class Entity(object):
 
         return datetime.now()
 
+    @property
+    def file_path(self):
+        return "{0}/index.html".format(self.path)
+
     def get_url_value(self, key):
         """
         There are three possible scenarios where 'key' can be stored
