@@ -145,7 +145,7 @@ class Deploy(object):
         save = os.path.join(self.md5_path, filename)
         with open(save, "w", encoding="utf-8") as outfile:
             dumped = json.dumps(self.new_md5s)
-            outfile.write(unicode(dumped))
+            outfile.write(dumped)
 
     def compare_md5s(self):
         """compare MD5 checksums"""
@@ -165,7 +165,7 @@ class Deploy(object):
             key.key = remote
             key.set_contents_from_filename(local)
             key.set_acl('public-read')
-            print "uploading: {1}".format(local, remote)
+            print("uploading: {1}".format(local, remote))
 
     def invalidate(self):
         """Invalidate changed entities"""
@@ -176,7 +176,7 @@ class Deploy(object):
             invalid,
         )
 
-        print "invalidating: {0}".format(invalid)
+        print("invalidating: {0}".format(invalid))
 
     def _invalidation_list(self):
         """
@@ -226,4 +226,4 @@ class Deploy(object):
             key.key = source
             key.set_redirect(destination)
             key.set_acl('public-read')
-            print "redirecting: {0} -> {1}".format(source, destination)
+            print("redirecting: {0} -> {1}".format(source, destination))

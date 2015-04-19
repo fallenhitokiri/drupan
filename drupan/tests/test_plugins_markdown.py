@@ -45,7 +45,5 @@ class TestMarkdown(unittest.TestCase):
         plugin = Plugin(self.site, self.config)
         plugin.convert(self.entity)
 
-        result = str(self.entity.content).translate(None, "\n")
-
         self.assertNotEqual(self.entity.content, None)
-        self.assertTrue("codehilite" in result)
+        self.assertTrue("codehilite" in self.entity.content)

@@ -10,7 +10,11 @@ import os
 from io import open
 import shutil
 import errno
-from HTMLParser import HTMLParser
+
+try:
+    from HTMLParser import HTMLParser
+except ImportError:
+    from html.parser import HTMLParser
 
 import yaml
 
@@ -175,8 +179,8 @@ class Writer(object):
 class ImageParser(HTMLParser):
     """Handler based on HTMLParser for images"""
     def __init__(self):
-        self.images = []
         HTMLParser.__init__(self)
+        self.images = []
 
     def handle_starttag(self, tag, attrs):
         """if image tag is found add it to self.images"""
