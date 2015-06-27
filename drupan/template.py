@@ -2,7 +2,7 @@
 """
     drupan.template
 
-    Integrate the jinja templating engine.
+    Integrate the jinja template engine.
 """
 
 from jinja2 import FileSystemLoader, Environment
@@ -58,8 +58,12 @@ class Render(object):
         """
         self.site = site
         self.config = config
+        self.templates = dict()
 
-        self.template = config.get_option("jinja", "template")
+        try:
+            self.template = config.get_option("jinja", "template")
+        except:
+            pass
 
     def run(self):
         """run the plugin"""
