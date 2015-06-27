@@ -3,7 +3,7 @@ import unittest
 
 from drupan.site import Site
 from drupan.config import Config
-from drupan.deployment.s3cf import Deploy
+from drupan.deployment.s3cf import Deploy, S3_HOST_MISSING_EXCEPTION
 
 
 class TestS3cf(unittest.TestCase):
@@ -79,3 +79,12 @@ class TestS3cf(unittest.TestCase):
         self.assertTrue("/bar/" in invalid)
         self.assertTrue("/baz" in invalid)
         self.assertTrue("/baz/" in invalid)
+
+    def test_bucket_dot(self):
+        """should raise an exception if not host is present"""
+        self.config.options["s3cf"]["bucket"] = "foo.bar"
+        self.assertRaises(
+            S3_HOST_MISSING_EXCEPTION, Deploy, self.site, self.config
+        )
+        self.config.options["s3cf"]["s3_host"] = "foo"
+        Deploy(self.site, self.config)
