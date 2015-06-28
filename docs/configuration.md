@@ -192,3 +192,5 @@ possible MD5 checksums of all files will be generated.
   - ```cloudfront_id``` ID of your CloudFront distribution
   - ```redirects``` redirects to create - format: old url: new url (uses S3 redirect 
   feature)
+  - ```s3_host``` if your bucket name contains a '.' you have to specify the S3 host
+  for your bucket (see http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)

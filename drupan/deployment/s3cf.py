@@ -20,8 +20,16 @@ import json
 from io import open
 
 import boto
-from boto.s3.connection import S3Connection
+from boto.s3.connection import S3Connection, OrdinaryCallingFormat
 from boto.s3.key import Key
+
+
+S3_HOST_ERROR = "buckets name contains a full stop.\n\n"
+S3_HOST_ERROR += "Please set the `s3_host` configuration key to your S3 host."
+
+
+class S3_HOST_MISSING_EXCEPTION(Exception):
+    pass
 
 
 class Deploy(object):
@@ -42,6 +50,13 @@ class Deploy(object):
         self.aws_access_key = config.get_option("s3cf", "aws_access_key")
         self.aws_secret_key = config.get_option("s3cf", "aws_secret_key")
         self.cloudfront_id = config.get_option("s3cf", "cloudfront_id")
+        self.s3_host = None
+
+        if "." in self.bucket_name:
+            try:
+                self.s3_host = config.get_option("s3cf", "s3_host")
+            except Exception:
+                raise S3_HOST_MISSING_EXCEPTION(S3_HOST_ERROR)
 
         self.new_md5s = dict()
         self.old_md5s = dict()
@@ -65,10 +80,18 @@ class Deploy(object):
 
     def setup(self):
         """setup AWS connection"""
-        self.s3_connection = S3Connection(
-            self.aws_access_key,
-            self.aws_secret_key,
-        )
+        if "." in self.bucket_name:
+            self.s3_connection = S3Connection(
+                self.aws_access_key,
+                self.aws_secret_key,
+                calling_format=OrdinaryCallingFormat(),
+                host=self.s3_host,
+            )
+        else:
+            self.s3_connection = S3Connection(
+                self.aws_access_key,
+                self.aws_secret_key,
+            )
         self.bucket = self.s3_connection.get_bucket(self.bucket_name)
         self.cf_connection = boto.connect_cloudfront(
             self.aws_access_key,
@@ -143,7 +166,7 @@ class Deploy(object):
             filename: name of the file to save MD5 sums to
         """
         save = os.path.join(self.md5_path, filename)
-        with open(save, "w", encoding="utf-8") as outfile:
+        with open(save, "wb") as outfile:
             dumped = json.dumps(self.new_md5s)
             outfile.write(dumped)
 
