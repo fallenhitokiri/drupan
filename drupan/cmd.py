@@ -48,7 +48,7 @@ def cmd():
     )
 
     if "--init" in sys.argv:
-        print INIT
+        print(INIT)
         sys.exit()
 
     args = parser.parse_args()
@@ -58,7 +58,7 @@ def cmd():
     # if someone uses a directory as config it is likely a drupan 1 setup
     # point to the migration guide.
     if os.path.isdir(args.config):
-        print WRONG_VERSION
+        print(WRONG_VERSION)
         sys.exit()
 
     engine.config.from_file(args.config)

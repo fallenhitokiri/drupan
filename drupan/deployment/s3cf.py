@@ -9,16 +9,22 @@
     Using CloudFront invalidation requests can result in high bills. Please
     consider this before using this plugin. If this is a deal breaker use
     s3sub with a 5 minute cache policy.
-
-    Requirement:
-        Filesystem writer
 """
 
 from hashlib import md5
+from mimetypes import MimeTypes
 
 import boto
-from boto.s3.connection import S3Connection
+from boto.s3.connection import S3Connection, OrdinaryCallingFormat
 from boto.s3.key import Key
+
+
+S3_HOST_ERROR = "buckets name contains a full stop.\n\n"
+S3_HOST_ERROR += "Please set the `s3_host` configuration key to your S3 host."
+
+
+class S3HostMissingException(Exception):
+    pass
 
 
 class Deploy(object):
@@ -32,11 +38,18 @@ class Deploy(object):
         self.config = config
 
         self.bucket_name = config.get_option("s3cf", "bucket")
-        self.redirects = config.get_option("s3cf", "redirects")
+        self.redirects = config.get_option("s3cf", "redirects", optional=True)
         self.skip_upload = config.get_option("s3cf", "skip_upload")
         self.aws_access_key = config.get_option("s3cf", "aws_access_key")
         self.aws_secret_key = config.get_option("s3cf", "aws_secret_key")
         self.cloudfront_id = config.get_option("s3cf", "cloudfront_id")
+        self.s3_host = None
+
+        if "." in self.bucket_name:
+            try:
+                self.s3_host = config.get_option("s3cf", "s3_host")
+            except Exception:
+                raise S3HostMissingException(S3_HOST_ERROR)
 
         self.s3_connection = None
         self.bucket = None
@@ -47,71 +60,106 @@ class Deploy(object):
         """run the deployment process"""
         self.setup()
 
-        self.upload()
-        self.invalidate()
-        self.redirect()
+        self.upload_entities()
+        self.upload_assets()
+        # self.invalidate()
+        # self.redirect()
 
     def setup(self):
         """setup AWS connection"""
-        self.s3_connection = S3Connection(
-            self.aws_access_key,
-            self.aws_secret_key,
-        )
+        if "." in self.bucket_name:  # work around for a boto bug
+            self.s3_connection = S3Connection(
+                self.aws_access_key,
+                self.aws_secret_key,
+                calling_format=OrdinaryCallingFormat(),
+                host=self.s3_host,
+            )
+        else:
+            self.s3_connection = S3Connection(
+                self.aws_access_key,
+                self.aws_secret_key,
+            )
         self.bucket = self.s3_connection.get_bucket(self.bucket_name)
         self.cf_connection = boto.connect_cloudfront(
             self.aws_access_key,
             self.aws_secret_key,
         )
 
-    def upload(self):
+    def upload_entities(self):
         """upload changed files to S3"""
         for entity in self.site.entities:
-            if not self.entity_changed(entity):
-                continue
+            self.upload(
+                entity.file_path,
+                entity.rendered.encode("utf-8"),
+                entity.url,
+            )
+            self.upload_images(entity)
 
-            key = Key(self.bucket)
-            key.key = entity.file_path
-            key.set_contents_from_string(entity.rendered)
-            key.set_acl('public-read')
+    def upload_images(self, entity):
+        """upload all images for this entity"""
+        for name in entity.images:
+            path = entity.path + "/" + name
+            self.upload(path, self.site.images[name])
 
-            print("uploading: {1}".format(entity.url))
+    def upload_assets(self):
+        for name, asset in self.site.assets.iteritems():
+            self.upload(name, asset)
 
-            self.set_invalid(entity)
-
-    def entity_changed(self, entity):
+    def upload(self, path, content, invalidate=None):
         """
-        Check if an entity is new or changed. If the Key is None the file is
-        new, else compare the etag (MD5) vs the entities checksum.
+        Set the content, mime type and ACL for a key on S3. Before setting the
+        check if the object is new or changed.
 
         Arguments:
-            entity: entity to check
+            path: path for key
+            content: content to set
+            invalidate: CloudFront path to add to invalidation list. * will be
+                        added to the end to make sure we invalidate the URL
+                        path with a trailing slash and the html itself.
+                        If None the path will be used.
+        """
+        changed = self.file_changed(path, content)
+
+        if not changed:
+            return
+
+        key = Key(self.bucket)
+        key.content_type = guess_mime_type(path)
+        key.key = path
+        key.set_contents_from_string(content)
+        key.set_acl("public-read")
+
+        print("uploaded: {0}".format(path))
+
+        if invalidate is None:
+            invalidate = path
+
+        self.to_invalidate.append(invalidate + "*")
+
+    def file_changed(self, path, content):
+        """
+        Check if an keys content is new or changed. If the Key is None the file
+        is new, if not compare the etag (MD5) with the checksum of the files
+        content.
+
+        Arguments:
+            path: key path
+            content: content to compare
 
         Returns:
             True if the key changes or is new and needs to be uploaded and
             invalidated.
         """
-        key = self.bucket.get_key(entity.file_path)
+        key = self.bucket.get_key(path)
 
         if not key:
             return True
 
-        checksum = md5(entity.rendered).hexdigest()
-        return key.etag.replace('"', "") == checksum
+        if key.etag is None:
+            return True
 
-    def set_invalid(self, entity):
-        """
-        Add the entities URL and the URL with an inverted slash to the
-        invalidation list.
-
-        Arguments:
-            entity: entity to invalidate
-        """
-        self.to_invalidate.append(entity.url)
-
-        if entity.url.endswith("/"):
-            self.to_invalidate.append(entity.url[:-1])
-        else:
-            self.to_invalidate.append("{0}/".format(entity.url))
+        checksum = md5(content).hexdigest()
+        return key.etag.replace('"', "") != checksum
 
     def invalidate(self):
         """Invalidate changed entities"""
@@ -124,14 +172,13 @@ class Deploy(object):
 
     def redirect(self):
         """create a redirect"""
-        if self.redirects != dict():
+        if self.redirects == dict() or self.redirects is None:
+            print("No redirects - skipping.")
             return
 
-        for source in self.redirects:
+        for source, destination in self.redirects.iteritems():
             if self.redirect_exists(source):
                 continue
-
-            destination = self.redirects[source]
 
             key = Key(self.bucket)
             key.key = source
@@ -153,3 +200,22 @@ class Deploy(object):
         if not self.bucket.get_key(redirect):
             return True
         return False
+
+
+def guess_mime_type(name):
+    """
+    Guess the mime type for a filename. Default: binary/octet-stream
+
+    Arguments:
+        name: name of the file to return mime type for
+
+    Returns:
+        mime type as string
+    """
+    mime = MimeTypes()
+    typ = mime.guess_type(name)[0]
+
+    if typ is None:
+        return "binary/octet-stream"
+
+    return typ

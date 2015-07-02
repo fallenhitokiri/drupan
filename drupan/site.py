@@ -37,6 +37,9 @@ class Site(object):
     def __init__(self):
         self.entities = list()  # list for drupan.entity.Entity
         self.date = datetime.now()
+        self.templates = dict()
+        self.assets = dict()
+        self.images = dict()
 
     def get(self, key, value):
         """

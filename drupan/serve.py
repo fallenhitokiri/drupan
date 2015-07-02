@@ -6,8 +6,11 @@
     Serve a generated site locally.
 """
 
-import SimpleHTTPServer
-import SocketServer
+try:
+    import SimpleHTTPServer
+    import SocketServer
+except ImportError:
+    from http.server import HTTPServer, SimpleHTTPRequestHandler
 import os
 
 
@@ -26,9 +29,9 @@ def http(dir, port=9000):
     httpd = SocketServer.TCPServer(("", port), handler)
 
     try:
-        print "server running on http://localhost:{0}".format(port)
+        print("server running on http://localhost:{0}".format(port))
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print "shutting down server\n"
+        print("shutting down server\n")
 
     os.chdir(cwd)

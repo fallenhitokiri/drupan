@@ -5,7 +5,7 @@
     Integrate the jinja template engine.
 """
 
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import DictLoader, Environment
 
 
 def filter_more(content):
@@ -58,17 +58,11 @@ class Render(object):
         """
         self.site = site
         self.config = config
-        self.templates = dict()
-
-        try:
-            self.template = config.get_option("jinja", "template")
-        except:
-            pass
 
     def run(self):
         """run the plugin"""
         env = Environment(
-            loader=FileSystemLoader(self.template),
+            loader=DictLoader(self.site.templates),
             extensions=["jinja2.ext.with_"]
         )
 

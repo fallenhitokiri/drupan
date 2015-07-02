@@ -8,6 +8,8 @@
 import re
 from datetime import datetime
 
+from drupan.imageparser import ImageParser
+
 
 class Entity(object):
     """define an entity and all helper methods"""
@@ -23,6 +25,11 @@ class Entity(object):
         self._url = None
         self._created = None
         self._updated = None
+        self._content_type = None
+        self._images = None
+
+    def __repr__(self):
+        return self.url
 
     @property
     def layout(self):
@@ -180,6 +187,31 @@ class Entity(object):
     @property
     def file_path(self):
         return "{0}/index.html".format(self.path)
+
+    @property
+    def images(self):
+        """
+        Returns:
+            list of all user defined images
+        """
+        if self._images:
+            return self._images
+
+        parser = ImageParser()
+
+        if hasattr(self, "renderd"):
+            parser.feed(self.rendered)
+        elif self.content is not None:
+            parser.feed(self.content)
+        else:
+            return list()
+
+        if len(parser.images) == 0:
+            self._images = list()
+        else:
+            self._images = parser.images
+
+        return self._images
 
     def get_url_value(self, key):
         """

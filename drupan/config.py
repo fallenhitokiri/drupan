@@ -31,13 +31,15 @@ class Config(object):
         with open(cfg, 'r', encoding='utf-8') as infile:
             self.parse_yaml(infile.read())
 
-    def get_option(self, section, key):
+    def get_option(self, section, key, optional=False):
         """
         get a configuration option for a section of the system
 
         Arguments:
             section: plugin name e.x.
             key: option to get
+            optional: if False an exception will be raised if the key cannot
+                      be found.
 
         Returns:
             configuration option
@@ -45,13 +47,19 @@ class Config(object):
         sec = self.options.get(section, None)
 
         if not sec:
+            if optional:
+                return None
+
             message = "{0} improperly configured".format(section)
             raise Exception(message)
 
         opt = sec.get(key, None)
 
         if not opt:
-            message = "could not find {0} for {1}".format(section, key)
+            if optional:
+                return None
+
+            message = "could not find {0} for {1}".format(key, section)
             raise Exception(message)
 
         return opt
