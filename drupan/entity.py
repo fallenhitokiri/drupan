@@ -199,7 +199,7 @@ class Entity(object):
 
         parser = ImageParser()
 
-        if hasattr(self, "renderd"):
+        if hasattr(self, "rendered"):
             parser.feed(self.rendered)
         elif self.content is not None:
             parser.feed(self.content)
