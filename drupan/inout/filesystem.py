@@ -161,7 +161,7 @@ class Writer(object):
 
     def write_assets(self):
         """write assets to files"""
-        for name, content in self.site.assets.iteritems():
+        for name, content in self.site.assets.items():
             path = os.path.join(self.base_path, os.path.dirname(name))
             create_path(path)
 

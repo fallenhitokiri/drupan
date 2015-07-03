@@ -102,7 +102,7 @@ class Deploy(object):
             self.upload(path, self.site.images[name])
 
     def upload_assets(self):
-        for name, asset in self.site.assets.iteritems():
+        for name, asset in self.site.assets.items():
             self.upload(name, asset)
 
     def upload(self, path, content, invalidate=None):
@@ -176,7 +176,7 @@ class Deploy(object):
             print("No redirects - skipping.")
             return
 
-        for source, destination in self.redirects.iteritems():
+        for source, destination in self.redirects.items():
             if self.redirect_exists(source):
                 continue
 
