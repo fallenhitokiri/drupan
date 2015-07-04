@@ -5,7 +5,7 @@ A standard configuration can look like this
     reader: "filesystem"
     writer: "filesystem"
     plugins: ["markdown", "blank", "tags"]
-    deployment: "s3sub"
+    deployment: "s3cf"
     url_scheme:
         index: ""
         archive: "/archive/"
@@ -16,12 +16,11 @@ A standard configuration can look like this
         error: "/error/"
     options:
         reader:
-            directory: "/Users/timo/tmp/screamingatmyscreen/content"
+            content: "/Users/timo/tmp/screamingatmyscreen/content"
             extension: "md"
+            template: "/Users/timo/tmp/screamingatmyscreen/template"
         writer:
             directory: "/Users/timo/tmp/screamingatmyscreen/site"
-        jinja:
-            template: "/Users/timo/tmp/screamingatmyscreen/template"
         markdown:
             extras: ["tables", "code-highlight"]
         blank:
@@ -30,12 +29,11 @@ A standard configuration can look like this
                 archive: "archive"
                 feed: "feed"
                 error: "error"
-        s3sub:
+        s3cf:
             bucket: "screamingatmyscreen.com-fail"
-            profile: "sams"
-            md5path: "/Users/timo/tmp/screamingatmyscreen/md5s"
-            site_url: "http://screamingatmyscreen.com"
-            skip_upload: ["/feed/index.html"]
+            aws_access_key: "foo"
+            aws_secret_key: "bar
+            cloudfront_id: "asdf"
             redirects:
                 "/feed.xml": "/feed/"
 
@@ -57,14 +55,6 @@ This means `%year` becomes the year of the created   timestamp, `%title`
 would be the title in the meta dictionary and `%foo` an attribute that was
 added by a plugin.
 
-## template engine
-Jinja 2 is used as template engine. The options go in the ```jinja```
-section.
-
-###### Options
-
-  - ```template``` directory with the template
-
 # Readers
 A reader is the way drupan gets the raw information and content to generate
 a site.
@@ -77,10 +67,11 @@ The filesystem reader reads the content from files in a directory.
 
 ###### Options
 
-  - ```directory``` path to the content directory. Relative to the current
+  - ```content``` path to the content directory. Relative to the current
   directory or the full path
   - ```extension``` file extension the content files have. All files with
   another extension will be ignored
+  - ```template``` directory with the template
 
 # Writers
 A writers' job is to somehow save the generated site and take care of all
@@ -133,26 +124,24 @@ This plugins has no options.
 
 # Deployment
 Deployment plugins are in charge of publishing your generated site the way
-you prefer and your target server supports.
+you prefer and your target server supports. If you are planning to deploy to
+AWS S3 and CloudFront using s3cf is the recommended way to do so.
 
-## s3sub
-This plugin runs the AWS cli tools as subcommand and uploads your site to
-S3. You have to make sure the AWS cli tools are in your path and that you
-have a profile with access keys that is allowed to read and write to the
-target bucket.
-
-After the initial upload only changed files will be uploaded. To make this
-possible MD5 checksums of all files will be generated.
+## s3cf
+This plugins uses the [boto library](https://github.com/boto/boto) to deploy
+your site to S3 and it will also invalidate all changed files on CloudFront. If
+you are not planning to use CloudFront just do not add a distribution ID.
 
 ###### Options
 
-  - ```bucket``` name of the bucket to upload to
-  - ```profile``` profile in your AWS cli configuration file to use
-  - ```md5path``` Path where to store the MD5 checksums
-  - ```site_url``` URL of your site
-  - ```skip_upload``` a list with files - if only files that are listed here
-  changed when running drupan the site will not be uploaded
-  - ```redirects``` redirects to create - format: old url: new url
+  - ```bucket``` name of the S3 bucket to upload to
+  - ```aws_access_key``` AWS access key with permissions for your S3 bucket and
+  CF distribution
+  - ```aws_access_key``` AWS secret key with permissions for your S3 bucket and 
+  CF distribution
+  - ```cloudfront_id``` ID of your CloudFront distribution (optional)
+  - ```redirects``` redirects to create - format: old url: new url (uses S3 
+  redirect feature)
 
 ## gitsub
 This plugins runs git as subcommand and pushes your site to the remote called
@@ -169,26 +158,21 @@ or just the generated site directory. It is up to you to decide what you prefer.
 
   - ```path``` path to run the git commands in
 
-## s3cf
-This plugins uses the [boto library](https://github.com/boto/boto) to deploy your
-site to S3 and it will also invalidate all changed files on CloudFront. As `s3sub`
-it requires you to use `fswriter` as writer plugin, but you do not need to go
-through the hassle to setup AWS cli tools.
+## s3sub
+This plugin runs the AWS cli tools as subcommand and uploads your site to
+S3. You have to make sure the AWS cli tools are in your path and that you
+have a profile with access keys that is allowed to read and write to the
+target bucket.
 
 After the initial upload only changed files will be uploaded. To make this
 possible MD5 checksums of all files will be generated.
 
 ###### Options
 
-  - ```bucket``` name of the S3 bucket to upload to
-  - ```md5path``` path where to store the MD5 checksums
+  - ```bucket``` name of the bucket to upload to
+  - ```profile``` profile in your AWS cli configuration file to use
+  - ```md5path``` Path where to store the MD5 checksum
   - ```site_url``` URL of your site
   - ```skip_upload``` a list with files - if only files that are listed here
   changed when running drupan the site will not be uploaded
-  - ```aws_access_key``` AWS access key with permissions for your S3 bucket and CF 
-  distribution
-  - ```aws_access_key``` AWS secret key with permissions for your S3 bucket and CF 
-  distribution
-  - ```cloudfront_id``` ID of your CloudFront distribution
-  - ```redirects``` redirects to create - format: old url: new url (uses S3 redirect 
-  feature)
+  - ```redirects``` redirects to create - format: old url: new url

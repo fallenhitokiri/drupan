@@ -1,7 +1,7 @@
 # drupan - flexible static site generator
 Drupan is a flexible static site generator helping you to create blogs, single
-page applications or traditional websites. While being opionionated the plugin
-system allows you to extend it with any functionallity you desire.
+page applications or traditional websites. While being opinionated the plugin
+system allows you to extend it with any functionality you desire.
 
 ## Quickstart
 Install drupan, clone this [example site](https://github.com/fallenhitokiri/drupan-template-blog)
@@ -33,8 +33,10 @@ Supported command line switches
 
 ### Deployment
 
+- `s3cf` deploy your site to AWS S3 and optionally invalidate changed files on
+AWS CloudFront
 - `gitsub` commits the changes to git and pushes to a remote server
-- `s3sub` uploads the site to S3
+- `s3sub` uploads the site to AWS S3
 
 ### Plugins
 
