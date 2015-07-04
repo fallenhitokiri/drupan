@@ -39,10 +39,13 @@ class Deploy(object):
 
         self.bucket_name = config.get_option("s3cf", "bucket")
         self.redirects = config.get_option("s3cf", "redirects", optional=True)
-        self.skip_upload = config.get_option("s3cf", "skip_upload")
         self.aws_access_key = config.get_option("s3cf", "aws_access_key")
         self.aws_secret_key = config.get_option("s3cf", "aws_secret_key")
-        self.cloudfront_id = config.get_option("s3cf", "cloudfront_id")
+        self.cloudfront_id = config.get_option(
+            "s3cf",
+            "cloudfront_id",
+            optional=True,
+        )
         self.s3_host = None
 
         if "." in self.bucket_name:
@@ -62,8 +65,8 @@ class Deploy(object):
 
         self.upload_entities()
         self.upload_assets()
-        # self.invalidate()
-        # self.redirect()
+        self.invalidate()
+        self.redirect()
 
     def setup(self):
         """setup AWS connection"""
@@ -80,10 +83,12 @@ class Deploy(object):
                 self.aws_secret_key,
             )
         self.bucket = self.s3_connection.get_bucket(self.bucket_name)
-        self.cf_connection = boto.connect_cloudfront(
-            self.aws_access_key,
-            self.aws_secret_key,
-        )
+
+        if self.cloudfront_id:
+            self.cf_connection = boto.connect_cloudfront(
+                self.aws_access_key,
+                self.aws_secret_key,
+            )
 
     def upload_entities(self):
         """upload changed files to S3"""
@@ -163,6 +168,9 @@ class Deploy(object):
 
     def invalidate(self):
         """Invalidate changed entities"""
+        if self.cloudfront_id is None:
+            return
+
         self.cf_connection.create_invalidation_request(
             self.cloudfront_id,
             self.to_invalidate,
