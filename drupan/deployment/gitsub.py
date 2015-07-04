@@ -31,11 +31,11 @@ class Deploy(object):
         """
         Execute a command
 
-        Arugments:
+        Arguments:
             command: command to execute
         """
-        proc = subprocess.Popen(shlex.split(command), cwd=self.path)
-        proc.communicate()
+        process = subprocess.Popen(shlex.split(command), cwd=self.path)
+        process.communicate()
 
     def run(self):
         """run the deployment process"""

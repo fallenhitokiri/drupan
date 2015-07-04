@@ -93,13 +93,13 @@ class Deploy(object):
                     self.new_md5s[filepath] = md5(raw).hexdigest()
 
     def generate_redirect_md5s(self):
-        """generate MD5 checkusm for all redirects"""
+        """generate MD5 checksum for all redirects"""
         for redirect in self.redirects:
             self.new_md5s[redirect] = md5(self.redirects[redirect]).hexdigest()
 
     def load_md5(self, filename):
         """
-        load MD5 checksums from disk (json format)
+        load MD5 checksum from disk (json format)
 
         Arguments:
             filename: name of the file to load MD5 sums from
@@ -116,7 +116,7 @@ class Deploy(object):
 
     def save_md5(self, filename):
         """
-        save MD5 checksums to disk (json format)
+        save MD5 checksum to disk (json format)
 
         Arguments:
             filename: name of the file to save MD5 sums to
@@ -124,10 +124,10 @@ class Deploy(object):
         save = os.path.join(self.md5_path, filename)
         with open(save, "w", encoding="utf-8") as outfile:
             dumped = json.dumps(self.new_md5s)
-            outfile.write(unicode(dumped))
+            outfile.write(str(dumped))
 
     def compare_md5s(self):
-        """compare MD5 checksums"""
+        """compare MD5 checksum"""
         for key in self.new_md5s:
             if not key in self.old_md5s:
                 self.changed.append(key)
@@ -141,7 +141,7 @@ class Deploy(object):
         for local in self.changed:
             remote = local.replace(self.path, self.s3path)
 
-            proc = subprocess.Popen(
+            process = subprocess.Popen(
                 [
                     "aws",
                     "s3",
@@ -153,7 +153,7 @@ class Deploy(object):
                 ],
                 cwd=self.path
             )
-            proc.communicate()
+            process.communicate()
 
     @property
     def should_upload(self):
@@ -169,7 +169,7 @@ class Deploy(object):
         for changed in self.changed:
             url = changed.replace(self.path, "")
 
-            if not url in self.skip_upload:
+            if url not in self.skip_upload:
                 upload = True
 
         return upload
@@ -179,11 +179,11 @@ class Deploy(object):
         index = os.path.join(self.path, "index.html")
 
         for redirect in self.changed:
-            # lstrip to make sure joining works if redirect starts with a /
+            # strip to make sure joining works if redirect starts with a /
             source = os.path.join(self.s3path, redirect.lstrip("/"))
             destination = urljoin(self.site_url, self.redirects[redirect])
 
-            proc = subprocess.Popen(
+            process = subprocess.Popen(
                 [
                     "aws",
                     "s3",
@@ -197,4 +197,4 @@ class Deploy(object):
                 ],
                 cwd=self.path
             )
-            proc.communicate()
+            process.communicate()

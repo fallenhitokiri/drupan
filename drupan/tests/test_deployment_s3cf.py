@@ -3,8 +3,11 @@ import unittest
 
 from drupan.site import Site
 from drupan.config import Config
-from drupan.deployment.s3cf import Deploy
-from drupan.entity import Entity
+from drupan.deployment.s3cf import (
+    Deploy,
+    S3HostMissingException,
+    guess_mime_type,
+)
 
 
 class TestS3cf(unittest.TestCase):
@@ -27,11 +30,28 @@ class TestS3cf(unittest.TestCase):
         }
         self.config.from_dict(cfg)
 
-    # def test_set_invalid(self):
-    #     """should set two urls"""
-    #     s3cf = Deploy(self.site, self.config)
-    #     entity = Entity(self.config)
-    #     entity._url = "/foo/bar/"
-    #     s3cf.set_invalid(entity)
-    #     self.assertEqual(len(s3cf.to_invalidate), 1)
-    #     self.assertEqual(s3cf.to_invalidate[0], "/foo/bar/*")
+    def test_init_missing_bucket(self):
+        """
+        should raise an exception if there is a dot in the bucket name and not
+        s3_host specified
+        """
+        self.config.options["s3cf"]["bucket"] = "foo.bar"
+
+        self.assertRaises(
+            S3HostMissingException,
+            Deploy,
+            self.site,
+            self.config,
+        )
+
+        self.config.options["s3cf"]["s3_host"] = "foo"
+
+        Deploy(self.site, self.config)
+
+    def test_guess_mime_type(self):
+        """should guess the correct mime type"""
+        self.assertEqual(guess_mime_type("foo"), "binary/octet-stream")
+        self.assertEqual(guess_mime_type("foo.jpg"), "image/jpeg")
+        self.assertEqual(guess_mime_type("foo.png"), "image/png")
+        self.assertEqual(guess_mime_type("foo.html"), "text/html")
+        self.assertEqual(guess_mime_type("foo.css"), "text/css")
