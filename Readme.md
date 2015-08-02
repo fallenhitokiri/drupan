@@ -8,8 +8,8 @@ Install drupan, clone this [example site](https://github.com/fallenhitokiri/drup
 repository and run `drupan config.yaml --serve` in the cloned directory.
 
 ## Noteworthy Features
-- deployment using git or directly to S3
-- fast generation time
+- deployment your site using git or directly to AWS S3 and AWS CloudFront
+- fast page generation
 - Jinja2 with custom template tags and filters
 - powerful plugin system
 
@@ -34,9 +34,9 @@ Supported command line switches
 ### Deployment
 
 - `s3cf` deploy your site to AWS S3 and optionally invalidate changed files on
-AWS CloudFront
+AWS CloudFront using boto
 - `gitsub` commits the changes to git and pushes to a remote server
-- `s3sub` uploads the site to AWS S3
+- `s3sub` uploads your site to AWS S3 using the AWS CLI package 
 
 ### Plugins
 

@@ -26,3 +26,11 @@ class TestBlank(unittest.TestCase):
         plugin.run()
 
         self.assertEqual(len(self.site.entities), 2)
+
+    def test_init_list(self):
+        """should convert the list to a dictionary"""
+        self.config.options["blank"]["generate"] = ["foo", "bar"]
+        plugin = Plugin(self.site, self.config)
+
+        self.assertEqual(plugin.generate["foo"], "foo")
+        self.assertEqual(plugin.generate["bar"], "bar")

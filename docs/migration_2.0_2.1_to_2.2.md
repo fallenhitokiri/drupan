@@ -11,7 +11,7 @@ template files and assets. To make this possible two configuration options
 changed.
 
   - `directory` renamed to `content`
-  - new option: `template` replaces `jiyaj/template` (path to your template
+  - new option: `template` replaces `jinja/template` (path to your template
   directory)
 
 ## s3cf
@@ -31,3 +31,12 @@ optional - if you do not want to use the feature just remove the key.
 
   - `redirects`
   - `cloudfront_id`
+
+Additionally you can now define redirects as a top level configuration option.
+This is just a logical move of the key since the redirects should not be tied
+to a certain deployment option.
+
+## Plugin: Blank
+The configuration option `generate` now expects a list instead of a dictionary.
+This means the title and layout of the generated entities will be the same. For
+compatibility reasons the old behavior is still supported.

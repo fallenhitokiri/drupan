@@ -55,3 +55,13 @@ class TestS3cf(unittest.TestCase):
         self.assertEqual(guess_mime_type("foo.png"), "image/png")
         self.assertEqual(guess_mime_type("foo.html"), "text/html")
         self.assertEqual(guess_mime_type("foo.css"), "text/css")
+
+    def test_redirects(self):
+        """should always get the correct redirects"""
+        deploy = Deploy(self.site, self.config)
+        self.assertEqual(deploy.redirects, "asdf")
+
+        self.config.redirects = "1234"
+        self.config.options["s3cf"]["redirects"] = None
+        deploy = Deploy(self.site, self.config)
+        self.assertEqual(deploy.redirects, "1234")

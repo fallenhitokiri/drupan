@@ -54,6 +54,12 @@ class TestConfig(unittest.TestCase):
         """should raise an exception"""
         self.assertRaises(Exception, self.config.get_option)
 
+    def test_get_option_redirects(self):
+        """should return a dictionary for a root element"""
+        self.config.redirects = {"foo": "bar"}
+        redirects = self.config.get_option(None, "redirects")
+        self.assertEqual(type(redirects), dict)
+
 
 if __name__ == "__main__":
     unittest.main()

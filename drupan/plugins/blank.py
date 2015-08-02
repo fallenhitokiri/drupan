@@ -22,6 +22,16 @@ class Plugin(object):
 
         self.generate = config.get_option("blank", "generate")
 
+        # 2.0 compatibility - 2.2 moved to a list where title and layout are
+        # the same.
+        if type(self.generate) == list:
+            generate_dict = {}
+
+            for item in self.generate:
+                generate_dict[item] = item
+
+            self.generate = generate_dict
+
     def run(self):
         """run the plugin"""
         for name in self.generate:

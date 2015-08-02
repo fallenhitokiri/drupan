@@ -20,6 +20,7 @@ class Config(object):
         self.plugins = None
         self.options = None
         self.deployment = None
+        self.redirects = None
 
     def from_file(self, cfg):
         """
@@ -44,6 +45,10 @@ class Config(object):
         Returns:
             configuration option
         """
+        # compatibility for 2.0 configuration
+        if key == "redirects" and section is None:
+            return self.redirects
+
         sec = self.options.get(section, None)
 
         if not sec:
@@ -87,3 +92,4 @@ class Config(object):
         self.plugins = cfg.get("plugins", None)
         self.options = cfg.get("options", None)
         self.deployment = cfg.get("deployment", None)
+        self.redirects = cfg.get("redirects", None)

@@ -38,7 +38,6 @@ class Deploy(object):
         self.config = config
 
         self.bucket_name = config.get_option("s3cf", "bucket")
-        self.redirects = config.get_option("s3cf", "redirects", optional=True)
         self.aws_access_key = config.get_option("s3cf", "aws_access_key")
         self.aws_secret_key = config.get_option("s3cf", "aws_secret_key")
         self.cloudfront_id = config.get_option(
@@ -58,6 +57,11 @@ class Deploy(object):
         self.bucket = None
         self.cf_connection = None
         self.to_invalidate = list()
+
+        self.redirects = config.get_option("s3cf", "redirects", optional=True)
+
+        if self.redirects is None:
+            self.redirects = config.get_option(None, "redirects")
 
     def run(self):
         """run the deployment process"""
