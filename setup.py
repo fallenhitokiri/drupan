@@ -5,56 +5,72 @@ from distutils.core import setup
 from drupan.version import __version__
 
 
-LONGDESC = """======
+LONGDESC = """
 drupan - flexible static site generator
-======
+---------------------------------------
+
 Drupan is a flexible static site generator helping you to create blogs, single
-page applications or traditional websites. While being opionionated the plugin
-system allows you to extend it with any functionallity you desire.
+page applications or traditional websites. While being opinionated the plugin
+system allows you to extend it with any functionality you desire.
+
+Quickstart
+``````````
+
+Install drupan, clone the example site (see links section)
+repository and run `drupan config.yaml --serve` in the cloned directory.
 
 Noteworthy Features
-======
-  - deployment using git or directly to S3
-  - fast generation time
-  - Jinja2 with custom template tags and filters
-  - powerful plugin system
+```````````````````
+
+* deployment your site using git or directly to AWS S3 and AWS CloudFront
+* fast page generation
+* Jinja2 with custom template tags and filters
+* powerful plugin system
 
 Usage
-======
+`````
+
 You can install drupan via pip. To generate your site you just run
 `drupan ~path/to/config.yaml`.
 
 Supported command line switches
 
-  - `nodeploy` do not deploy the generated site
-  - `serve` runs a development server on port 9000
-  - `init` creates a new site
-  - `deploy` deploy your output directory without generation
+* `nodeploy` do not deploy the generated site
+* `serve` runs a development server on port 9000
+* `deploy` deploy your output directory without generation
 
 Readers
-======
+```````
 
-  - `filesystem` reads content from files with a YAML header
+* `filesystem` reads content from files with a YAML header
 
 Writers
-======
+```````
 
-  - `filesystem` writes the generated site to a directory
+* `filesystem` writes the generated site to a directory
 
 Deployment
-======
+``````````
 
-  - `gitsub` commits the changes to git and pushes to a remote server
-  - `s3sub` uploads the site to S3
-  - `s3cf` upload directly to S3 and invalidate CouldFront using boto
+* `s3cf` deploy your site to AWS S3 and optionally invalidate changed files on
+AWS CloudFront using boto
+* `gitsub` commits the changes to git and pushes to a remote server
+* `s3sub` uploads your site to AWS S3 using the AWS CLI package
 
 Plugins
-======
+```````
 
-  - `blank` generates empty Entity instances with a given layout. This
-  can be used to generate index or archive pages
-  - `markdown` converts entity content from markdown to HTML
-  - `tags` support for tags which are added to a posts meta information
+* `blank` generates empty Entity instances with a given layout. This can be
+used to generate index or archive pages
+* `markdown` converts entity content from markdown to HTML
+* `tags` support for tags which are added to a posts meta information
+
+Links
+`````
+
+* `development version <https://github.com/fallenhitokiri/drupan/>`_
+* `example site <https://github.com/fallenhitokiri/drupan-template-blog/>`_
+
 """
 
 
