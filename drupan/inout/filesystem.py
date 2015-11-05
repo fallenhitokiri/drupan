@@ -231,8 +231,7 @@ def create_path(path):
     """
     Create all directories needed to write an entity.
 
-    Arguments:
-        entity: entity to write (drupan.entity.Entity)
+    :param path: path to create
     """
     if path == "":
         return

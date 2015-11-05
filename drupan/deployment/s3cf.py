@@ -106,7 +106,10 @@ class Deploy(object):
             self.upload_images(entity)
 
     def upload_images(self, entity):
-        """upload all images for this entity"""
+        """upload all images for this entity
+
+        :param entity: entity to upload images for
+        """
         for name in entity.images:
             path = entity.path + "/" + name
             self.upload(path, self.site.images[name])
