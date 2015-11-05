@@ -15,14 +15,14 @@ changed.
   directory)
 
 ## s3cf
-The s3cf was improved. It is not required anymore to write md5 files to a file
+It is not required anymore to write md5 files to a file
 to keep track of changed files between two uploads. This allows drupan to work
 without writing the files locally, so the fsreader and s3cf would be sufficient
 to deploy a site to S3 and CloudFront (no fswrite is required)
 
 For this reason the following configuration options were removed
 
-  - `md5path removed`
+  - `md5path`
   - `skip_upload`
   - `site_url`
  
