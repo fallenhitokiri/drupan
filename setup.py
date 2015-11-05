@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from distutils.core import setup
-
-from drupan.version import __version__
-
-
-LONGDESC = """
+"""
 drupan - flexible static site generator
 ---------------------------------------
 
@@ -52,16 +45,14 @@ Writers
 Deployment
 ``````````
 
-* `s3cf` deploy your site to AWS S3 and optionally invalidate changed files on
-AWS CloudFront using boto
+* `s3cf` deploy your site to AWS S3 and optionally invalidate changed files on AWS CloudFront using both
 * `gitsub` commits the changes to git and pushes to a remote server
 * `s3sub` uploads your site to AWS S3 using the AWS CLI package
 
 Plugins
 ```````
 
-* `blank` generates empty Entity instances with a given layout. This can be
-used to generate index or archive pages
+* `blank` generates empty Entity instances with a given layout. This can be used to generate index or archive pages
 * `markdown` converts entity content from markdown to HTML
 * `tags` support for tags which are added to a posts meta information
 
@@ -72,6 +63,10 @@ Links
 * `example site <https://github.com/fallenhitokiri/drupan-template-blog/>`_
 
 """
+from distutils.core import setup
+
+from drupan.version import __version__
+
 
 
 setup(
@@ -89,7 +84,7 @@ setup(
     license="BSD",
     description="Drupan is a flexible static site generator helping you \
     to create blogs, single page applications or traditional websites.",
-    long_description=LONGDESC,
+    long_description=__doc__,
     install_requires=[
         "pyyaml",
         "markdown2",
@@ -113,8 +108,8 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX :: BSD :: FreeBSD",
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.4",
         "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
