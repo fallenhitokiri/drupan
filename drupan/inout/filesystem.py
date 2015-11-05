@@ -85,6 +85,8 @@ class Reader(object):
 
     def read_template(self):
         """read template files and populate template dict"""
+        template_extensions = (".html", ".htm", ".xml", ".txt")
+
         for file_names, dir_name in dir_walker(self.template):
             for name in file_names:
                 if name.startswith("."):
@@ -93,7 +95,7 @@ class Reader(object):
                 store = self.site.templates
                 mode = "r"
 
-                if not name.startswith("_"):
+                if not name.endswith(template_extensions):
                     store = self.site.assets
                     mode = "rb"
 
