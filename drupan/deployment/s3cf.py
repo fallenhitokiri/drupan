@@ -69,6 +69,7 @@ class Deploy(object):
 
         self.upload_entities()
         self.upload_assets()
+        self.upload_templates()
         self.invalidate()
         self.redirect()
 
@@ -111,8 +112,17 @@ class Deploy(object):
             self.upload(path, self.site.images[name])
 
     def upload_assets(self):
+        """upload assets stored in template directory"""
         for name, asset in self.site.assets.items():
             self.upload(name, asset)
+
+    def upload_templates(self):
+        """upload template files which are not prefixed with _"""
+        for name, content in self.site.templates.items():
+            if name.startswith("_"):
+                continue
+
+            self.upload(name, content, name)
 
     def upload(self, path, content, invalidate=None):
         """

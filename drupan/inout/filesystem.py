@@ -146,6 +146,7 @@ class Writer(object):
         self.clean_dir()
         self.write_entities()
         self.write_assets()
+        self.write_templates()
 
     def write_entities(self):
         """write entities to files"""
@@ -169,6 +170,18 @@ class Writer(object):
 
             path = os.path.join(self.base_path, name)
             write(content, path, binary=True)
+
+    def write_templates(self):
+        """write template files which are not prefixed with _"""
+        for name, content in self.site.templates.items():
+            if name.startswith("_"):
+                continue
+
+            path = os.path.join(self.base_path, os.path.dirname(name))
+            create_path(path)
+
+            path = os.path.join(self.base_path, name)
+            write(content, path)
 
     def write_images(self, entity):
         """
