@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from mock import patch
+
 from drupan.site import Site
 from drupan.config import Config
 from drupan.deployment.s3cf import (
@@ -65,3 +67,13 @@ class TestS3cf(unittest.TestCase):
         self.config.options["s3cf"]["redirects"] = None
         deploy = Deploy(self.site, self.config)
         self.assertEqual(deploy.redirects, "1234")
+
+    @patch("drupan.deployment.s3cf.Deploy.upload")
+    def test_upload_assets(self, mock):
+        """should only add one asset to the upload dictionary"""
+        deploy = Deploy(self.site, self.config)
+        deploy.site.assets["foo"] = "foo"
+        deploy.site.assets["_bar"] = "bar"
+        deploy.upload_assets()
+
+        mock.assert_called_once_with("foo", "foo")
