@@ -216,13 +216,11 @@ class Deploy(object):
         """
         Check if a redirect exists.
 
-        Arguments:
-            redirect: redirect URL to check
+        :param redirect: redirect URL to check
 
-        Returns:
-            True if the redirect already exists
+        :returns: True if the redirect already exists
         """
-        if not self.bucket.get_key(redirect):
+        if self.bucket.get_key(redirect):
             return True
         return False
 

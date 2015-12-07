@@ -65,3 +65,15 @@ class TestS3cf(unittest.TestCase):
         self.config.options["s3cf"]["redirects"] = None
         deploy = Deploy(self.site, self.config)
         self.assertEqual(deploy.redirects, "1234")
+
+    def test_redirect_exists(self):
+        """should return True if a redirect exists, False if not"""
+        class BucketMock(object):
+            @classmethod
+            def get_key(cls, redirect):
+                return redirect
+
+        deploy = Deploy(self.site, self.config)
+        deploy.bucket = BucketMock()
+        self.assertTrue(deploy.redirect_exists(True))
+        self.assertFalse(deploy.redirect_exists(False))
