@@ -10,8 +10,12 @@ class ImageParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
         self.images = []
+        self.exclude = ("/", "//", "https://", "http://", "ftp://")
 
     def handle_starttag(self, tag, attrs):
         """if image tag is found add it to self.images"""
         if tag == 'img':
-            self.images.append((dict(attrs)['src']))
+            img = dict(attrs)['src']
+
+            if not img.startswith(self.exclude):
+                self.images.append(img)
