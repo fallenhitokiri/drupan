@@ -22,7 +22,7 @@ class PluginTests(unittest.TestCase):
         }
         blank = BlankPlugin(engine.site, engine.config)
 
-        engine._prepare_plugins()
+        engine.prepare_engine()
         self.assertEqual(len(engine.plugins), 1)
         self.assertEqual(engine.plugins[0].__class__, blank.__class__)
 
@@ -37,7 +37,7 @@ class PluginTests(unittest.TestCase):
         )
         sys.path.append(module_path)
 
-        engine._prepare_plugins()
+        engine.prepare_engine()
         self.assertEqual(len(engine.plugins), 1)
         self.assertFalse(engine.plugins[0].ran)
         self.assertEqual(engine.plugins[0].name, "TestPlugin")

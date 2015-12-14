@@ -25,43 +25,44 @@ class Engine(object):
 
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
-        self.reader = __import__(
-            "drupan.inout.{0}".format(self.config.reader),
-            fromlist=["Reader"]
-        ).Reader(self.site, self.config)
+        if self.config.reader:
+            imported = self._load_module(self.config.reader, "inout", "Reader")
+            self.reader = imported.Reader(self.site, self.config)
 
-        self.writer = __import__(
-            "drupan.inout.{0}".format(self.config.writer),
-            fromlist=["Writer"]
-        ).Writer(self.site, self.config)
+        if self.config.writer:
+            imported = self._load_module(self.config.writer, "inout", "Writer")
+            self.writer= imported.Writer(self.site, self.config)
 
-        self._prepare_plugins()
+        for name in self.config.plugins:
+            imported = self._load_module(name, "plugins", "Plugin")
+            plugin = imported.Plugin(self.site, self.config)
+            self.plugins.append(plugin)
 
         self.renderer = Render(self.site, self.config)
 
         if self.config.deployment:
-            self.deployment = __import__(
-                "drupan.deployment.{0}".format(self.config.deployment),
-                fromlist=["Deploy"]
-            ).Deploy(self.site, self.config)
+            imported = self._load_module(
+                self.config.deployment,
+                "deployment",
+                "Deploy",
+            )
+            self.deployment = imported.Deploy(self.site, self.config)
 
-    def _prepare_plugins(self):
-        """Create an instance of all plugins and add them to self.plugins.
+    @staticmethod
+    def _load_module(name, base_name, kind):
+        """Load a drupan module and return it.
 
-        First try to import the plugin from python path with the package name
-        `drupan$name`. If the import fails try to import the plugin from drupan
-        standard plugin module.
+        :param name: name of the module to load
+        :param base_name: base path for drupan standard module
+        :param kind: class to import
+        :returns: imported class from `name`
         """
-        for name in self.config.plugins:
-            try:
-                plugin_name = "drupan{0}".format(name)
-                imported = __import__(plugin_name, fromlist=["Plugin"])
-            except ImportError:
-                plugin_name = "drupan.plugins.{0}".format(name)
-                imported = __import__(plugin_name, fromlist=["Plugin"])
-
-            plugin = imported.Plugin(self.site, self.config)
-            self.plugins.append(plugin)
+        try:
+            plugin_name = "drupan{0}".format(name)
+            return __import__(plugin_name, fromlist=[kind])
+        except ImportError:
+            plugin_name = "drupan.{0}.{1}".format(base_name, name)
+            return __import__(plugin_name, fromlist=[kind])
 
     def run(self):
         """run the site generation process"""
