@@ -31,7 +31,7 @@ class Engine(object):
 
         if self.config.writer:
             imported = self._load_module(self.config.writer, "inout", "Writer")
-            self.writer= imported.Writer(self.site, self.config)
+            self.writer = imported.Writer(self.site, self.config)
 
         for name in self.config.plugins:
             imported = self._load_module(name, "plugins", "Plugin")
