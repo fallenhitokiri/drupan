@@ -117,6 +117,9 @@ class Deploy(object):
     def upload_assets(self):
         """upload assets stored in template directory"""
         for name, asset in self.site.assets.items():
+            if name.startswith("_"):
+                continue
+
             self.upload(name, asset)
 
     def upload_templates(self):
