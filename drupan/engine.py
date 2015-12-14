@@ -35,12 +35,7 @@ class Engine(object):
             fromlist=["Writer"]
         ).Writer(self.site, self.config)
 
-        for name in self.config.plugins:
-            plugin = __import__(
-                "drupan.plugins.{0}".format(name),
-                fromlist=["Plugin"]
-            ).Plugin(self.site, self.config)
-            self.plugins.append(plugin)
+        self._prepare_plugins()
 
         self.renderer = Render(self.site, self.config)
 
@@ -49,6 +44,24 @@ class Engine(object):
                 "drupan.deployment.{0}".format(self.config.deployment),
                 fromlist=["Deploy"]
             ).Deploy(self.site, self.config)
+
+    def _prepare_plugins(self):
+        """Create an instance of all plugins and add them to self.plugins.
+
+        First try to import the plugin from python path with the package name
+        `drupan$name`. If the import fails try to import the plugin from drupans
+        standard plugin package.
+        """
+        for name in self.config.plugins:
+            try:
+                plugin_name = "drupan{0}".format(name)
+                imported = __import__(plugin_name, fromlist=["Plugin"])
+            except ImportError:
+                plugin_name = "drupan.plugins.{0}".format(name)
+                imported = __import__(plugin_name, fromlist=["Plugin"])
+
+            plugin = imported.Plugin(self.site, self.config)
+            self.plugins.append(plugin)
 
     def run(self):
         """run the site generation process"""
