@@ -49,8 +49,8 @@ class Engine(object):
         """Create an instance of all plugins and add them to self.plugins.
 
         First try to import the plugin from python path with the package name
-        `drupan$name`. If the import fails try to import the plugin from drupans
-        standard plugin package.
+        `drupan$name`. If the import fails try to import the plugin from drupan
+        standard plugin module.
         """
         for name in self.config.plugins:
             try:
