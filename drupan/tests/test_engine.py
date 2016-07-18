@@ -7,6 +7,14 @@ from drupan.engine import Engine
 from drupan.plugins.blank import Plugin as BlankPlugin
 
 
+class MockPlugin(object):
+    def __init__(self):
+        self.ran = False
+
+    def run(self):
+        self.ran = True
+
+
 class PluginTests(unittest.TestCase):
     def test_import_base_plugin(self):
         """import blank plugin"""
@@ -55,3 +63,62 @@ class PluginTests(unittest.TestCase):
         self.assertEqual(len(engine.plugins), 1)
         self.assertFalse(engine.plugins[0].ran)
         self.assertEqual(engine.plugins[0].name, "TestPlugin")
+
+    def add_external_plugins_invalid_path(self):
+        """raise an exception if the path does not exist"""
+        engine = Engine()
+        engine.config.external_plugins = "fj30e32f"
+        self.assertRaises(Exception, engine.prepare_engine)
+
+    def test_prepare_engine(self):
+        """should load all plugins"""
+        engine = Engine()
+        engine.config.reader = "filesystem"
+        engine.config.writer = "filesystem"
+        engine.config.deployment = "gitsub"
+        engine.config.options = {
+            "reader": {
+                "content": "foo",
+                "extension": "md",
+                "template": "foo",
+            },
+            "writer": {
+                "directory": "foo",
+            },
+            "gitsub": {
+                "path": "foo",
+            },
+        }
+        engine.prepare_engine()
+
+        self.assertIsNotNone(engine.reader)
+        self.assertIsNotNone(engine.writer)
+        self.assertIsNotNone(engine.deployment)
+
+    def test_run(self):
+        """should run all plugins"""
+        reader = MockPlugin()
+        writer = MockPlugin()
+        plugin = MockPlugin()
+        renderer = MockPlugin()
+
+        engine = Engine()
+        engine.reader = reader
+        engine.writer = writer
+        engine.plugins.append(plugin)
+        engine.renderer = renderer
+        engine.run()
+
+        self.assertTrue(reader.ran)
+        self.assertTrue(writer.ran)
+        self.assertTrue(plugin.ran)
+        self.assertTrue(renderer.ran)
+
+    def test_deploy_no_plugin(self):
+        """if no plugin is set do not raise an exception, otherwise run it"""
+        engine = Engine()
+        engine.deploy()
+        plugin = MockPlugin()
+        engine.deployment = plugin
+        engine.deploy()
+        self.assertTrue(plugin.ran)

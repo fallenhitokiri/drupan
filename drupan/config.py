@@ -17,7 +17,7 @@ class Config(object):
         self.reader = None
         self.writer = None
         self.url_scheme = dict()
-        self.plugins = None
+        self.plugins = list()
         self.options = None
         self.deployment = None
         self.redirects = None
