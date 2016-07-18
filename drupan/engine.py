@@ -6,6 +6,9 @@
     together and runs the actual site creation process.
 """
 
+import os
+import sys
+
 from .site import Site
 from .config import Config
 from .template import Render
@@ -25,6 +28,8 @@ class Engine(object):
 
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
+        self.add_external_plugins()
+
         if self.config.reader:
             imported = self._load_module(self.config.reader, "inout", "Reader")
             self.reader = imported.Reader(self.site, self.config)
@@ -50,7 +55,12 @@ class Engine(object):
 
     @staticmethod
     def _load_module(name, base_name, kind):
-        """Load a drupan module and return it.
+        """Load a drupan module and return it. First try to load a module from
+        path with the format `drupan-$pluginName` before trying to import a
+        plugin from the drupan distribution.
+
+        If both imports fail let drupan run into an ImportError exception since
+        something is clearly broken.
 
         :param name: name of the module to load
         :param base_name: base path for drupan standard module
@@ -58,11 +68,23 @@ class Engine(object):
         :returns: imported class from `name`
         """
         try:
-            plugin_name = "drupan{0}".format(name)
+            plugin_name = "drupan-{0}".format(name)
             return __import__(plugin_name, fromlist=[kind])
         except ImportError:
             plugin_name = "drupan.{0}.{1}".format(base_name, name)
             return __import__(plugin_name, fromlist=[kind])
+
+    def add_external_plugins(self):
+        """Add external plugin path to Python path."""
+        if not self.config.external_plugins:
+            return
+
+        plugin_path = self.config.external_plugins
+
+        if not os.path.exists(plugin_path):
+            raise Exception("External plugin path does not exist.")
+
+        sys.path.append(plugin_path)
 
     def run(self):
         """run the site generation process"""

@@ -41,3 +41,17 @@ class PluginTests(unittest.TestCase):
         self.assertEqual(len(engine.plugins), 1)
         self.assertFalse(engine.plugins[0].ran)
         self.assertEqual(engine.plugins[0].name, "TestPlugin")
+
+    def test_external_plugin_path(self):
+        """add external_plugins path to Python path so the module imports"""
+        engine = Engine()
+        engine.config.plugins = ["foo"]
+        engine.config.external_plugins = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "module",
+        )
+        engine.prepare_engine()
+
+        self.assertEqual(len(engine.plugins), 1)
+        self.assertFalse(engine.plugins[0].ran)
+        self.assertEqual(engine.plugins[0].name, "TestPlugin")
