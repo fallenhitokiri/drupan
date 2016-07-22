@@ -109,8 +109,11 @@ class Reader(object):
                 fqp = os.path.join(dir_name, name)
                 key = os.path.join(stripped, name)
 
-                with open(fqp, mode) as infile:
-                    store[key] = infile.read()
+                if name.endswith(template_extensions):
+                    with open(fqp, mode) as infile:
+                        store[key] = infile.read()
+                else:
+                    store[key] = open(fqp, mode)
 
     def read_images(self):
         """read images and populate images dict"""
@@ -121,8 +124,8 @@ class Reader(object):
                 if name.startswith("."):
                     continue
 
-                with open(os.path.join(dir_name, name), "rb") as infile:
-                    self.site.images[name] = infile.read()
+                fqp = os.path.join(dir_name, name)
+                self.site.images[name] = open(fqp, "rb")
 
 
 class Writer(object):
@@ -169,7 +172,7 @@ class Writer(object):
             create_path(path)
 
             path = os.path.join(self.base_path, name)
-            write(content, path, binary=True)
+            write(content.read(), path, binary=True)
 
     def write_templates(self):
         """write template files which are not prefixed with _"""
@@ -195,7 +198,7 @@ class Writer(object):
         for name in entity.images:
             image = self.site.images[name]
             output = os.path.join(path, name)
-            write(image, output, binary=True)
+            write(image.read(), output, binary=True)
 
     def clean_dir(self):
         """clean the output directory"""
