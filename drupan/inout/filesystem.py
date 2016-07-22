@@ -15,6 +15,7 @@ import re
 import yaml
 
 from drupan.entity import Entity
+from drupan.file_wrapper import FileWrapper
 
 
 class Reader(object):
@@ -113,7 +114,7 @@ class Reader(object):
                     with open(fqp, mode) as infile:
                         store[key] = infile.read()
                 else:
-                    store[key] = open(fqp, mode)
+                    store[key] = FileSystemFileWrapper(fqp)
 
     def read_images(self):
         """read images and populate images dict"""
@@ -125,7 +126,7 @@ class Reader(object):
                     continue
 
                 fqp = os.path.join(dir_name, name)
-                self.site.images[name] = open(fqp, "rb")
+                self.site.images[name] = FileSystemFileWrapper(fqp)
 
 
 class Writer(object):
@@ -172,7 +173,7 @@ class Writer(object):
             create_path(path)
 
             path = os.path.join(self.base_path, name)
-            write(content.read(), path, binary=True)
+            write(content, path)
 
     def write_templates(self):
         """write template files which are not prefixed with _"""
@@ -198,7 +199,7 @@ class Writer(object):
         for name in entity.images:
             image = self.site.images[name]
             output = os.path.join(path, name)
-            write(image.read(), output, binary=True)
+            write(image, output)
 
     def clean_dir(self):
         """clean the output directory"""
@@ -206,6 +207,20 @@ class Writer(object):
             shutil.rmtree(self.base_path)
         except:
             pass
+
+
+class FileSystemFileWrapper(FileWrapper):
+    def __init__(self, fqp):
+        """Wrap a local file. Store its file object in an instance variable.
+
+        :param fqp: full path to file.
+        """
+        self._file_object = open(fqp, "rb")
+
+    def read(self):
+        """:returns: content of the file"""
+        self._file_object.seek(0)
+        return self._file_object.read()
 
 
 def dir_walker(path):
@@ -251,18 +266,17 @@ def create_path(path):
             raise
 
 
-def write(content, path, binary=False):
+def write(content, path):
     """
     Write an entity to disk
 
     Arguments:
         content: content to write
         path: path to write to
-        binary: write in binary format
     """
-    if binary:
+    if isinstance(content, FileWrapper):
         with open(path, "wb") as output:
-            output.write(content)
+            output.write(content.read())
     else:
         with open(path, "w", encoding="utf-8") as output:
             output.write(content)
