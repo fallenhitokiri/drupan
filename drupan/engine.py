@@ -12,7 +12,7 @@ import sys
 from .site import Site
 from .config import Config
 from .template import Render
-from .serve import http
+from .serve import server
 
 
 class Engine(object):
@@ -96,7 +96,7 @@ class Engine(object):
 
     def serve(self):
         """serve the generated site"""
-        http(self.config.get_option("writer", "directory"))
+        server(self.config.get_option("writer", "directory"))
 
     def deploy(self):
         """deploy the generated site"""

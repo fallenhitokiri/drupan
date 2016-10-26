@@ -6,15 +6,17 @@
     Serve a generated site locally.
 """
 
-try:
-    import SimpleHTTPServer
-    import SocketServer
-except ImportError:
-    from http.server import HTTPServer, SimpleHTTPRequestHandler
 import os
 
+try:
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
+    from SocketServer import TCPServer
+except ImportError:
+    from http.server import SimpleHTTPRequestHandler
+    from socketserver import TCPServer
 
-def http(directory, port=9000):
+
+def server(directory, port=9000):
     """
     Serve a directory over http.
 
@@ -25,8 +27,7 @@ def http(directory, port=9000):
     cwd = os.getcwd()
     os.chdir(directory)
 
-    handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-    httpd = SocketServer.TCPServer(("", port), handler)
+    httpd = TCPServer(("", port), SimpleHTTPRequestHandler)
 
     try:
         print("server running on http://localhost:{0}".format(port))
