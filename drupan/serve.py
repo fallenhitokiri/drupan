@@ -14,16 +14,16 @@ except ImportError:
 import os
 
 
-def http(dir, port=9000):
+def http(directory, port=9000):
     """
     Serve a directory over http.
 
     Arguments:
-        dir: directory of the generated site
+        directory: directory of the generated site
         port: port to run the httpd on
     """
     cwd = os.getcwd()
-    os.chdir(dir)
+    os.chdir(directory)
 
     handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer(("", port), handler)

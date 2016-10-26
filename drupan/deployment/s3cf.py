@@ -144,7 +144,6 @@ class Deploy(object):
                            be added to the end to make sure we invalidate the
                            URL path with a trailing slash and the html itself.
                            If None the path will be used.
-        :param isFile: indicates if the contentn is a FileObject.
         """
         changed = self.file_changed(path, content)
 
