@@ -205,7 +205,7 @@ class Writer(object):
         """clean the output directory"""
         try:
             shutil.rmtree(self.base_path)
-        except:
+        except OSError:
             pass
 
 
