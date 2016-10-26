@@ -27,11 +27,11 @@ class Plugin(object):
             if entity.raw:
                 self.convert(entity)
 
-    def convert(self, entitiy):
+    def convert(self, entity):
         """
         convert entity.raw to markdown and save it to entity.content
 
         Arguments:
             entity: instance of drupan.entity.Entity
         """
-        entitiy.content = markdown(entitiy.raw, extras=self.extras)
+        entity.content = markdown(entity.raw, extras=self.extras)
