@@ -6,12 +6,12 @@
 """
 
 from jinja2 import DictLoader, Environment
+import htmlmin
 
 
 def filter_more(content):
-    """
-    if there is a more tag return everything above else return the content
-    string
+    """If there is a more tag return everything above else return the content
+    string.
     """
     (first, more, second) = content.partition("<!--MORE-->")
 
@@ -22,9 +22,8 @@ def filter_more(content):
 
 
 def filter_filter(site, key, value):
-    """
-    returns one or more entities for a specific key / value combination. Uses
-    Site.get()
+    """:returns: one or more entities for a specific key / value combination.
+    Uses Site.get()
     """
     filtered = site.get(key, value)
 
@@ -35,8 +34,8 @@ def filter_filter(site, key, value):
 
 
 def filter_get(site, key, value):
-    """
-    returns one entity for a specific key / value combination. Uses Site.get()
+    """:returns: one entity for a specific key / value combination. Uses
+    Site.get()
     """
     filtered = site.get(key, value)
 
@@ -52,9 +51,8 @@ class Render(object):
     """render site using Jinja"""
     def __init__(self, site, config):
         """
-        Arguments:
-            site: instance of drupan.site.Site
-            config: instance of drupan.config.Config
+        :param site: instance of drupan.site.Site
+        :param config: instance of drupan.config.Config
         """
         self.site = site
         self.config = config
@@ -76,8 +74,20 @@ class Render(object):
 
             name = "_{0}.html".format(page.layout)
             template = env.get_template(name)
-            page.rendered = template.render(
+            rendered = template.render(
                 obj=page,
                 site=self.site,
                 config=self.config
             )
+            page.rendered = self.minify(rendered)
+
+    def minify(self, rendered):
+        """minify HTML using htmlmin. This does not minify any inlined JS or
+        CSS. HTML is not minified if config.minify is False.
+
+        :param rendered: rendered HTML string
+        :returns: minified or original HTML string
+        """
+        if self.config.minify:
+            return str(htmlmin.minify(unicode(rendered)))
+        return rendered

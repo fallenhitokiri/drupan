@@ -22,6 +22,7 @@ class Config(object):
         self.deployment = None
         self.redirects = None
         self.external_plugins = None
+        self.minify = True
 
     def from_file(self, cfg):
         """
@@ -95,3 +96,4 @@ class Config(object):
         self.deployment = cfg.get("deployment", None)
         self.redirects = cfg.get("redirects", None)
         self.external_plugins = cfg.get("external_plugins", None)
+        self.minify = cfg.get("minify", True)

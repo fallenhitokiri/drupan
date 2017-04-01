@@ -33,3 +33,22 @@ class TestRender(unittest.TestCase):
         """should raise TemplateNotFound exception"""
         self.entity.meta["layout"] = "foo"
         self.assertRaises(TemplateNotFound, self.render.run)
+
+    def test_minify(self):
+        """should minify HTML"""
+        original = """<html>
+            asdf
+        </html>
+        """
+        expected = "<html> asdf </html> "
+        self.assertEqual(self.render.minify(original), expected)
+
+    def test_no_minify(self):
+        """should not minify HTML"""
+        self.render.config.minify = False
+        original = """<html>
+            asdf
+        </html>
+        """
+        self.assertEqual(self.render.minify(original), original)
+        self.render.config.minify = True
