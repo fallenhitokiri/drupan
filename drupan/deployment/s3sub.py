@@ -17,6 +17,7 @@ import os
 try:
     from urlparse import urljoin
 except ImportError:
+    # noinspection PyUnresolvedReferences,PyUnresolvedReferences
     from urllib.parse import urljoin
 
 
@@ -129,7 +130,7 @@ class Deploy(object):
     def compare_md5s(self):
         """compare MD5 checksum"""
         for key in self.new_md5s:
-            if not key in self.old_md5s:
+            if key not in self.old_md5s:
                 self.changed.append(key)
                 continue
 

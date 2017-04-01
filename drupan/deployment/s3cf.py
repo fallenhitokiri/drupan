@@ -18,6 +18,8 @@ import boto
 from boto.s3.connection import S3Connection, OrdinaryCallingFormat
 from boto.s3.key import Key
 
+from drupan.file_wrapper import FileWrapper
+
 
 S3_HOST_ERROR = "buckets name contains a full stop.\n\n"
 S3_HOST_ERROR += "Please set the `s3_host` configuration key to your S3 host."
@@ -135,13 +137,13 @@ class Deploy(object):
         Set the content, mime type and ACL for a key on S3. Before setting the
         check if the object is new or changed.
 
-        Arguments:
-            path: path for key
-            content: content to set
-            invalidate: CloudFront path to add to invalidation list. * will be
-                        added to the end to make sure we invalidate the URL
-                        path with a trailing slash and the html itself.
-                        If None the path will be used.
+
+        :param path: path for key
+        :param content: content to set
+        :param invalidate: CloudFront path to add to invalidation list. * will
+                           be added to the end to make sure we invalidate the
+                           URL path with a trailing slash and the html itself.
+                           If None the path will be used.
         """
         changed = self.file_changed(path, content)
 
@@ -151,7 +153,10 @@ class Deploy(object):
         key = Key(self.bucket)
         key.content_type = guess_mime_type(path)
         key.key = path
-        key.set_contents_from_string(content)
+        if isinstance(content, FileWrapper):
+            key.set_contents_from_string(content.read())
+        else:
+            key.set_contents_from_string(content)
         key.set_acl("public-read")
 
         print("uploaded: {0}".format(path))
@@ -183,7 +188,10 @@ class Deploy(object):
         if key.etag is None:
             return True
 
-        checksum = md5(content).hexdigest()
+        if isinstance(content, FileWrapper):
+            checksum = md5(content.read()).hexdigest()
+        else:
+            checksum = md5(content).hexdigest()
         return key.etag.replace('"', "") != checksum
 
     def invalidate(self):

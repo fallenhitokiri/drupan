@@ -17,10 +17,11 @@ class Config(object):
         self.reader = None
         self.writer = None
         self.url_scheme = dict()
-        self.plugins = None
+        self.plugins = list()
         self.options = None
         self.deployment = None
         self.redirects = None
+        self.external_plugins = None
 
     def from_file(self, cfg):
         """
@@ -93,3 +94,4 @@ class Config(object):
         self.options = cfg.get("options", None)
         self.deployment = cfg.get("deployment", None)
         self.redirects = cfg.get("redirects", None)
+        self.external_plugins = cfg.get("external_plugins", None)

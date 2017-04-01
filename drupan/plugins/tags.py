@@ -38,7 +38,7 @@ class Plugin(object):
         Arguments:
             instance of drupan.entity.Entity
         """
-        if not "tags" in entity.meta:
+        if "tags" not in entity.meta:
             return
 
         for tag in entity.meta["tags"]:

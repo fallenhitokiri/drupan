@@ -2,11 +2,13 @@
 try:
     from HTMLParser import HTMLParser
 except ImportError:
+    # noinspection PyUnresolvedReferences
     from html.parser import HTMLParser
 
 
 class ImageParser(HTMLParser):
     """Handler based on HTMLParser for images"""
+
     def __init__(self):
         HTMLParser.__init__(self)
         self.images = []
