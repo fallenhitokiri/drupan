@@ -1,5 +1,6 @@
 boto==2.36.0
 funcsigs==0.4
+htmlmin==0.1.10
 Jinja2==2.7.3
 markdown2==2.3.0
 MarkupSafe==0.23
