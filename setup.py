@@ -110,7 +110,7 @@ setup(
         "Operating System :: POSIX :: BSD :: FreeBSD",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.6",
         "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
