@@ -21,7 +21,6 @@ pip-log.txt
 .mr.developer.cfg
 venv
 .idea/
-
 MANIFEST
-
+.pytest_cache/
 nosetests.xml
