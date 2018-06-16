@@ -12,6 +12,8 @@ import re
 
 import yaml
 
+from drupan import logging
+
 
 class Config(object):
     """hold every information needed by the engine and plugins to work"""
@@ -25,6 +27,7 @@ class Config(object):
         self.redirects = None
         self.external_plugins = None
         self._add_env_loader()
+        self.logger = None
 
     def _add_env_loader(self):
         # pattern matcher for environment variables
@@ -111,3 +114,8 @@ class Config(object):
         self.deployment = cfg.get("deployment", None)
         self.redirects = cfg.get("redirects", None)
         self.external_plugins = cfg.get("external_plugins", None)
+
+        self._load_logger(cfg.get("logger", None))
+
+    def _load_logger(self, name):
+        self.logger = logging.get_logger(self, name)
