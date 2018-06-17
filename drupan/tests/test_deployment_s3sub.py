@@ -32,7 +32,7 @@ class TestS3Sub(unittest.TestCase):
         s3d = Deploy(self.site, self.config)
         s3d.new_md5s["foo"] = 1
         s3d.compare_md5s()
-        self.assertEquals(s3d.changed[0], "foo")
+        self.assertEqual(s3d.changed[0], "foo")
 
     def test_compare_md5s_changed(self):
         """should add key to changed"""
@@ -40,7 +40,7 @@ class TestS3Sub(unittest.TestCase):
         s3d.new_md5s["foo"] = 1
         s3d.old_md5s["foo"] = 2
         s3d.compare_md5s()
-        self.assertEquals(s3d.changed[0], "foo")
+        self.assertEqual(s3d.changed[0], "foo")
 
     def test_compare_md5s_no_change(self):
         """should add key to changed"""
@@ -48,7 +48,7 @@ class TestS3Sub(unittest.TestCase):
         s3d.new_md5s["foo"] = 1
         s3d.old_md5s["foo"] = 1
         s3d.compare_md5s()
-        self.assertEquals(len(s3d.changed), 0)
+        self.assertEqual(len(s3d.changed), 0)
 
     def test_should_upload_skip(self):
         """should skip uploading"""
