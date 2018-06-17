@@ -12,7 +12,7 @@ import sys
 from .site import Site
 from .config import Config
 from .template import Render
-from .serve import server
+from .serve import HTTPServer
 
 
 class Engine(object):
@@ -88,20 +88,20 @@ class Engine(object):
 
     def run(self):
         """run the site generation process"""
-        if self.reader:
-            self.reader.run()
-
+        self.reader.run()
         for plugin in self.plugins:
             plugin.run()
-
         self.renderer.run()
-
-        if self.writer:
-            self.writer.run()
-
-        if self.deployment:
-            self.deployment.run()
+        self.writer.run()
 
     def serve(self):
         """serve the generated site"""
-        server(self.config.get_option("writer", "directory"))
+        server = HTTPServer(self.config)
+        server.serve()
+
+    def deploy(self):
+        """deploy the generated site"""
+        if not self.deployment:
+            return
+
+        self.deployment.run()
