@@ -26,6 +26,9 @@ class Engine(object):
         self.renderer = None
         self.deployment = None
 
+    def __del__(self):
+        self.config.logger.close()
+
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
         self.add_external_plugins()
