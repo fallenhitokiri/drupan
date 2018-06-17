@@ -91,11 +91,13 @@ class Engine(object):
 
     def run(self):
         """run the site generation process"""
-        self.reader.run()
+        if self.reader:
+            self.reader.run()
         for plugin in self.plugins:
             plugin.run()
         self.renderer.run()
-        self.writer.run()
+        if self.writer:
+            self.writer.run()
 
     def serve(self):
         """serve the generated site"""
