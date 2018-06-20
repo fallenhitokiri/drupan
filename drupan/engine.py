@@ -25,9 +25,7 @@ class Engine(object):
         self.plugins = list()
         self.renderer = None
         self.deployment = None
-
-    def __del__(self):
-        self.config.logger.close()
+        self.logger = None
 
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
@@ -55,6 +53,8 @@ class Engine(object):
                 "Deploy",
             )
             self.deployment = imported.Deploy(self.site, self.config)
+
+        self.logger = self.config.logger
 
     @staticmethod
     def _load_module(name, base_name, kind):
@@ -93,11 +93,18 @@ class Engine(object):
         """run the site generation process"""
         if self.reader:
             self.reader.run()
+
         for plugin in self.plugins:
             plugin.run()
+
         self.renderer.run()
+
         if self.writer:
             self.writer.run()
+
+        self.deploy()
+
+        self.logger.close()
 
     def serve(self):
         """serve the generated site"""

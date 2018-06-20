@@ -4,6 +4,7 @@ import os
 import sys
 
 from drupan.engine import Engine
+from drupan.logging import NoopLogger
 from drupan.plugins.blank import Plugin as BlankPlugin
 
 
@@ -109,6 +110,7 @@ class PluginTests(unittest.TestCase):
         engine.plugins.append(plugin)
         engine.renderer = renderer
         engine.deployment = deploy
+        engine.logger = NoopLogger()
         engine.run()
 
         self.assertTrue(reader.ran)

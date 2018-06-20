@@ -18,7 +18,8 @@ setup(
         "drupan",
         "drupan/plugins",
         "drupan/deployment",
-        "drupan/inout"
+        "drupan/inout",
+        "drupan/logging"
     ],
     url="http://pypi.python.org/pypi/drupan/",
     license="BSD",
