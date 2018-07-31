@@ -2,20 +2,14 @@ language: python
 python:
   - "3.5"
   - "3.6"
-  - "3.7"
   - "3.6-dev"
-  - "3.7-dev"
 matrix:
   include:
     - python: "3.5"
       env: BOTO_CONFIG=/tmp/nowhere
     - python: "3.6"
       env: BOTO_CONFIG=/tmp/nowhere
-    - python: "3.7"
-      env: BOTO_CONFIG=/tmp/nowhere
     - python: "3.6-dev"
-      env: BOTO_CONFIG=/tmp/nowhere
-    - python: "3.7-dev"
       env: BOTO_CONFIG=/tmp/nowhere
 
 install:
