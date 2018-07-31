@@ -1,6 +1,10 @@
 language: python
 python:
-  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.6-dev"
+  - "3.7-dev"
 matrix:
   include:
     - python: "3.5"
