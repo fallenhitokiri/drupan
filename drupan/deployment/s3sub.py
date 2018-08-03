@@ -13,12 +13,7 @@ from hashlib import md5
 import json
 from io import open
 import os
-
-try:
-    from urlparse import urljoin
-except ImportError:
-    # noinspection PyUnresolvedReferences,PyUnresolvedReferences
-    from urllib.parse import urljoin
+from urllib.parse import urljoin
 
 
 class Deploy(object):

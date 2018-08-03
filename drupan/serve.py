@@ -8,12 +8,8 @@
 
 import os
 
-try:
-    from SimpleHTTPServer import SimpleHTTPRequestHandler
-    from SocketServer import TCPServer
-except ImportError:
-    from http.server import SimpleHTTPRequestHandler
-    from socketserver import TCPServer
+from http.server import SimpleHTTPRequestHandler
+from socketserver import TCPServer
 
 
 def server(directory, port=9000):

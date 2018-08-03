@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-try:
-    from HTMLParser import HTMLParser
-except ImportError:
-    # noinspection PyUnresolvedReferences
-    from html.parser import HTMLParser
+from html.parser import HTMLParser
 
 
 class ImageParser(HTMLParser):

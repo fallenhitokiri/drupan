@@ -63,7 +63,7 @@ class Render(object):
         """run the plugin"""
         env = Environment(
             loader=DictLoader(self.site.templates),
-            extensions=["jinja2.ext.with_"]
+            extensions=["jinja2.ext.with_", "jinja2.ext.do"]
         )
 
         env.filters["more"] = filter_more
