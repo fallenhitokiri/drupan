@@ -101,24 +101,18 @@ class PluginTests(unittest.TestCase):
         writer = MockPlugin()
         plugin = MockPlugin()
         renderer = MockPlugin()
+        deploy = MockPlugin()
 
         engine = Engine()
         engine.reader = reader
         engine.writer = writer
         engine.plugins.append(plugin)
         engine.renderer = renderer
+        engine.deployment = deploy
         engine.run()
 
         self.assertTrue(reader.ran)
         self.assertTrue(writer.ran)
         self.assertTrue(plugin.ran)
         self.assertTrue(renderer.ran)
-
-    def test_deploy_no_plugin(self):
-        """if no plugin is set do not raise an exception, otherwise run it"""
-        engine = Engine()
-        engine.deploy()
-        plugin = MockPlugin()
-        engine.deployment = plugin
-        engine.deploy()
-        self.assertTrue(plugin.ran)
+        self.assertTrue(deploy.ran)

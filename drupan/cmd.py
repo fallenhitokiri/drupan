@@ -68,10 +68,10 @@ def cmd():
         engine.deploy()
         sys.exit()
 
+    if args.nodeploy:
+        engine.deployment = None
+
     engine.run()
 
     if args.serve:
         engine.serve()
-
-    if not args.nodeploy:
-        engine.deploy()
