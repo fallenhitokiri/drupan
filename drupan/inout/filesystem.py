@@ -34,19 +34,22 @@ class Reader(object):
         self.content = config.get_option("reader", "content", optional=True)
         self.extension = config.get_option("reader", "extension")
         self.template = config.get_option("reader", "template", optional=True)
+        self.logger = config.logger
 
         if self.content is None:
             # Try getting the content directory via the content key. This
             # preserves 2.0 config format. Will be removed in 3.0
             self.content = config.get_option("reader", "directory")
-            print("Please rename your directory key to content.")
+            self.logger.log("Please rename your directory key to content.")
 
         if self.template is None:
             # If the reader is not configured for templates try getting it
             # via the jinja key. This preserves the behavior of the 2.0 config
             # format. Will be removed in 3.0
             self.template = config.get_option("jinja", "template")
-            print("Please move your template key to the reader section.")
+            self.logger.log(
+                "Please move your template key to the reader section."
+            )
 
         if not self.extension.startswith("."):
             self.extension = ".{0}".format(self.extension)

@@ -12,7 +12,7 @@ import sys
 from .site import Site
 from .config import Config
 from .template import Render
-from .serve import server
+from .serve import HTTPServer
 
 
 class Engine(object):
@@ -25,6 +25,7 @@ class Engine(object):
         self.plugins = list()
         self.renderer = None
         self.deployment = None
+        self.logger = None
 
     def prepare_engine(self):
         """get all subsystems and plugins setup"""
@@ -52,6 +53,8 @@ class Engine(object):
                 "Deploy",
             )
             self.deployment = imported.Deploy(self.site, self.config)
+
+        self.logger = self.config.logger
 
     @staticmethod
     def _load_module(name, base_name, kind):
@@ -102,6 +105,9 @@ class Engine(object):
         if self.deployment:
             self.deployment.run()
 
+        self.logger.close()
+
     def serve(self):
         """serve the generated site"""
-        server(self.config.get_option("writer", "directory"))
+        server = HTTPServer(self.config)
+        server.serve()

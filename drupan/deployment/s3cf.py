@@ -39,6 +39,7 @@ class Deploy(object):
         self.site = site
         self.config = config
 
+        self.logger = config.logger
         self.bucket_name = config.get_option("s3cf", "bucket")
         self.aws_access_key = config.get_option("s3cf", "aws_access_key")
         self.aws_secret_key = config.get_option("s3cf", "aws_secret_key")
@@ -159,7 +160,7 @@ class Deploy(object):
             key.set_contents_from_string(content)
         key.set_acl("public-read")
 
-        print("uploaded: {0}".format(path))
+        self.logger.log("uploaded: {0}".format(path))
 
         if invalidate is None:
             invalidate = path
@@ -204,12 +205,12 @@ class Deploy(object):
             self.to_invalidate,
         )
 
-        print("invalidating: {0}".format(self.to_invalidate))
+        self.logger.log("invalidating: {0}".format(self.to_invalidate))
 
     def redirect(self):
         """create a redirect"""
         if self.redirects == dict() or self.redirects is None:
-            print("No redirects - skipping.")
+            self.logger.log("No redirects - skipping.")
             return
 
         for source, destination in self.redirects.items():
@@ -221,7 +222,9 @@ class Deploy(object):
             key.set_redirect(destination)
             key.set_acl('public-read')
 
-            print("redirecting: {0} -> {1}".format(source, destination))
+            self.logger.log(
+                "redirecting: {0} -> {1}".format(source, destination)
+            )
 
     def redirect_exists(self, redirect):
         """

@@ -8,3 +8,4 @@ pbr==1.8.1
 Pygments==2.0.2
 PyYAML==3.11
 six==1.10.0
+sender==0.3
