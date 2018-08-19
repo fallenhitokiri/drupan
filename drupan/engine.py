@@ -102,7 +102,8 @@ class Engine(object):
         if self.writer:
             self.writer.run()
 
-        self.deploy()
+        if self.deployment:
+            self.deployment.run()
 
         self.logger.close()
 
@@ -110,10 +111,3 @@ class Engine(object):
         """serve the generated site"""
         server = HTTPServer(self.config)
         server.serve()
-
-    def deploy(self):
-        """deploy the generated site"""
-        if not self.deployment:
-            return
-
-        self.deployment.run()
