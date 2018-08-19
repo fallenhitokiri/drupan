@@ -7,6 +7,8 @@
 """
 
 from io import open
+import os
+import re
 
 import yaml
 
@@ -22,6 +24,20 @@ class Config(object):
         self.deployment = None
         self.redirects = None
         self.external_plugins = None
+        self._add_env_loader()
+
+    def _add_env_loader(self):
+        # pattern matcher for environment variables
+        env_pattern = re.compile(r'^\<%= ENV\[\'(.*)\'\] %\>(.*)$')
+
+        def env_constructor(loader, node):
+            """PyYAML constructor for environment variables"""
+            value = loader.construct_scalar(node)
+            var, remaining = env_pattern.match(value).groups()
+            return os.environ.get(var) + remaining
+
+        yaml.add_implicit_resolver("!env", env_pattern)
+        yaml.add_constructor("!env", env_constructor)
 
     def from_file(self, cfg):
         """

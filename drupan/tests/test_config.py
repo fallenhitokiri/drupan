@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import unittest
 
 from drupan.config import Config
@@ -59,6 +60,19 @@ class TestConfig(unittest.TestCase):
         self.config.redirects = {"foo": "bar"}
         redirects = self.config.get_option(None, "redirects")
         self.assertEqual(type(redirects), dict)
+
+    def test_env_loader(self):
+        os.environ["drupan_test_foo"] = "bar"
+
+        yaml = """options:
+          bar:
+            foo: <%= ENV['drupan_test_foo'] %>
+        """
+        self.config.parse_yaml(yaml)
+
+        del os.environ["drupan_test_foo"]
+
+        self.assertEqual(self.config.get_option("bar", "foo"), "bar")
 
 
 if __name__ == "__main__":
