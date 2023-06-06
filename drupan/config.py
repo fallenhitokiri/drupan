@@ -7,12 +7,8 @@
 """
 
 from io import open
-import os
-import re
 
 import yaml
-
-from drupan import logging
 
 
 class Config(object):
@@ -26,21 +22,6 @@ class Config(object):
         self.deployment = None
         self.redirects = None
         self.external_plugins = None
-        self._add_env_loader()
-        self.logger = None
-
-    def _add_env_loader(self):
-        # pattern matcher for environment variables
-        env_pattern = re.compile(r'^\<%= ENV\[\'(.*)\'\] %\>(.*)$')
-
-        def env_constructor(loader, node):
-            """PyYAML constructor for environment variables"""
-            value = loader.construct_scalar(node)
-            var, remaining = env_pattern.match(value).groups()
-            return os.environ.get(var) + remaining
-
-        yaml.add_implicit_resolver("!env", env_pattern)
-        yaml.add_constructor("!env", env_constructor)
 
     def from_file(self, cfg):
         """
@@ -96,7 +77,7 @@ class Config(object):
         Arguments:
             raw: yaml data
         """
-        parsed = yaml.load(raw)
+        parsed = yaml.safe_load(raw)
         self.from_dict(parsed)
 
     def from_dict(self, cfg):
@@ -114,8 +95,3 @@ class Config(object):
         self.deployment = cfg.get("deployment", None)
         self.redirects = cfg.get("redirects", None)
         self.external_plugins = cfg.get("external_plugins", None)
-
-        self._load_logger(cfg.get("logger", None))
-
-    def _load_logger(self, name):
-        self.logger = logging.get_logger(self, name)
