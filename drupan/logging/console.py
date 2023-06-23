@@ -3,8 +3,8 @@ import logging
 
 
 class ConsoleLogger(object):
-    def __init__(self, config):
-        self.logger = logging.getLogger("drupan")
+    def __init__(self):
+        self.logger = logging.getLogger("fluffy")
 
     def log(self, message):
         self.logger.info(message)

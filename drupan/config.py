@@ -1,18 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-    drupan.config
 
-    Configuration for drupan. You can configure it by passing a dictionary
+    kiss.config
+
+    Configuration for kiss. You can configure it by passing a dictionary
     with all values, passing a YAML formatted string or a path to a file.
 """
 
+import logging
 from io import open
 
 import yaml
 
 
+class ConsoleLogger(object):
+    def __init__(self):
+        self.logger = logging.getLogger("kiss")
+
+    def log(self, message):
+        self.logger.info(message)
+
+    def close(self):
+        pass
+
+
 class Config(object):
     """hold every information needed by the engine and plugins to work"""
+
     def __init__(self):
         self.reader = None
         self.writer = None
@@ -22,6 +36,7 @@ class Config(object):
         self.deployment = None
         self.redirects = None
         self.external_plugins = None
+        self.logger = ConsoleLogger()
 
     def from_file(self, cfg):
         """
@@ -33,7 +48,7 @@ class Config(object):
         with open(cfg, 'r', encoding='utf-8') as infile:
             self.parse_yaml(infile.read())
 
-    def get_option(self, section, key, optional=False):
+    def get_option(self, section, key, optional=False, return_default=None):
         """
         get a configuration option for a section of the system
 
@@ -42,6 +57,7 @@ class Config(object):
             key: option to get
             optional: if False an exception will be raised if the key cannot
                       be found.
+            return_default: if given it will just return this if nothing found
 
         Returns:
             configuration option
@@ -54,6 +70,8 @@ class Config(object):
 
         if not sec:
             if optional:
+                if return_default:
+                    return return_default
                 return None
 
             message = "{0} improperly configured".format(section)

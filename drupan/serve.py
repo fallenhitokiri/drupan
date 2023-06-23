@@ -26,7 +26,7 @@ class HTTPServer(object):
         os.chdir(self.directory)
 
         httpd = TCPServer(("", self.port), SimpleHTTPRequestHandler)
-
+        print( "server running on http://localhost:{0}".format(self.port))
         try:
             self.logger.log(
                 "server running on http://localhost:{0}".format(self.port)

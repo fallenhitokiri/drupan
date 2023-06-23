@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from .observer import ConcreteSubject
 
 """
     drupan.site
@@ -33,13 +33,20 @@ def search(entity, key, value):
     return False
 
 
-class Site(object):
-    def __init__(self):
+class Site(ConcreteSubject):
+    dont_overwrite = ['entities', 'date', 'templates', 'assets', 'images']
+
+    def __init__(self, **kwargs):
         self.entities = list()  # list for drupan.entity.Entity
         self.date = datetime.now()
         self.templates = dict()
         self.assets = dict()
         self.images = dict()
+        self.__dict__.update((k, v) for k, v in kwargs.items() if k not in self.dont_overwrite)
+        self.context_name = kwargs.get('site_name', 'ReedSite')
+        self.site_wide = {
+
+        }
 
     def get(self, key, value):
         """
@@ -56,6 +63,7 @@ class Site(object):
         results = list()
 
         for entity in self.entities:
+            self.notify(f"checking {entity} for search")
             if search(entity, key, value):
                 results.append(entity)
 

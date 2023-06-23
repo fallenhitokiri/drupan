@@ -2,30 +2,23 @@
 import argparse
 import sys
 import os
-
+import traceback
 from .engine import Engine
 from .version import __version__
 
-
-WRONG_VERSION = """Your config parameter is a directory. If you just updated
-drupan your site is likely still configured for drupan 1, you are using
-drupan 2.
-Please check the migration guide in the docs directory on
-<https://github.com/fallenhitokiri/drupan/docs/migration_1_to_2.md>
+KISS = "Keep it simple, stupid!"
+WRONG_VERSION = """
+YO!
 """
 
-INIT = """For a new site you can clone \
-<https://github.com/fallenhitokiri/drupan-template-blog> \
-which should give you a good starting point and should always be up to date \
-with the latest chages.
-
-After cloning switch to the directory and run `drupan config.yaml --serve`
+INIT = """
+Les get it!
 """
 
 
 def cmd():
     """command line entry point"""
-    desc = "drupan v{0}".format(__version__)
+    desc = f"{KISS} v{__version__}"
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("config", help="configuration file")
     parser.add_argument(
@@ -54,6 +47,7 @@ def cmd():
     args = parser.parse_args()
 
     engine = Engine()
+    engine.deployment = None
 
     # if someone uses a directory as config it is likely a drupan 1 setup
     # point to the migration guide.
@@ -62,16 +56,23 @@ def cmd():
         sys.exit()
 
     engine.config.from_file(args.config)
-    engine.prepare_engine()
+    try:
+        engine.prepare_engine()
+    except Exception as e:
+        print(f"Got Exception {e} \n")
+        print(engine.context_info())
+        tb = traceback.format_exc()
+        print(tb)
+        exit(1)
 
-    if args.deploy:
-        engine.deploy()
-        sys.exit()
-
-    if args.nodeploy:
-        engine.deployment = None
-
-    engine.run()
+    try:
+        engine.run()
+    except Exception as e:
+        print(f"Got Exception {e} \n")
+        print(engine.context_info())
+        tb = traceback.format_exc()
+        print(tb)
+        # exit(1)
 
     if args.serve:
         engine.serve()

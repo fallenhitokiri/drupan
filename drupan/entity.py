@@ -13,6 +13,10 @@ from drupan.imageparser import ImageParser
 
 class Entity(object):
     """define an entity and all helper methods"""
+
+    def __str__(self):
+        return self.meta.get('title', "unnamed entitiy")
+
     def __init__(self, config):
         self.config = config
 
@@ -37,6 +41,7 @@ class Entity(object):
         Returns:
             layout for this entity
         """
+        # print(f"Fetching layout for {self.meta}")
         return self.meta.get("layout", None)
 
     @property
@@ -170,6 +175,13 @@ class Entity(object):
             tags from meta
         """
         return self.meta.get("tags", None)
+
+    @property
+    def extra_css(self):
+        return self.meta.get("extra_css", None)
+
+    def meta_or_none(self, wha):
+        return self.meta.get(wha, None)
 
     @property
     def date(self):

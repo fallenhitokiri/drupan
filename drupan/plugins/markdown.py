@@ -20,6 +20,7 @@ class Plugin(object):
         self.config = config
 
         self.extras = config.get_option("markdown", "extras")
+        print(f"Loaded markdown with extras {self.extras}")
 
     def run(self):
         """run the plugin"""

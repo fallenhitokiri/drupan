@@ -11,9 +11,10 @@ from io import open
 import shutil
 import errno
 import re
-
+import frontmatter
 import yaml
-
+from django.utils.text import slugify
+import datetime
 from drupan.entity import Entity
 from drupan.file_wrapper import FileWrapper
 
@@ -23,6 +24,7 @@ class Reader(object):
     Implements a filesystem reader parsing drupans standard format. It consists
     of a header with all meta data, separated by three dashes from the content.
     """
+
     def __init__(self, site, config):
         """
         Arguments:
@@ -31,6 +33,7 @@ class Reader(object):
         """
         self.site = site
         self.config = config
+        print(f"Loaded with {config}")
         self.content = config.get_option("reader", "content", optional=True)
         self.extension = config.get_option("reader", "extension")
         self.template = config.get_option("reader", "template", optional=True)
@@ -39,14 +42,12 @@ class Reader(object):
             # Try getting the content directory via the content key. This
             # preserves 2.0 config format. Will be removed in 3.0
             self.content = config.get_option("reader", "directory")
-            print("Please rename your directory key to content.")
 
         if self.template is None:
             # If the reader is not configured for templates try getting it
             # via the jinja key. This preserves the behavior of the 2.0 config
             # format. Will be removed in 3.0
             self.template = config.get_option("jinja", "template")
-            print("Please move your template key to the reader section.")
 
         if not self.extension.startswith("."):
             self.extension = ".{0}".format(self.extension)
@@ -66,7 +67,34 @@ class Reader(object):
             fqp = os.path.join(self.content, current)
 
             with open(fqp, 'r', encoding='utf-8') as infile:
-                self.parse_file(infile.read())
+                self.new_parse_file(infile.read(), filename=fqp)
+
+    def new_parse_file(self, raw, **kwargs):
+        fname = kwargs.get('filename', 'unknown')
+        content = frontmatter.loads(raw)
+        entity = Entity(self.config)
+        if not content.metadata:
+            content.metadata = {
+                'title': slugify(fname),
+                'date': datetime.datetime.today(),
+                'layout': 'post'
+            }
+        entity.meta = content.metadata
+
+        entity.raw = content.content.strip()
+        self.site.entities.append(entity)
+        if content.metadata.get('tags', None):
+            print("has tags")
+            entity_tags = content.metadata.get('tags')
+            if self.site.site_wide.get('tags', None):
+                pass
+            else:
+                self.site.site_wide['tags'] = []
+            if isinstance(entity_tags, list):
+                self.site.site_wide['tags'] += entity_tags
+            else:
+                self.site.site_wide['tags'].append(entity_tags)
+            print(f"updated site tags with {entity_tags}")
 
     def parse_file(self, raw):
         """
@@ -77,7 +105,19 @@ class Reader(object):
         """
         (header, separator, content) = raw.partition("---")
         meta = yaml.safe_load(header)
-
+        print(f"Got meta {meta}")
+        if meta.get('tags', None):
+            print("has tags")
+            entity_tags = meta.get('tags')
+            if self.site.site_wide.get('tags', None):
+                pass
+            else:
+                self.site.site_wide['tags'] = []
+            if isinstance(entity_tags, list):
+                self.site.site_wide['tags'] += entity_tags
+            else:
+                self.site.site_wide['tags'].append(entity_tags)
+            print(f"updated site tags with {entity_tags}")
         entity = Entity(self.config)
         entity.meta = meta
         entity.raw = content.strip()
@@ -134,6 +174,7 @@ class Writer(object):
     Implements a filesystem writer, writing all entities which have a rendered
     attribute != None. The path is the URL split and appended to the base path.
     """
+
     def __init__(self, site, config):
         """
         Arguments:
